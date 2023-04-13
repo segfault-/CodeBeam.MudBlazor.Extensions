@@ -6,70 +6,66 @@
     <MudStack Class="@Class" Style="@Style"> @*Row="Vertical"*@
         <div style="@GetStepperStyle()">
             <ol style="grid-column-start: 1; grid-column-end: -1;flex-direction:row;grid-row:1;list-style: none;display: flex;">
-            @foreach (MudStep step in _steps)
+                @{
+                    MudStep currentStep = null;
+                }
+                @foreach (MudStep step in _steps)
             {
-                <li style="@GetStepPercent()">
-
-                
                 @if (step.IsResultStep || (MobileView == true && IsStepActive(step) == false))
                 {
-
+                    currentStep = step;
+                    continue;
                 }
-                else
-                {
-                    
+
+                <li style="@GetStepPercent()">
                     <div @onclick="@(Linear ? null : () => SetActiveIndex(step))" Class="@HeaderClassname">
-                        @{
-                            bool active = IsStepActive(step);
-                        }
-                        @if(step.Template != null)
-                        {
-                            @step.Template(step)
-                        }
-                        else
-                        {
-                            <MudAvatar Class="@((active || step.Status != StepStatus.Continued) ? $"mud-theme-{Color.ToDescriptionString()}" : null)" Variant="@Variant" Size="Size.Small">
-                                @if (step.Status == Enums.StepStatus.Completed)
-                                {
-                                    <MudIcon Icon="@Icons.Material.Filled.Done" Size="Size.Small" />
-                                }
-                                else if (step.Status == StepStatus.Skipped)
-                                {
-                                    <MudIcon Icon="@Icons.Material.Filled.Remove" Size="Size.Small" />
-                                }
-                                else
-                                {
-                                    @(Steps.IndexOf(step) + 1)
-                                }
-                            </MudAvatar>
-                            @if (HeaderTextView == HeaderTextView.All || HeaderTextView == HeaderTextView.NewLine || (HeaderTextView == HeaderTextView.OnlyActiveText && active))
+                    @{
+                        bool active = IsStepActive(step);
+                    }
+                    @if(step.Template != null)
+                    {
+                        @step.Template(step)
+                    }
+                    else
+                    {
+                        <MudAvatar Class="@((active || step.Status != StepStatus.Continued) ? $"mud-theme-{Color.ToDescriptionString()}" : null)" Variant="@Variant" Size="Size.Small">
+                            @if (step.Status == Enums.StepStatus.Completed)
                             {
-                                <div>
-                                    <MudText Align="Align.Center" Color="@(active ? Color : Color.Default)" Style="@(active ? "font-weight: 900" : null)">@step.Title</MudText>
-                                    @if (step.Optional == true)
-                                    {
-                                        <MudText Align="@(HeaderTextView == HeaderTextView.NewLine ? Align.Center : Align.Start)" Typo="Typo.subtitle2" Color="@(active ? Color : Color.Default)" Style="@(active ? "font-weight: 500" : null)">@LocalizedStrings.Optional</MudText>
-                                    }
-                                </div>
+                                <MudIcon Icon="@Icons.Material.Filled.Done" Size="Size.Small" />
                             }
+                            else if (step.Status == StepStatus.Skipped)
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.Remove" Size="Size.Small" />
+                            }
+                            else
+                            {
+                                @(Steps.IndexOf(step) + 1)
+                            }
+                        </MudAvatar>
+                        @if (HeaderTextView == HeaderTextView.All || HeaderTextView == HeaderTextView.NewLine || (HeaderTextView == HeaderTextView.OnlyActiveText && active))
+                        {
+                            <div>
+                                <MudText Align="Align.Center" Color="@(active ? Color : Color.Default)" Style="@(active ? "font-weight: 900" : null)">@step.Title</MudText>
+                                @if (step.Optional == true)
+                                {
+                                    <MudText Align="@(HeaderTextView == HeaderTextView.NewLine ? Align.Center : Align.Start)" Typo="Typo.subtitle2" Color="@(active ? Color : Color.Default)" Style="@(active ? "font-weight: 500" : null)">@LocalizedStrings.Optional</MudText>
+                                }
+                            </div>
                         }
+                    }
                     </div>
-
-                    if (_steps.Count - 1 != _steps.IndexOf(step) || MobileView == true)
-                    {
-                        <span class="@GetDashClassname(step)"></span>
-                    }
-
-                    @if (MobileView == true)
-                    {
-                        <MudText Typo="Typo.body2" Color="@Color">@(_steps?.IndexOf(step) + 1) / @(_steps?.Count)</MudText>
-                    }
-                    }
                 </li>
 
+                
+                
             }              
             </ol>
+            @if (MobileView == true)
+            {
+                <MudText Style="grid-row:1;" Typo="Typo.body2" Color="@Color">@(_steps?.IndexOf(currentStep) + 1) / @(_steps?.Count)</MudText>
+            }
             <MudProgressLinear Color="Color.Primary" Value="@ProgressValue" Min="0" Max="100" Style="@GetProgressLinearStyle()" />
+
         </div>
         <MudStack Row="true" AlignItems="@(HeaderTextView == HeaderTextView.NewLine ? AlignItems.Start : AlignItems.Center)"> @*Row="!Vertical"*@
 
