@@ -72,6 +72,7 @@
             <MudProgressLinear Color="Color.Primary" Value="@ProgressValue" Min="0" Max="100" Style="@GetProgressLinearStyle()" />
         </div>
         <MudStack Row="true" AlignItems="@(HeaderTextView == HeaderTextView.NewLine ? AlignItems.Start : AlignItems.Center)"> @*Row="!Vertical"*@
+
             @foreach (MudStep step in _steps)
             {
                 if (step.IsResultStep || (MobileView == true && IsStepActive(step) == false))
@@ -116,8 +117,9 @@
                     <MudText Typo="Typo.body2" Color="@Color">@(_steps?.IndexOf(step) + 1) / @(_steps?.Count)</MudText>
                 }
             }            
+            
+            
         </MudStack>
-
         @if (Loading)
         {
             <MudProgressLinear Indeterminate="true" Color="@Color" />

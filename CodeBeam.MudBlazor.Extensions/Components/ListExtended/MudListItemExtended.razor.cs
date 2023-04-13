@@ -328,8 +328,8 @@ namespace MudExtensions
 
         public void SetSelected(bool selected, bool forceRender = true)
         {
-            if (Disabled)
-                return;
+            //if (Disabled)
+            //    return;
             if (_selected == selected)
                 return;
             _selected = selected;
