@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFrameworks>net7.0</TargetFrameworks>
+		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>6.4.8</Version>
+		<Version>6.4.9</Version>
 		<Title>CodeBeam.MudBlazor.Extensions</Title>
 		<Authors>CodeBeam</Authors>
 		<Company>CodeBeam</Company>
@@ -13,7 +13,7 @@
 		<PackageIcon>Mud_Secondary.png</PackageIcon>
 		<PackageProjectUrl>https://codebeam-mudextensions.pages.dev/</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/CodeBeamOrg/CodeBeam.MudBlazor.Extensions</RepositoryUrl>
-		<PackageTags>Blazor; MudBlazor; Component; Extension; Animate; Stepper; Select; List; Loading; Gallery; ChipField; Transfer</PackageTags>
+		<PackageTags>Blazor; MudBlazor; Component; Extension; Animate; Stepper; Select; List; Loading; Gallery; ChipField; Transfer; Barcode; QR</PackageTags>
 		<RootNamespace>MudExtensions</RootNamespace>
 	</PropertyGroup>
 
@@ -24,6 +24,8 @@
 	<ItemGroup>
 		<PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
 		<PackageReference Include="CsvHelper" Version="30.0.1" />
+		<PackageReference Include="MudBlazor" Version="6.2.1" />
+		<PackageReference Include="ZXing.Net" Version="0.16.9" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
@@ -74,10 +76,6 @@
 		<None Include="Components\ListExtended\MudListSubheaderExtended.razor" />
 		<None Include="Components\SwitchM3\MudSwitchM3.razor" />
 		<None Include="wwwroot\MudExtensions.js" />-->
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <ProjectReference Include="..\..\segfault\MudBlazor\src\MudBlazor\MudBlazor.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
