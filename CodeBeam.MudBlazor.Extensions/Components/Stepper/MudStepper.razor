@@ -5,7 +5,7 @@
 <CascadingValue Value="this" IsFixed="true">
     <MudStack Class="@Class" Style="@Style"> @*Row="Vertical"*@
         <div style="@GetStepperStyle()">
-            <ol style="grid-column-start: 1; grid-column-end: -1;flex-direction:row;grid-row:1;list-style: none;display: flex;">
+            <div style="grid-column-start: 1; grid-column-end: -1;flex-direction:row;grid-row:1;list-style: none;display: flex;">
                 @{
                     MudStep currentStep = null;
                 }
@@ -17,7 +17,7 @@
                     continue;
                 }
 
-                <li style="@GetStepPercent()">
+                <div style="@GetStepPercent()">
                     <div @onclick="@(Linear ? null : () => SetActiveIndex(step))" Class="@HeaderClassname">
                     @{
                         bool active = IsStepActive(step);
@@ -54,12 +54,9 @@
                         }
                     }
                     </div>
-                </li>
-
-                
-                
+                </div>    
             }              
-            </ol>
+            </div>
             @if (MobileView == true)
             {
                 <MudText Style="grid-row:1;" Typo="Typo.body2" Color="@Color">@(_steps?.IndexOf(currentStep) + 1) / @(_steps?.Count)</MudText>
