@@ -94,11 +94,11 @@ namespace MudExtensions
         }
 
 
-        //protected override async Task OnClickHandler(MouseEventArgs ev)
-        //{
-        //    await NavLinkClicked.InvokeAsync(this);
-        //    await base.OnClickHandler(ev);
-        //}
+        protected override async Task OnClickHandler(MouseEventArgs ev)
+        {
+            await NavLinkClicked.InvokeAsync(this);
+            await base.OnClickHandler(ev);
+        }
 
         public void Dispose()
         {

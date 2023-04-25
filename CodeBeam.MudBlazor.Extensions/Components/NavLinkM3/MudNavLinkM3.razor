@@ -5,17 +5,18 @@
 <MudStack Class="mb-3" AlignItems="AlignItems.Center" Justify="Justify.Center" Spacing="1">
     <div @attributes="UserAttributes" class="@Classname" disabled="@Disabled" style="@Style">
         <NavLink @onclick="@OnClickHandler"
+                 
                  class="@LinkClassname"
                  @attributes="@Attributes"
                  Match="@Match"
                  ActiveClass="@ActiveClass">        
             @if (!string.IsNullOrEmpty(Icon))
             {
-                <MudIcon  Icon="@Icon" Color="@IconColor" Class="@IconClassname" />
+                <MudIcon Icon="@Icon" Color="@IconColor" Class="@IconClassname" />
             }
         </NavLink>
     </div>
     <div class="mud-nav-link-text-m3">
-        @Label
+        <MudTextM3 TypeStyle="Enums.TypeStyle.Body" TypeSize="Enums.TypeSize.Medium">@Label</MudTextM3>
     </div>
 </MudStack>
