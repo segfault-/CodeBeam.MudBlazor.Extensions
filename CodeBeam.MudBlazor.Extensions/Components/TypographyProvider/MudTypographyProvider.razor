@@ -1,0 +1,107 @@
+﻿@namespace MudExtensions
+@inherits MudComponentBase
+
+@using System.Text
+@using MudExtensions.Components.TypographyM3;
+@using MudExtensions.Enums
+@using MudExtensions.Utilities
+
+
+<style>
+    :root {
+        @($"--mud-typographym3-display-large-font : {string.Join(',', @DisplayLargeTypo.Font)};") 
+        @($"--mud-typographym3-display-large-line-height : {DisplayLargeTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-display-large-size : {DisplayLargeTypo.Size}rem;") 
+        @($"--mud-typographym3-display-large-tracking : {DisplayLargeTypo.Tracking}rem;") 
+        @($"--mud-typographym3-display-large-weight : {DisplayLargeTypo.Weight};")
+        
+        @($"--mud-typographym3-display-medium-font : {string.Join(',', DisplayMediumTypo.Font)};") 
+        @($"--mud-typographym3-display-medium-line-height : {DisplayMediumTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-display-medium-size : {DisplayMediumTypo.Size}rem;") 
+        @($"--mud-typographym3-display-medium-tracking : {DisplayMediumTypo.Tracking}rem;") 
+        @($"--mud-typographym3-display-medium-weight : {DisplayMediumTypo.Weight};")
+
+        @($"--mud-typographym3-display-small-font : {string.Join(',', DisplaySmallTypo.Font)};") 
+        @($"--mud-typographym3-display-small-line-height : {DisplaySmallTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-display-small-size : {DisplaySmallTypo.Size}rem;") 
+        @($"--mud-typographym3-display-small-tracking : {DisplaySmallTypo.Tracking}rem;") 
+        @($"--mud-typographym3-display-small-weight : {DisplaySmallTypo.Weight};")
+
+
+        @($"--mud-typographym3-headline-large-font : {string.Join(',', @HeadlineLargeTypo.Font)};") 
+        @($"--mud-typographym3-headline-large-line-height : {HeadlineLargeTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-headline-large-size : {HeadlineLargeTypo.Size}rem;") 
+        @($"--mud-typographym3-headline-large-tracking : {HeadlineLargeTypo.Tracking}rem;") 
+        @($"--mud-typographym3-headline-large-weight : {HeadlineLargeTypo.Weight};")
+        
+        @($"--mud-typographym3-headline-medium-font : {string.Join(',', HeadlineMediumTypo.Font)};") 
+        @($"--mud-typographym3-headline-medium-line-height : {HeadlineMediumTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-headline-medium-size : {HeadlineMediumTypo.Size}rem;") 
+        @($"--mud-typographym3-headline-medium-tracking : {HeadlineMediumTypo.Tracking}rem;") 
+        @($"--mud-typographym3-headline-medium-weight : {HeadlineMediumTypo.Weight};")
+
+        @($"--mud-typographym3-headline-small-font : {string.Join(',', HeadlineSmallTypo.Font)};") 
+        @($"--mud-typographym3-headline-small-line-height : {HeadlineSmallTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-headline-small-size : {HeadlineSmallTypo.Size}rem;") 
+        @($"--mud-typographym3-headline-small-tracking : {HeadlineSmallTypo.Tracking}rem;") 
+        @($"--mud-typographym3-headline-small-weight : {HeadlineSmallTypo.Weight};")
+
+
+        @($"--mud-typographym3-title-large-font : {string.Join(',', @TitleLargeTypo.Font)};") 
+        @($"--mud-typographym3-title-large-line-height : {TitleLargeTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-title-large-size : {TitleLargeTypo.Size}rem;") 
+        @($"--mud-typographym3-title-large-tracking : {TitleLargeTypo.Tracking}rem;") 
+        @($"--mud-typographym3-title-large-weight : {TitleLargeTypo.Weight};")
+        
+        @($"--mud-typographym3-title-medium-font : {string.Join(',', TitleMediumTypo.Font)};") 
+        @($"--mud-typographym3-title-medium-line-height : {TitleMediumTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-title-medium-size : {TitleMediumTypo.Size}rem;") 
+        @($"--mud-typographym3-title-medium-tracking : {TitleMediumTypo.Tracking}rem;") 
+        @($"--mud-typographym3-title-medium-weight : {TitleMediumTypo.Weight};")
+
+        @($"--mud-typographym3-title-small-font : {string.Join(',', TitleSmallTypo.Font)};") 
+        @($"--mud-typographym3-title-small-line-height : {TitleSmallTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-title-small-size : {TitleSmallTypo.Size}rem;") 
+        @($"--mud-typographym3-title-small-tracking : {TitleSmallTypo.Tracking}rem;") 
+        @($"--mud-typographym3-title-small-weight : {TitleSmallTypo.Weight};")
+
+
+        @($"--mud-typographym3-label-large-font : {string.Join(',', @LabelLargeTypo.Font)};") 
+        @($"--mud-typographym3-label-large-line-height : {LabelLargeTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-label-large-size : {LabelLargeTypo.Size}rem;") 
+        @($"--mud-typographym3-label-large-tracking : {LabelLargeTypo.Tracking}rem;") 
+        @($"--mud-typographym3-label-large-weight : {LabelLargeTypo.Weight};")
+        
+        @($"--mud-typographym3-label-medium-font : {string.Join(',', LabelMediumTypo.Font)};") 
+        @($"--mud-typographym3-label-medium-line-height : {LabelMediumTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-label-medium-size : {LabelMediumTypo.Size}rem;") 
+        @($"--mud-typographym3-label-medium-tracking : {LabelMediumTypo.Tracking}rem;") 
+        @($"--mud-typographym3-label-medium-weight : {LabelMediumTypo.Weight};")
+
+        @($"--mud-typographym3-label-small-font : {string.Join(',', LabelSmallTypo.Font)};") 
+        @($"--mud-typographym3-label-small-line-height : {LabelSmallTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-label-small-size : {LabelSmallTypo.Size}rem;") 
+        @($"--mud-typographym3-label-small-tracking : {LabelSmallTypo.Tracking}rem;") 
+        @($"--mud-typographym3-label-small-weight : {LabelSmallTypo.Weight};")
+
+
+        @($"--mud-typographym3-body-large-font : {string.Join(',', @BodyLargeTypo.Font)};") 
+        @($"--mud-typographym3-body-large-line-height : {BodyLargeTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-body-large-size : {BodyLargeTypo.Size}rem;") 
+        @($"--mud-typographym3-body-large-tracking : {BodyLargeTypo.Tracking}rem;") 
+        @($"--mud-typographym3-body-large-weight : {BodyLargeTypo.Weight};")
+        
+        @($"--mud-typographym3-body-medium-font : {string.Join(',', BodyMediumTypo.Font)};") 
+        @($"--mud-typographym3-body-medium-line-height : {BodyMediumTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-body-medium-size : {BodyMediumTypo.Size}rem;") 
+        @($"--mud-typographym3-body-medium-tracking : {BodyMediumTypo.Tracking}rem;") 
+        @($"--mud-typographym3-body-medium-weight : {BodyMediumTypo.Weight};")
+
+        @($"--mud-typographym3-body-small-font : {string.Join(',', BodySmallTypo.Font)};") 
+        @($"--mud-typographym3-body-small-line-height : {BodySmallTypo.LineHeight}rem;") 
+        @($"--mud-typographym3-body-small-size : {BodySmallTypo.Size}rem;") 
+        @($"--mud-typographym3-body-small-tracking : {BodySmallTypo.Tracking}rem;") 
+        @($"--mud-typographym3-body-small-weight : {BodySmallTypo.Weight};")
+    }
+
+</style>
