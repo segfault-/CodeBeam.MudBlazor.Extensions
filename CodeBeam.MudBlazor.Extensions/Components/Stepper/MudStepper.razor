@@ -113,6 +113,11 @@
                     <MudSpacer />
                 }
 
+                @if (currentStep?.OptionalButtons != null)
+                {
+                    @currentStep.OptionalButtons
+                }
+
                 @if (showResultStep == false)
                 {
                     if ((ActiveIndex < Steps.Count && Steps[ActiveIndex].Status != StepStatus.Continued) || (ActiveIndex == Steps.Count - 1 && HasResultStep() == false && IsAllStepsCompleted()))

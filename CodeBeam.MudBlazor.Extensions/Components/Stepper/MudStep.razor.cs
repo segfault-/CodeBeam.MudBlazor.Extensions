@@ -2,13 +2,7 @@
 using MudBlazor;
 using MudBlazor.Utilities;
 using MudExtensions.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MudExtensions.Extensions;
-using Microsoft.AspNetCore.Components.Rendering;
 
 namespace MudExtensions
 {
@@ -22,6 +16,11 @@ namespace MudExtensions
 
         [CascadingParameter]
         public MudStepper MudStepper { get; set; }
+
+        /// <summary>
+        /// Custom buttons for a step
+        /// </summary>
+        [Parameter] public RenderFragment? OptionalButtons { get; set; }
 
         /// <summary>
         /// Step text to show on header.
