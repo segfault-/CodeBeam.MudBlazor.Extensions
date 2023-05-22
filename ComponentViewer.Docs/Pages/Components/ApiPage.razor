@@ -99,7 +99,7 @@
     </ExampleCard>
 
     <ExampleCard Title="Api - MudColorProvider" HasExpansionPanel="true">
-        <MudTable Items="@(typeof(MudTypographyProvider).GetProperties().Where(x => x.Name != "FieldId" && x.Name != "UserAttributes").OrderBy(x => x.Name).ToList())">
+        <MudTable Items="@(typeof(MudColorProvider).GetProperties().Where(x => x.Name != "FieldId" && x.Name != "UserAttributes").OrderBy(x => x.Name).ToList())">
             <HeaderContent>
                 <MudTh>Name</MudTh>
                 <MudTh>Type</MudTh>
@@ -111,7 +111,7 @@
                 <MudTd DataLabel="Default">
                     @if (true)
                     {
-                        MudTypographyProvider instance = new();
+                        MudColorProvider instance = new();
                         <MudText Typo="Typo.body2">@(context.GetValue(instance)?.ToString() ?? "null")</MudText>
                     }
                 </MudTd>

@@ -50,8 +50,6 @@
 		<Content Remove="bundleconfig.json" />
 		<Content Remove="compilerconfig.json" />
 		<Content Remove="excubowebcompiler.json" />
-		<Content Remove="wwwroot\MudExtensions.min.css" />
-		<Content Remove="wwwroot\MudExtensions.min.css.map" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -70,8 +68,6 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
-		<None Include="wwwroot\MudExtensions.min.css" />
-		<None Include="wwwroot\MudExtensions.min.css.map" />
 		<!--<None Include="wwwroot\MudExtensions.js" />-->
 		<!--<None Include="Components\ListExtended\MudListExtended.razor" />
 		<None Include="Components\ListExtended\MudListItemExtended.razor" />
