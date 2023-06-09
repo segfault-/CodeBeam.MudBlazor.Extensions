@@ -12,11 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.5" />
     <PackageReference Include="MudBlazor" Version="6.2.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\d\vNext\MudBlazor\src\MudBlazor\MudBlazor.csproj" />
     <ProjectReference Include="..\CodeBeam.MudBlazor.Extensions\CodeBeam.MudBlazor.Extensions.csproj" />
   </ItemGroup>
 
