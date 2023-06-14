@@ -96,6 +96,21 @@ namespace MudExtensions.UnitTests.Mocks
             OnBreakpointChanged = null;
             return ValueTask.CompletedTask;
         }
+
+        public Task<BreakpointServiceSubscribeResult> SubscribeAsync(Action<Breakpoint> callback)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<BreakpointServiceSubscribeResult> SubscribeAsync(Action<Breakpoint> callback, ResizeOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UnsubscribeAsync(Guid subscriptionId)
+        {
+            throw new NotImplementedException();
+        }
     }
 #pragma warning restore CS1998
 }

@@ -96,6 +96,21 @@ namespace MudExtensions.UnitTests.Mocks
             OnBreakpointChanged = null;
             return ValueTask.CompletedTask;
         }
+
+        public Task<Guid> SubscribeAsync(Action<BrowserWindowSize> callback)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Guid> SubscribeAsync(Action<BrowserWindowSize> callback, ResizeOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UnsubscribeAsync(Guid subscriptionId)
+        {
+            throw new NotImplementedException();
+        }
     }
 #pragma warning restore CS1998
 }
