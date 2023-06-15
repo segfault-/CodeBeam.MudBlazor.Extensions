@@ -94,7 +94,7 @@ namespace MudExtensions
         }
 
 
-        protected override async Task OnClickHandler(MouseEventArgs ev)
+        protected async Task OnClickHandler(MouseEventArgs ev)
         {
             await NavLinkClicked.InvokeAsync(this);
             await base.OnClickHandler(ev);

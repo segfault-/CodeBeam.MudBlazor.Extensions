@@ -97,6 +97,22 @@
                 @($"--mud-{customColor.Key}-{a}: {GetRGBString(customColor.Value, a)};")
             }
         } 
+
+        @($"--mud-neutral-87: {GetRGBString(Neutral, 87)};")
+        @for(int i = 92; i < 100; i = i++)
+        {
+            int a = i;
+            @($"--mud-neutral-{a}: {GetRGBString(Neutral, a)};")
+        }
+
+        @($"--mud-neutral-4: {GetRGBString(Neutral, 4)};")
+        @($"--mud-neutral-6: {GetRGBString(Neutral, 6)};")
+        @($"--mud-neutral-12: {GetRGBString(Neutral, 12)};")
+        @($"--mud-neutral-17: {GetRGBString(Neutral, 17)};")
+        @($"--mud-neutral-22: {GetRGBString(Neutral, 22)};")
+        @($"--mud-neutral-24: {GetRGBString(Neutral, 24)};")
+
+
         @($"--mud-primary-{MainTone}: {GetRGBString(Primary, MainTone)};") 
         @($"--mud-secondary-{MainTone}: {GetRGBString(Secondary, MainTone)};") 
         @($"--mud-tertiary-{MainTone}: {GetRGBString(Tertiary, MainTone)};")
@@ -140,6 +156,9 @@
         {
             @($"--mud-{customColor.Key}-99: {GetRGBString(customColor.Value, 99)};")
         }
+
+        
+
 
         --mud-primary-0: rgb(0, 0, 0);
         --mud-primary-100: rgb(255, 255, 255);
@@ -197,6 +216,24 @@
             @($"--mud-m3-{customColor.Key}-container: var(--mud-{customColor.Key}-{(ContainerTone == 90 && DarkMode == true ? "30" : ContainerTone.ToString())});");
             @($"--mud-m3-on{customColor.Key}-container: var(--mud-{customColor.Key}-{(ContainerTone == 90 && DarkMode == true ? "90" : 100 - ContainerTone)});");
         }
+
+        --mud-m3-surface: var(--mud-neutral-@($"{(DarkMode == true ? "6" : "98")}"));
+        --mud-m3-surface-dim: var(--mud-neutral-@($"{(DarkMode == true ? "6" : "87")}"));
+        --mud-m3-surface-bright: var(--mud-neutral-@($"{(DarkMode == true ? "24" : "98")}"));
+        --mud-m3-surface-container-lowest: var(--mud-neutral-@($"{(DarkMode == true ? "4" : "100")}"));
+        --mud-m3-surface-container-low: var(--mud-neutral-@($"{(DarkMode == true ? "10" : "96")}"));
+        --mud-m3-surface-container: var(--mud-neutral-@($"{(DarkMode == true ? "12" : "94")}"));
+        --mud-m3-surface-container-high: var(--mud-neutral-@($"{(DarkMode == true ? "17" : "92")}"));
+        --mud-m3-surface-container-highest: var(--mud-neutral-@($"{(DarkMode == true ? "22" : "90")}"));
+        --mud-m3-surface-variant: var(--mud-neutralvariant-@($"{(DarkMode == true ? "30" : "90")}"));
+        --mud-m3-on-surface: var(--mud-neutral-@($"{(DarkMode == true ? "90" : "10")}"));
+        --mud-m3-on-surface-variant: var(--mud-neutralvariant-@($"{(DarkMode == true ? "80" : "30")}"));
+        --mud-m3-inverse-surface: var(--mud-neutral-@($"{(DarkMode == true ? "90" : "20")}"));
+        --mud-m3-inverse-on-surface: var(--mud-neutral-@($"{(DarkMode == true ? "20" : "95")}"));
+        --mud-m3-background: var(--mud-neutral-@($"{(DarkMode == true ? "6" : "98")}"));
+        --mud-m3-on-background: var(--mud-neutral-@($"{(DarkMode == true ? "90" : "10")}"));
+
+
 
 
         @if (Override)
