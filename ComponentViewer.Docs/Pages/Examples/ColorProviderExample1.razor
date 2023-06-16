@@ -2,6 +2,7 @@
 @using ComponentViewer.Docs.Shared
 @using MudBlazor.Extensions
 
+
 <MudGrid>
     <MudItem xs="12" sm="8">
         <MudColorProvider 
@@ -17,29 +18,29 @@
             DarkMode="_darkMode"
             CustomColors="@_customColors" />
 
-        <MudStack>
+        <div>
             <MudStack Row="true">
                 <MudStack Spacing="1" Class="d-flex flex-grow-1">
-                    <MudPaper Height="150px" Style="background-color: var(--mud-m3-primary)" Class="rounded-0 d-flex flex-column flex-grow-1 align-stretch justify-center">
-                        <MudStack Justify="Justify.SpaceBetween" Class="flex-grow-1">
+                    <MudPaper Height="150px" Style="background-color: var(--mud-m3-primary)" Class="rounded-0">
+                        <MudStack Justify="Justify.SpaceBetween" AlignItems="AlignItems.Stretch">
                             <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-primary)">Primary</MudTextM3>
                             <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-primary)">P-@(_darkMode ? "80" : "40")</MudTextM3>
-                            <MudPaper Elevation="0" Height="50px" Style="background-color: var(--mud-m3-on-primary)" Class="rounded-0 d-flex flex-column align-center justify-center">
-                                <MudStack Row="true">
-                                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-primary)">On Primary</MudTextM3>
-                                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-primary)">P-@(_darkMode ? "20" : "100")</MudTextM3>
-                                </MudStack>
+                            <MudPaper Elevation="0" Height="50px" Style="background-color: var(--mud-m3-on-primary)" Class="rounded-0">
+@*                                 <MudStack Justify="Justify.SpaceBetween" AlignItems="AlignItems.Stretch" Row="true">
+                                    <MudTextM3 Class="pl-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-primary)">On Primary</MudTextM3>
+                                    <MudTextM3 Class="pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-primary)">P-@(_darkMode ? "20" : "100")</MudTextM3>
+                                </MudStack> *@
                             </MudPaper>
                         </MudStack>
                     </MudPaper>
-                        <MudPaper Height="150px" Style="background-color: var(--mud-m3-primary-container)" Class="rounded-0 d-flex flex-column flex-grow-1 align-stretch justify-center">
+                    <MudPaper Height="150px" Style="background-color: var(--mud-m3-primary-container)" Class="rounded-0 d-flex flex-column flex-grow-1 align-stretch justify-center">
                         <MudStack Justify="Justify.SpaceBetween" Class="flex-grow-1">
                             <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-primary-container)">Primary Container</MudTextM3>
                             <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-primary-container)">P-@(_darkMode ? "30" : "90")</MudTextM3>
-                                <MudPaper Elevation="0" Height="50px" Style="background-color: var(--mud-m3-on-primary-container)" Class="rounded-0 d-flex flex-column align-center justify-center">
-                                <MudStack Justify="Justify.SpaceAround" Row="true">
-                                    <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-primary-container)">On Primary Container</MudTextM3>
-                                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-primary-container)">P-@(_darkMode ? "90" : "10")</MudTextM3>
+                            <MudPaper Elevation="0" Height="50px" Style="background-color: var(--mud-m3-on-primary-container)" Class="rounded-0 d-flex flex-column align-center justify-center">
+                                <MudStack Justify="Justify.SpaceBetween" Row="true">
+                                    <MudTextM3 Class="pl-2"                    TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-primary-container)">On Primary Container</MudTextM3>
+                                    <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-primary-container)">P-@(_darkMode ? "90" : "10")</MudTextM3>
                                 </MudStack>
                             </MudPaper>
                         </MudStack>
@@ -51,7 +52,7 @@
                             <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-secondary)">Secondary</MudTextM3>
                             <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-secondary)">S-@(_darkMode ? "80" : "40")</MudTextM3>
                                 <MudPaper Elevation="0" Height="50px" Style="background-color: var(--mud-m3-on-secondary)" Class="rounded-0 d-flex flex-column align-center justify-center">
-                                    <MudStack Justify="Justify.SpaceAround" Row="true">
+                                    <MudStack Justify="Justify.SpaceBetween" Row="true">
                                         <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-secondary)">On Secondary</MudTextM3>
                                         <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-secondary)">S-@(_darkMode ? "20" : "100")</MudTextM3>
                                 </MudStack>
@@ -62,10 +63,10 @@
                         <MudStack Justify="Justify.SpaceBetween" Class="flex-grow-1">
                             <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-secondary-container)">Secondary Container</MudTextM3>
                             <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-secondary-container)">S-@(_darkMode ? "30" : "90")</MudTextM3>
-                                <MudPaper Elevation="0" Height="50px" Style="background-color: var(--mud-m3-on-secondary-container)" Class="rounded-0 d-flex flex-column align-center justify-center">
-                                    <MudStack Justify="Justify.SpaceAround" Row="true">
+                            <MudPaper Elevation="0" Height="50px" Style="background-color: var(--mud-m3-on-secondary-container)" Class="rounded-0 d-flex flex-column align-center justify-center">
+                                <MudStack Justify="Justify.SpaceBetween" Row="true">
                                     <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-secondary-container)">On Secondary Container</MudTextM3>
-                                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-secondary-container)">S-@(_darkMode ? "90" : "10")</MudTextM3>
+                                    <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-secondary-container)">S-@(_darkMode ? "90" : "10")</MudTextM3>
                                 </MudStack>
                             </MudPaper>
                         </MudStack>
@@ -74,14 +75,14 @@
                 <MudStack Spacing="1" Class="d-flex flex-grow-1">
                         <MudPaper Height="150px" Style="background-color: var(--mud-m3-tertiary)" Class="rounded-0 d-flex flex-column flex-grow-1 align-stretch justify-center">
                         <MudStack Justify="Justify.SpaceBetween" Class="flex-grow-1">
-                                <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-tertiary)">Tertiary</MudTextM3>
-                            <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-tertiary)">T-@(_darkMode ? "80" : "40")</MudTextM3>
+                                <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-tertiary)">Tertiary</MudTextM3>
+                                <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-tertiary)">T-@(_darkMode ? "80" : "40")</MudTextM3>
                                 <MudPaper Elevation="0" Height="50px" Style="background-color: var(--mud-m3-on-tertiary)" Class="rounded-0 d-flex flex-column align-center justify-center">
-                                <MudStack Row="true">
-                                    <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-tertiary)">On tertiary</MudTextM3>
+                                    <MudStack Row="true">
+                                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-tertiary)">On tertiary</MudTextM3>
                                         <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-tertiary)">T-@(_darkMode ? "20" : "100")</MudTextM3>
-                                </MudStack>
-                            </MudPaper>
+                                    </MudStack>
+                                </MudPaper>
                         </MudStack>
                     </MudPaper>
                         <MudPaper Height="150px" Style="background-color: var(--mud-m3-tertiary-container)" Class="rounded-0 d-flex flex-column flex-grow-1 align-stretch justify-center">
@@ -144,66 +145,66 @@
                         </MudStack>
                     </MudPaper>
             </MudStack>
-                <MudStack Row="true" Spacing="0">
+            <MudStack Row="true" Spacing="0">
 
-                    <MudPaper Height="150px" Style="background-color: var(--mud-m3-surface-container-lowest)" Class="rounded-0 d-flex flex-column flex-grow-1 flex-shrink-1 align-stretch justify-center">
-                        <MudStack Justify="Justify.SpaceBetween">
-                            <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-surface)">Surface Container Lowest</MudTextM3>
-                            <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-surface)">N-@(_darkMode ? "4" : "100")</MudTextM3>
-                        </MudStack>
-                    </MudPaper>
-                    <MudPaper Height="150px" Style="background-color: var(--mud-m3-surface-container-low)" Class="rounded-0 d-flex flex-column flex-grow-1 flex-shrink-1 align-stretch justify-center">
-                        <MudStack Justify="Justify.SpaceBetween">
-                            <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-surface)">Surface Container Low</MudTextM3>
-                            <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-surface)">N-@(_darkMode ? "10" : "96")</MudTextM3>
-                        </MudStack>
-                    </MudPaper>
-                    <MudPaper Height="150px" Style="background-color: var(--mud-m3-surface-container)" Class="rounded-0 d-flex flex-column flex-grow-1 flex-shrink-1 align-stretch justify-center">
-                        <MudStack Justify="Justify.SpaceBetween">
-                            <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-surface)">Surface Container</MudTextM3>
-                            <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-surface)">N-@(_darkMode ? "12" : "94")</MudTextM3>
-                        </MudStack>
-                    </MudPaper>
-                    <MudPaper Height="150px" Style="background-color: var(--mud-m3-surface-container-high)" Class="rounded-0 d-flex flex-column flex-grow-1 flex-shrink-1 align-stretch justify-center">
-                        <MudStack Justify="Justify.SpaceBetween">
-                            <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-surface)">Surface Container High</MudTextM3>
-                            <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-surface)">N-@(_darkMode ? "17" : "92")</MudTextM3>
-                        </MudStack>
-                    </MudPaper>
-                    <MudPaper Height="150px" Style="background-color: var(--mud-m3-surface-container-highest)" Class="rounded-0 d-flex flex-column flex-grow-1 flex-shrink-1 align-stretch justify-center">
-                        <MudStack Justify="Justify.SpaceBetween">
-                            <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-surface)">Surface Container Highest</MudTextM3>
-                            <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-surface)">N-@(_darkMode ? "22" : "90")</MudTextM3>
-                        </MudStack>
-                    </MudPaper>
-            </MudStack>
-                <MudStack Row="true" Spacing="0">
-                    <MudPaper Height="50px" Style="background-color: var(--mud-m3-on-surface)" Class="rounded-0 d-flex flex-column flex-grow-1 align-stretch justify-center">
-                        <MudStack Row="true" Justify="Justify.SpaceBetween" Class="flex-grow-1">
-                            <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-surface)">On Surface</MudTextM3>
-                            <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-surface)">N-@(_darkMode ? "90" : "10")</MudTextM3>
-                        </MudStack>
-                    </MudPaper>
-                    <MudPaper Height="50px" Style="background-color: var(--mud-m3-on-surface-variant)" Class="rounded-0 d-flex flex-column flex-grow-1 align-stretch justify-center">
-                        <MudStack  Row="true" Justify="Justify.SpaceBetween" Class="flex-grow-1">
-                            <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-surface-variant)">On Surface Variant</MudTextM3>
-                            <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-surface-variant)">NV-@(_darkMode ? "80" : "30")</MudTextM3>
-                        </MudStack>
-                    </MudPaper>
-                    <MudPaper Height="50px" Style="background-color: var(--mud-m3-outline)" Class="rounded-0 d-flex flex-column flex-grow-1 align-stretch justify-center">
-                        <MudStack Row="true" Justify="Justify.SpaceBetween" Class="flex-grow-1">
-                            <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-surface-variant)">Outline</MudTextM3>
-                            <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-surface-variant)">NV-@(_darkMode ? "60" : "50")</MudTextM3>
-                        </MudStack>
-                    </MudPaper>
-                    <MudPaper Height="50px" Style="background-color: var(--mud-m3-outline-variant)" Class="rounded-0 d-flex flex-column flex-grow-1 align-stretch justify-center">
-                        <MudStack Row="true" Justify="Justify.SpaceBetween" Class="flex-grow-1">
-                            <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-surface)">Outline Variant</MudTextM3>
-                            <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-surface)">NV-@(_darkMode ? "30" : "80")</MudTextM3>
-                        </MudStack>
-                    </MudPaper>
-            </MudStack>
+                <MudPaper Height="150px" Style="background-color: var(--mud-m3-surface-container-lowest)" Class="rounded-0 d-flex flex-column flex-grow-1 flex-shrink-1 align-stretch justify-center">
+                    <MudStack Justify="Justify.SpaceBetween">
+                        <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-surface)">Surface Container Lowest</MudTextM3>
+                        <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-surface)">N-@(_darkMode ? "4" : "100")</MudTextM3>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Height="150px" Style="background-color: var(--mud-m3-surface-container-low)" Class="rounded-0 d-flex flex-column flex-grow-1 flex-shrink-1 align-stretch justify-center">
+                    <MudStack Justify="Justify.SpaceBetween">
+                        <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-surface)">Surface Container Low</MudTextM3>
+                        <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-surface)">N-@(_darkMode ? "10" : "96")</MudTextM3>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Height="150px" Style="background-color: var(--mud-m3-surface-container)" Class="rounded-0 d-flex flex-column flex-grow-1 flex-shrink-1 align-stretch justify-center">
+                    <MudStack Justify="Justify.SpaceBetween">
+                        <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-surface)">Surface Container</MudTextM3>
+                        <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-surface)">N-@(_darkMode ? "12" : "94")</MudTextM3>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Height="150px" Style="background-color: var(--mud-m3-surface-container-high)" Class="rounded-0 d-flex flex-column flex-grow-1 flex-shrink-1 align-stretch justify-center">
+                    <MudStack Justify="Justify.SpaceBetween">
+                        <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-surface)">Surface Container High</MudTextM3>
+                        <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-surface)">N-@(_darkMode ? "17" : "92")</MudTextM3>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Height="150px" Style="background-color: var(--mud-m3-surface-container-highest)" Class="rounded-0 d-flex flex-column flex-grow-1 flex-shrink-1 align-stretch justify-center">
+                    <MudStack Justify="Justify.SpaceBetween">
+                        <MudTextM3 Class="pt-2 pl-2"               TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-surface)">Surface Container Highest</MudTextM3>
+                        <MudTextM3 Class="d-flex justify-end pr-2" TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-surface)">N-@(_darkMode ? "22" : "90")</MudTextM3>
+                    </MudStack>
+                </MudPaper>
         </MudStack>
+            <MudStack Row="true" Spacing="0">
+                <MudPaper Height="50px" Style="background-color: var(--mud-m3-on-surface)" Class="rounded-0 d-flex flex-column flex-grow-1 align-stretch justify-center">
+                    <MudStack Row="true" Justify="Justify.SpaceBetween" Class="flex-grow-1">
+                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-surface)">On Surface</MudTextM3>
+                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-surface)">N-@(_darkMode ? "90" : "10")</MudTextM3>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Height="50px" Style="background-color: var(--mud-m3-on-surface-variant)" Class="rounded-0 d-flex flex-column flex-grow-1 align-stretch justify-center">
+                    <MudStack  Row="true" Justify="Justify.SpaceBetween" Class="flex-grow-1">
+                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-surface-variant)">On Surface Variant</MudTextM3>
+                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-surface-variant)">NV-@(_darkMode ? "80" : "30")</MudTextM3>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Height="50px" Style="background-color: var(--mud-m3-outline)" Class="rounded-0 d-flex flex-column flex-grow-1 align-stretch justify-center">
+                    <MudStack Row="true" Justify="Justify.SpaceBetween" Class="flex-grow-1">
+                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-surface-variant)">Outline</MudTextM3>
+                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-surface-variant)">NV-@(_darkMode ? "60" : "50")</MudTextM3>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Height="50px" Style="background-color: var(--mud-m3-outline-variant)" Class="rounded-0 d-flex flex-column flex-grow-1 align-stretch justify-center">
+                    <MudStack Row="true" Justify="Justify.SpaceBetween" Class="flex-grow-1">
+                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium" Style="color: var(--mud-m3-on-surface)">Outline Variant</MudTextM3>
+                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small" Style="color: var(--mud-m3-on-surface)">NV-@(_darkMode ? "30" : "80")</MudTextM3>
+                    </MudStack>
+                </MudPaper>
+        </MudStack>
+        </div>
 
         @if (_showAllTones)
         {
