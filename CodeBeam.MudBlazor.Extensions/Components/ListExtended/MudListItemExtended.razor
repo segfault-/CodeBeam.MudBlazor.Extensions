@@ -54,22 +54,23 @@
             </div>
         }
         <div class="mud-list-item-text-extended @(Inset? "mud-list-item-text-inset-extended" : "")">
-            <MudTextM3 TypeSize="@_textTypeSize" TypeStyle="TypeStyle.Label">
-                @if (ChildContent is not null)
-                {
-                    @ChildContent
-                }
-                else
-                {
-                    <MudStack Row="true">
-                        <MudStack>
-                            <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium">@Text</MudTextM3>
+            @if (ChildContent is not null)
+            {
+                @ChildContent
+            }
+            else
+            {
+                <MudStack Row="true" Justify="Justify.SpaceBetween">
+                    <MudStack>
+                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Medium">@Text</MudTextM3>
+                        @if (!string.IsNullOrWhiteSpace(SecondaryText))
+                        {
                             <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small">@SecondaryText</MudTextM3>
-                        </MudStack>
-                        <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small">@EndText</MudTextM3>
+                        }
                     </MudStack>
-                }
-            </MudTextM3>
+                    <MudTextM3 TypeStyle="TypeStyle.Label" TypeSize="TypeSize.Small">@EndText</MudTextM3>
+                </MudStack>
+            }
         </div>
 
         if (MudListExtended != null && NestedList == null && MudListExtended.MultiSelection == true && MudListExtended.MultiSelectionAlign == Align.End && IsFunctional == false &&
