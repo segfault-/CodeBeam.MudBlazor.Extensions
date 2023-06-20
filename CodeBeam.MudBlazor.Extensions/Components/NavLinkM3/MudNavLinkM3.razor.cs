@@ -50,6 +50,10 @@ namespace MudExtensions
             };
         }
 
+        [Parameter]
+        [Category(CategoryTypes.Text.Appearance)]
+        public int? BadgeContent { get; set; }
+
         /// <summary>
         /// Set the text-align on the component.
         /// </summary>

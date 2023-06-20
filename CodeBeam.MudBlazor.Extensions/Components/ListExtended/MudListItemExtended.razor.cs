@@ -62,6 +62,13 @@ namespace MudExtensions
         [Category(CategoryTypes.List.Behavior)]
         public string SecondaryText { get; set; }
 
+        /// <summary>
+        /// The end text to display
+        /// </summary>
+        [Parameter]
+        [Category(CategoryTypes.List.Behavior)]
+        public string EndText { get; set; }
+
         [Parameter]
         [Category(CategoryTypes.List.Selecting)]
         public T Value { get; set; }
@@ -397,16 +404,16 @@ namespace MudExtensions
             OnClick.InvokeAsync(ev).AndForget();
         }
 
-        private Typo _textTypo;
+        private TypeSize _textTypeSize;
         protected void OnListParametersChanged()
         {
             if ((Dense ?? MudListExtended?.Dense) ?? false)
             {
-                _textTypo = Typo.body2;
+                _textTypeSize = TypeSize.Medium;
             }
             else
             {
-                _textTypo = Typo.body1;
+                _textTypeSize = TypeSize.Small;
             }
             StateHasChanged();
         }
