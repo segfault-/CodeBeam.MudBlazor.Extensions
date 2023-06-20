@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using MudBlazor.Interfaces;
 using MudBlazor.Utilities;
+using MudExtensions.Enums;
 
 namespace MudExtensions
 {
@@ -49,8 +50,20 @@ namespace MudExtensions
             };
         }
 
-        [Parameter] public EventCallback<MudNavLinkM3> NavLinkClicked { get; set; }
+        /// <summary>
+        /// Set the text-align on the component.
+        /// </summary>
         [Parameter]
+        [Category(CategoryTypes.Text.Appearance)]
+        public TypeStyle TypeStyle { get; set; } = TypeStyle.Body;
+        /// <summary>
+        /// Set the text-align on the component.
+        /// </summary>
+        [Parameter]
+        [Category(CategoryTypes.Text.Appearance)]
+        public TypeSize TypeSize { get; set; } = TypeSize.Large;
+
+        [Parameter] public EventCallback<MudNavLinkM3> NavLinkClicked { get; set; }
         [Category(CategoryTypes.NavMenu.Behavior)]
         public string Label { get; set; }
         /// <summary>
