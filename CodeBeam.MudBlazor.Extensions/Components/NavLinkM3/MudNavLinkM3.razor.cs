@@ -55,16 +55,18 @@ namespace MudExtensions
         /// </summary>
         [Parameter]
         [Category(CategoryTypes.Text.Appearance)]
-        public TypeStyle TypeStyle { get; set; } = TypeStyle.Body;
+        public TypeStyle TypeStyle { get; set; } = TypeStyle.Label;
         /// <summary>
         /// Set the text-align on the component.
         /// </summary>
         [Parameter]
         [Category(CategoryTypes.Text.Appearance)]
-        public TypeSize TypeSize { get; set; } = TypeSize.Large;
+        public TypeSize TypeSize { get; set; } = TypeSize.Medium;
 
         [Parameter] public EventCallback<MudNavLinkM3> NavLinkClicked { get; set; }
-        [Category(CategoryTypes.NavMenu.Behavior)]
+
+        [Parameter]
+        [Category(CategoryTypes.Text.Appearance)]
         public string Label { get; set; }
         /// <summary>
         /// Icon to use if set.
