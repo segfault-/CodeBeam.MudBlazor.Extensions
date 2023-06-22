@@ -16,7 +16,7 @@ namespace MudExtensions
 
         private delegate Expression Binder(Expression left, Expression right);
 
-        private Expression ParseTree<T>(Rule<T> condition, ParameterExpression parm)
+        private Expression ParseTree<T>(FilterRule<T> condition, ParameterExpression parm)
         {
             Expression left = null;
 
@@ -117,7 +117,7 @@ namespace MudExtensions
             return left;
         }
 
-        private static Expression GenerateFilterExpressionForStringType<T>(Rule<T> rule, Expression parameter)
+        private static Expression GenerateFilterExpressionForStringType<T>(FilterRule<T> rule, Expression parameter)
         {
             var dataType = typeof(T).GetProperty(rule.Field).PropertyType;
             var field = parameter;
@@ -164,7 +164,7 @@ namespace MudExtensions
             };
         }
 
-        private static Expression GenerateFilterExpressionForEnumType<T>(Rule<T> rule, Expression parameter)
+        private static Expression GenerateFilterExpressionForEnumType<T>(FilterRule<T> rule, Expression parameter)
         {
             var dataType = typeof(T).GetProperty(rule.Field).PropertyType;
             var field = parameter;
@@ -192,7 +192,7 @@ namespace MudExtensions
         }
 
         [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "<Pending>")]
-        private static Expression GenerateFilterExpressionForNumericType<T>(Rule<T> rule, Expression parameter)
+        private static Expression GenerateFilterExpressionForNumericType<T>(FilterRule<T> rule, Expression parameter)
         {
             var dataType = typeof(T).GetProperty(rule.Field).PropertyType;
             var field = Expression.Convert(parameter, typeof(double?));
@@ -231,7 +231,7 @@ namespace MudExtensions
             };
         }
 
-        private static Expression GenerateFilterExpressionForDateTimeType<T>(Rule<T> rule, Expression parameter)
+        private static Expression GenerateFilterExpressionForDateTimeType<T>(FilterRule<T> rule, Expression parameter)
         {
             var dataType = typeof(T).GetProperty(rule.Field).PropertyType;
             if (dataType == typeof(DateTime))
@@ -310,7 +310,7 @@ namespace MudExtensions
         }
 
         [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "<Pending>")]
-        private static Expression GenerateFilterExpressionForBooleanType<T>(Rule<T> rule, Expression parameter)
+        private static Expression GenerateFilterExpressionForBooleanType<T>(FilterRule<T> rule, Expression parameter)
         {
             var dataType = typeof(T).GetProperty(rule.Field).PropertyType;
 
@@ -440,7 +440,7 @@ namespace MudExtensions
             }
         }
 
-        public Expression<Func<T, bool>> ParseExpressionOf<T>(Rule<T> root)
+        public Expression<Func<T, bool>> ParseExpressionOf<T>(FilterRule<T> root)
         {
             Expression<Func<T, bool>> query = null;
             var itemExpression = Expression.Parameter(typeof(T));
@@ -460,7 +460,7 @@ namespace MudExtensions
             return query;
         }
 
-        public Func<T, bool> ParsePredicateOf<T>(Rule<T> root)
+        public Func<T, bool> ParsePredicateOf<T>(FilterRule<T> root)
         {
             var query = ParseExpressionOf<T>(root);
             if (query != null)

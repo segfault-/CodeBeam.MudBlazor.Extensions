@@ -1,106 +1,21 @@
 ﻿@namespace MudExtensions
+@using MudExtensions.Enums;
 @inherits MudComponentBase
 @typeparam T
 
-<MudStack Row="true" Class="gap-3 flex-grow-1" Justify="Justify.FlexStart" AlignItems="AlignItems.Baseline">
-    <MudButtonGroup Class="flex-none ml-n4" Color="Color.Primary" Variant="Variant.Text">
-        <MudButton Class="px-0" Disabled="true" Variant="Variant.Text">@ParentCondition</MudButton>
-        <MudIconButton Class="px-0" Icon="@Icons.Material.Filled.Add" Size="Size.Small" aria-label="add" OnClick="@AddExpressionRule"></MudIconButton>
-    </MudButtonGroup>
+<div class="@ClassName" style="@StyleString">
+    <MudButton OnClick="(() => StateHasChanged())">StateHasChanged</MudButton>
+    <CascadingValue Value="this" IsFixed="true">
+        @FilterTemplate
+        <Node T="T" PredicateUnit="@FilterRoot" />
+        
+        
+        
+        <ExpressionTree PredicateUnit="@FilterRoot" />
+        <MudSpacer></MudSpacer>
+        <ExpressionTree PredicateUnit="@RootPredicate" />
 
-    @if (!HasChildren)
-    {
-        <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-            <MudSelect T="Column<T>" Disabled="Leaf.Disabled" @bind-Value="@Column" FullWidth="true" Required="true" Dense="true">
-                @foreach (var column in Root?.RenderedColumns ?? Enumerable.Empty<Column<T>>())
-                {
-                    if (column.Filterable ?? true)
-                    {
-                        <MudSelectItem T="Column<T>" Value="@column">@column.Title</MudSelectItem>
-                    }
-                }
-            </MudSelect>
-        </MudPaper>
+    </CascadingValue>
+</div>
 
-        @if (Column != null)
-        {
-            <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-                <MudSelect T="string" Disabled="Leaf.Disabled" @bind-Value="@Operator" FullWidth="true" Required="true" Dense="true">
-                    @foreach (var o in FilterOperator.GetOperatorByDataType(@Leaf.Value.FilterDefinition.FieldType))
-                    {
-                        <MudSelectItem Value="@o">@o</MudSelectItem>
-                    }
-                </MudSelect>
-            </MudPaper>
-        }
-        @if (Leaf.Value.FilterDefinition.FieldType.IsString && !(Leaf.Value.FilterDefinition.Operator ?? "").EndsWith("empty"))
-        {
-            <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-                <MudTextField Class="flex-shrink-1" T="string" Value="@_valueString" ValueChanged="@StringValueChanged" Required="true" />
-            </MudPaper>
-        }
-        else if (Leaf.Value.FilterDefinition.FieldType.IsNumber && !(Leaf.Value.FilterDefinition.Operator ?? "").EndsWith("empty"))
-        {
-            <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-                <MudNumericField Class="flex-shrink-1" T="double?" Value="@_valueNumber" ValueChanged="@NumberValueChanged" Required="true" />
-            </MudPaper>
-        }
-        else if (Leaf.Value.FilterDefinition.FieldType.IsEnum)
-        {
-            @if ((Leaf.Value.FilterDefinition.Operator ?? "").Equals("is one of") || (Leaf.Value.FilterDefinition.Operator ?? "").Equals("is not one of"))
-            {
-                <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-                    <MudSelect T="string" Value="@_valueString" ValueChanged="@StringValueChanged" @bind-SelectedValues="@MultiSelectValues" MultiSelection="true" FullWidth="true" Required="true" Dense="true">
-                        @foreach (var item in Enum.GetValues(Leaf.Value.FilterDefinition.FieldType.InnerType))
-                        {
-                            <MudSelectItem T="string" Value="@((string)@item.ToString())">@item</MudSelectItem>
-                        }
-                    </MudSelect>
-                </MudPaper>
-            }
-            else
-            {
-                <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-                    <MudSelect T="Enum" Value="@_valueEnum" ValueChanged="@EnumValueChanged" MultiSelection="false" FullWidth="true" Required="true" Dense="true">
-                        @foreach (var item in Enum.GetValues(Leaf.Value.FilterDefinition.FieldType.InnerType))
-                        {
-                            <MudSelectItem T="Enum" Value="@((Enum)item)">@item</MudSelectItem>
-                        }
-                    </MudSelect>
-                </MudPaper>
-            }
-        }
-        else if (Leaf.Value.FilterDefinition.FieldType.IsBoolean)
-        {
-            <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-                <MudSelect Class="flex-shrink-1" T="bool?" Value="@_valueBool" ValueChanged="@BoolValueChanged" Required="true" Dense="true">
-                    <MudSelectItem T="bool?" Value="@(true)">true</MudSelectItem>
-                    <MudSelectItem T="bool?" Value="@(false)">false</MudSelectItem>
-                </MudSelect>
-            </MudPaper>
-        }
-        else if (Leaf.Value.FilterDefinition.FieldType.IsDateTime && !(Leaf.Value.FilterDefinition.Operator ?? "").EndsWith("empty"))
-        {
-            <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-                <MudDatePicker Class="flex-shrink-1" Date="@_valueDate" DateChanged="@DateValueChanged" Required="true" />
-                <MudTimePicker Class="flex-shrink-1" Time="@_valueTime" TimeChanged="@TimeValueChanged" Required="true" />
-            </MudPaper>
-        }
-        <MudSpacer />
 
-    }
-    else
-    {
-        <MudSpacer />
-        <MudStack Row="true">
-            <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small">
-                <MudButton Disabled="true" Size="Size.Small">@Leaf.Value.Condition</MudButton>
-                <MudMenu Icon="@Icons.Material.Filled.ArrowDropDown">
-                    <MudMenuItem OnClick="() => SetButtonText(0)">AND</MudMenuItem>
-                    <MudMenuItem OnClick="() => SetButtonText(1)">OR</MudMenuItem>
-                </MudMenu>
-            </MudButtonGroup>
-        </MudStack>
-    }
-    <MudIconButton Class="flex-none" Icon="@Icons.Material.Outlined.Close" OnClick="() => RemoveExpressionRule()" Color="Color.Primary" Size="Size.Small"></MudIconButton>
-</MudStack>

@@ -12,6 +12,8 @@ namespace MudExtensions
     {
         Guid Id { get; set; }
 
+        string Field { get; set; }
+
         string? Title { get; set; }
 
         string? Operator { get; set; }

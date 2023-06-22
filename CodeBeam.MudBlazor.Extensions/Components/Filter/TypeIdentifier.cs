@@ -1,10 +1,4 @@
-﻿// Copyright (c) MudBlazor 2021
-// MudBlazor licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-using System;
-using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace MudExtensions
 {
@@ -41,13 +35,7 @@ namespace MudExtensions
 
         internal static bool IsString(Type? type)
         {
-            if (type is null)
-                return false;
-
-            if (type == typeof(string))
-                return true;
-
-            return false;
+            return IsTypeOrNullableOfType(type, typeof(string));
         }
 
         public static bool IsNumber(Type? type)
@@ -57,50 +45,40 @@ namespace MudExtensions
 
         public static bool IsEnum(Type? type)
         {
-            if (type is null)
-                return false;
-
-            if (type.IsEnum)
-                return true;
-
-            var underlyingType = Nullable.GetUnderlyingType(type);
-            return underlyingType is { IsEnum: true };
+            return IsTypeOrNullableOfType(type, t => t.IsEnum);
         }
 
         public static bool IsDateTime(Type? type)
         {
-            if (type is null)
-                return false;
-
-            if (type == typeof(DateTime))
-                return true;
-
-            var underlyingType = Nullable.GetUnderlyingType(type);
-            return underlyingType is not null && underlyingType == typeof(DateTime);
+            return IsTypeOrNullableOfType(type, typeof(DateTime));
         }
 
         public static bool IsBoolean(Type? type)
         {
-            if (type is null)
-                return false;
-
-            if (type == typeof(bool))
-                return true;
-
-            var underlyingType = Nullable.GetUnderlyingType(type);
-            return underlyingType is not null && underlyingType == typeof(bool);
+            return IsTypeOrNullableOfType(type, typeof(bool));
         }
 
         public static bool IsGuid(Type? type)
         {
-            if (type is null)
-                return false;
+            return IsTypeOrNullableOfType(type, typeof(Guid));
+        }
 
-            if (type == typeof(Guid))
+        private static bool IsTypeOrNullableOfType(Type? type, Type targetType)
+        {
+            if (type == targetType)
                 return true;
 
             var underlyingType = Nullable.GetUnderlyingType(type);
-            return underlyingType is not null && underlyingType == typeof(Guid);
+            return underlyingType == targetType;
+        }
+
+        private static bool IsTypeOrNullableOfType(Type? type, Func<Type, bool> predicate)
+        {
+            if (predicate(type))
+                return true;
+
+            var underlyingType = Nullable.GetUnderlyingType(type);
+            return underlyingType is not null && predicate(underlyingType);
         }
     }
 }

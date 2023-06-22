@@ -15,6 +15,8 @@ namespace MudExtensions
 
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        public string Field { get; set; } = string.Empty;
+
         public string? Title { get; set; }
 
         public string? Operator { get; set; }

@@ -1,0 +1,13 @@
+﻿@namespace MudExtensions
+@using MudExtensions.Enums;
+@typeparam T
+@inherits MudComponentBase
+
+<CascadingValue Value="@Filter" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code{
+    [CascadingParameter] public MudFilter<T> Filter { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

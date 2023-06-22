@@ -979,6 +979,18 @@
   letter-spacing: var(--mud-typographym3-label-small-tracking);
   font-weight: var(--mud-typographym3-label-small-weight); }
 
+.mud-filter {
+  background-color: var(--mud-m3-surface);
+  color: var(--mud-m3-on-surface); }
+  .mud-filter .mud-filter-node {
+    background-color: var(--mud-m3-surface-container);
+    color: var(--mud-m3-on-surface); }
+    .mud-filter .mud-filter-node .compound-predicate {
+      background-color: var(--mud-m3-surface-container);
+      color: var(--mud-m3-on-surface);
+      margin: 16px;
+      padding: 8px; }
+
 /*@import '../abstracts/variables';*/
 .mud-list-extended {
   margin: 0;
