@@ -4,12 +4,11 @@ using MudBlazor.Utilities;
 
 namespace MudExtensions
 {
-    public partial class AtomicPredicateComponent<T> : MudComponentBase
+    public partial class OperatorSelectComponent<T> : MudComponentBase
     {
-        [CascadingParameter] public MudFilter<T> Filter { get; set; }
         [Parameter] public AtomicPredicate<T> AtomicPredicate { get; set; }
 
-        protected string ClassName => new CssBuilder("mud-atomic-predicate")
+        protected string ClassName => new CssBuilder("mud-operator-select")
             .AddClass(Class)
             .Build();
 

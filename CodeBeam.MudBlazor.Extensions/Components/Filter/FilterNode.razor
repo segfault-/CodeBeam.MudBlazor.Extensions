@@ -9,13 +9,13 @@
     @if (PredicateUnit is CompoundPredicate<T> compoundPredicate)
     {
         <CascadingValue Value="@Filter" IsFixed="true">
-            <CompoundPredicateComponent CompoundPredicate="@compoundPredicate" />
+            <CompoundPredicateComponent T="T" CompoundPredicate="@compoundPredicate" />
         </CascadingValue>
     }
     else if (PredicateUnit is AtomicPredicate<T> atomicPredicate)
     {
         <CascadingValue Value="@Filter" IsFixed="true">
-            <AtomicPredicateComponent AtomicPredicate="@atomicPredicate" />
+            <AtomicPredicateComponent T="T" AtomicPredicate="@atomicPredicate" />
         </CascadingValue> 
     }
 </div>

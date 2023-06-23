@@ -7,7 +7,7 @@ namespace MudExtensions
     public partial class CompoundPredicateComponent<T> : MudComponentBase
     {
         [CascadingParameter] public MudFilter<T> Filter { get; set; }
-        [CascadingParameter] public CompoundPredicate<T> CompoundPredicate { get; set; }
+        [Parameter] public CompoundPredicate<T> CompoundPredicate { get; set; }
 
         protected string ClassName => new CssBuilder("mud-compound-predicate")
             .AddClass(Class)

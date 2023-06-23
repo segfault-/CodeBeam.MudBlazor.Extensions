@@ -1,0 +1,14 @@
+﻿@namespace MudExtensions
+@inherits MudComponentBase
+@typeparam T
+
+<div class="@ClassName" style="@StyleString">
+    <MudPaper Class="flex-initial" Width="25%" Elevation="0">
+        <MudSelect T="string" @bind-Value="AtomicPredicate.Operator" FullWidth="true" Required="true" Dense="true">
+            @foreach (var o in FilterOperator.GetOperatorByDataType(AtomicPredicate.MemberType))
+            {
+                <MudSelectItem Value="@o">@o</MudSelectItem>
+            }
+        </MudSelect>
+    </MudPaper>
+</div>

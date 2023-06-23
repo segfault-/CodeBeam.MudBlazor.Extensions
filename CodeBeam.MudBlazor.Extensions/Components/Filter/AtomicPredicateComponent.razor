@@ -4,83 +4,20 @@
 @typeparam T
 
 <div class="@ClassName" style="@StyleString">
+
     <MudPaper Class="ma-8 pa-4">
         <MudStack Row="true">
-            <MudSelect T="Expression<Func<T, object>>" @bind-Value="AtomicPredicate.PropertyExpression" FullWidth="true" Required="true" Dense="true">
-                @foreach (var property in Filter.Properties ?? Enumerable.Empty<Property<T>>())
-                {
-                    <MudSelectItem T="Expression<Func<T, object>>" Value="@property.PropertyExpression">@property.Title</MudSelectItem>
-                }
-            </MudSelect>
-
+            <PropertySelectComponent T="T" AtomicPredicate="@AtomicPredicate" />
             @if (AtomicPredicate.PropertyExpression is not null)
             {
-                <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-                    <MudSelect T="string" @bind-Value="AtomicPredicate.Operator" FullWidth="true" Required="true" Dense="true">
-                        @foreach (var o in FilterOperator.GetOperatorByDataType(AtomicPredicate.MemberType))
-                        {
-                            <MudSelectItem Value="@o">@o</MudSelectItem>
-                        }
-                    </MudSelect>
-                </MudPaper>
+                <CascadingValue Value="@Filter" IsFixed="true">
+                    <OperatorSelectComponent AtomicPredicate="@AtomicPredicate" />
+                </CascadingValue>
             }
-
             @if (!string.IsNullOrWhiteSpace(AtomicPredicate.Operator))
             {
-                FieldType fieldType = FieldType.Identify(AtomicPredicate.MemberType);
-                if (fieldType.IsString && !(AtomicPredicate.Operator ?? "").EndsWith("empty"))
-                {
-                    <MudTextField Class="flex-shrink-1" T="string" @bind-Value="@AtomicPredicate.ValueString" Required="true" />
-                }
-                else if (fieldType.IsNumber && !(AtomicPredicate.Operator ?? "").EndsWith("empty"))
-                {
-                    <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-                        <MudNumericField Class="flex-shrink-1" T="double?" @bind-Value="@AtomicPredicate.ValueNumber" Required="true" />
-                    </MudPaper>
-                }
-                else if (fieldType.IsEnum)
-                {
-                    @if ((AtomicPredicate.Operator ?? "").Equals("is one of") || (AtomicPredicate.Operator ?? "").Equals("is not one of"))
-                    {
-                        <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-                            <MudSelect T="string" @bind-Value="@AtomicPredicate.ValueString" @bind-SelectedValues="@AtomicPredicate.MultiSelectValues" MultiSelection="true" FullWidth="true" Required="true" Dense="true">
-                                @foreach (var item in Enum.GetValues(fieldType.InnerType))
-                                {
-                                    <MudSelectItem T="string" Value="@((string)@item.ToString())">@item</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudPaper>
-                    }
-                    else
-                    {
-                        <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-                            <MudSelect T="Enum" @bind-Value="@AtomicPredicate.ValueEnum" MultiSelection="false" FullWidth="true" Required="true" Dense="true">
-                                @foreach (var item in Enum.GetValues(fieldType.InnerType))
-                                {
-                                    <MudSelectItem T="Enum" Value="@((Enum)item)">@item</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudPaper>
-                    }
-                }
-                else if (fieldType.IsBoolean)
-                {
-                    <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-                        <MudSelect Class="flex-shrink-1" T="bool?" @bind-Value="@AtomicPredicate.ValueBool" Required="true" Dense="true">
-                            <MudSelectItem T="bool?" Value="@(true)">true</MudSelectItem>
-                            <MudSelectItem T="bool?" Value="@(false)">false</MudSelectItem>
-                        </MudSelect>
-                    </MudPaper>
-                }
-                else if (fieldType.IsDateTime && !(AtomicPredicate.Operator ?? "").EndsWith("empty"))
-                {
-                    <MudPaper Class="flex-initial" Width="25%" Elevation="0">
-                        <MudDatePicker Class="flex-shrink-1" @bind-Date="@AtomicPredicate.ValueDate" Required="true" />
-                        <MudTimePicker Class="flex-shrink-1" @bind-Time="@AtomicPredicate.ValueTime" Required="true" />
-                    </MudPaper>
-                }
+                <ValueFieldComponent AtomicPredicate="@AtomicPredicate" />
             }
-
         </MudStack>
     </MudPaper>
 </div>

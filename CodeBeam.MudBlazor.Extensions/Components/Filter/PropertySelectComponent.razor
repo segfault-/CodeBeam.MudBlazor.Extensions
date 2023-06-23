@@ -1,0 +1,13 @@
+﻿@namespace MudExtensions
+@using System.Linq.Expressions;
+@inherits MudComponentBase
+@typeparam T
+
+<div class="@ClassName" style="@StyleString">
+    <MudSelect T="Expression<Func<T, object>>" @bind-Value="AtomicPredicate.PropertyExpression" FullWidth="true" Required="true" Dense="true">
+        @foreach (var property in Filter.Properties ?? Enumerable.Empty<Property<T>>())
+        {
+            <MudSelectItem T="Expression<Func<T, object>>" Value="@property.PropertyExpression">@property.Title</MudSelectItem>
+        }
+    </MudSelect>
+</div>

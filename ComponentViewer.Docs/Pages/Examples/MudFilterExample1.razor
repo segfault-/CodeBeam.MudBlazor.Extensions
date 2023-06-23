@@ -1,8 +1,6 @@
 ﻿@using MudBlazor.Utilities;
 
 <MudPaper>
-    <MudButton OnClick="ToggleDarkMode">ToggleDarkMode</MudButton>
-
     <MudFilter T="CatsDto">
         <FilterTemplate>
             <Property T="CatsDto" Title="Name" PropertyExpression="@(x => x.Name)" />
@@ -14,11 +12,7 @@
             <Property T="CatsDto" Title="Air Tag" PropertyExpression="@(x => x.MicroId)" />
         </FilterTemplate>
     </MudFilter>
-
-
 </MudPaper>
-
-
 
 @code {
     public class CatsDto
@@ -37,34 +31,5 @@
             GrayTabby,
             BlackTabby
         }
-
-    }
-
-
-    MudColor _primaryColor = new MudColor("#6750A4");
-    MudColor _secondaryColor = new MudColor("#625B71");
-    MudColor _tertiaryColor = new MudColor("#7D5260");
-    MudColor _neutralColor = new MudColor("#615D67");
-    MudColor _neutralVariantColor = new MudColor("#5F5D62");
-    MudColor _errorColor = new MudColor("#B3261E");
-
-    MudColor _customColor1 = new MudColor("#434C56");
-    MudColor _customColor2 = new MudColor("#FBEC5D");
-
-    Dictionary<string, string> _customColors = new()
-    {
-        {"hailnavy", "#434C56"},
-        {"maize", "#FBEC5D"}
-    };
-
-
-    int _mainTone = 40;
-    int _containerTone = 90;
-    bool _showAllTones = true;
-    bool _darkMode = false;
-
-    protected void ToggleDarkMode()
-    {
-        _darkMode = !_darkMode;
     }
 }
