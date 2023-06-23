@@ -2,13 +2,14 @@
 
 namespace MudExtensions
 {
+#nullable enable
     public abstract class PredicateUnit<T>
     {
         public Guid Id { get; set; }
 
-        public PredicateUnit<T> Parent { get; set; }
+        public PredicateUnit<T>? Parent { get; set; }
 
-        protected PredicateUnit(PredicateUnit<T> parent)
+        protected PredicateUnit(PredicateUnit<T>? parent)
             : base()
         {
             Parent = parent;
@@ -22,17 +23,18 @@ namespace MudExtensions
         {
         }
 
+        public string? ValueString { get; set; } = null;
+        public double? ValueNumber { get; set; } = null;
+        public Enum? ValueEnum { get; set; } = null;
+        public bool? ValueBool { get; set; } = null;
+        public DateTime? ValueDate { get; set; } = null;
+        public TimeSpan? ValueTime { get; set; } = null;
+        public object? Value { get; set; } = null;
 
-        public object? ValueObject;
-        public string? ValueString;
-        public double? ValueNumber;
-        public Enum? ValueEnum = null;
-        public bool? ValueBool;
-        public DateTime? ValueDate;
-        public TimeSpan? ValueTime;
-        public bool IsMultSelect;
+        public string? Operator { get; set; } = null;
+
+        public bool IsMultSelect { get; set; } = false;
         public IEnumerable<string> MultiSelectValues { get; set; } = new HashSet<string>();
-
 
         public Expression<Func<T, object>> PropertyExpression { get; set; }
 
@@ -44,17 +46,13 @@ namespace MudExtensions
             }
         }
 
-        public Type MemberType
+        public Type? MemberType
         {
             get
             {
                 return GetMemberType(PropertyExpression);
             }
         }
-
-        public object Value { get; set; }
-        public string Operator { get; set; }
-
 
         private string GetMemberName(Expression<Func<T, object>> expression)
         {
@@ -81,15 +79,19 @@ namespace MudExtensions
             return member.Member.Name;
         }
 
-        private Type GetMemberType(Expression<Func<T, object>> expression)
+        private Type? GetMemberType(Expression<Func<T, object>>? expression)
         {
-            if (expression.Body is MemberExpression member)
+            if (expression?.Body is MemberExpression member)
+            {
                 return member.Type;
+            }
 
-            if (expression.Body is UnaryExpression unary)
+            if (expression?.Body is UnaryExpression unary)
+            {
                 return unary.Operand.Type;
+            }
 
-            throw new ArgumentException("Could not get the member type.");
+            return null;
         }
     }
 
@@ -98,7 +100,7 @@ namespace MudExtensions
         public CompoundPredicateLogicalOperator LogicalOperator { get; set; }
         public List<PredicateUnit<T>> FilterDescriptors { get; set; }
 
-        public CompoundPredicate(PredicateUnit<T> parent)
+        public CompoundPredicate(PredicateUnit<T>? parent)
             : base(parent)
         {
             FilterDescriptors = new List<PredicateUnit<T>>();

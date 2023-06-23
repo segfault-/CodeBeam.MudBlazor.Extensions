@@ -982,11 +982,25 @@
 .mud-filter {
   background-color: var(--mud-m3-surface);
   color: var(--mud-m3-on-surface); }
-  .mud-filter .mud-filter-node .compound-predicate {
+  .mud-filter .mud-filter-node .mud-compound-predicate {
     background-color: var(--mud-m3-surface-container);
     color: var(--mud-m3-on-surface);
     margin: 16px;
     padding: 8px; }
+  .mud-filter .mud-filter-node .mud-atomic-predicate {
+    background-color: var(--mud-m3-surface-container);
+    color: var(--mud-m3-on-surface);
+    padding: 8px;
+    margin-top: 2px; }
+    .mud-filter .mud-filter-node .mud-atomic-predicate .mud-property-select {
+      flex-grow: 1;
+      flex-shrink: 1; }
+    .mud-filter .mud-filter-node .mud-atomic-predicate .mud-operator-select {
+      flex-grow: 1;
+      flex-shrink: 1; }
+    .mud-filter .mud-filter-node .mud-atomic-predicate .mud-value-field {
+      flex-grow: 1;
+      flex-shrink: 1; }
 
 /*@import '../abstracts/variables';*/
 .mud-list-extended {

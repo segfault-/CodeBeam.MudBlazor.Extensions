@@ -9,6 +9,11 @@ namespace MudExtensions
         [CascadingParameter] public MudFilter<T> Filter { get; set; }
         [Parameter] public AtomicPredicate<T> AtomicPredicate { get; set; }
 
+        public Task OnPropertySelectChangedAsync()
+        {
+            return Task.CompletedTask;
+        }
+
         protected string ClassName => new CssBuilder("mud-atomic-predicate")
             .AddClass(Class)
             .Build();

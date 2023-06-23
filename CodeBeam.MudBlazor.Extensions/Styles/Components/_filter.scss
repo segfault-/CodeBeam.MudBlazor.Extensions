@@ -4,11 +4,33 @@
 
     .mud-filter-node {
 
-        .compound-predicate {
+        .mud-compound-predicate {
             background-color: var(--mud-m3-surface-container);
             color: var(--mud-m3-on-surface);
             margin: 16px;
             padding: 8px;
+        }
+
+        .mud-atomic-predicate {
+            background-color: var(--mud-m3-surface-container);
+            color: var(--mud-m3-on-surface);
+            padding: 8px;
+            margin-top: 2px;
+
+            .mud-property-select {
+                flex-grow: 1;
+                flex-shrink: 1;
+            }
+
+            .mud-operator-select {
+                flex-grow: 1;
+                flex-shrink: 1;
+            }
+
+            .mud-value-field {
+                flex-grow: 1;
+                flex-shrink: 1;
+            }
         }
     }
 }

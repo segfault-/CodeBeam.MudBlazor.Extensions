@@ -4,20 +4,13 @@
 @typeparam T
 
 <div class="@ClassName" style="@StyleString">
-
-    <MudPaper Class="ma-8 pa-4">
-        <MudStack Row="true">
-            <PropertySelectComponent T="T" AtomicPredicate="@AtomicPredicate" />
-            @if (AtomicPredicate.PropertyExpression is not null)
-            {
-                <CascadingValue Value="@Filter" IsFixed="true">
-                    <OperatorSelectComponent AtomicPredicate="@AtomicPredicate" />
-                </CascadingValue>
-            }
-            @if (!string.IsNullOrWhiteSpace(AtomicPredicate.Operator))
-            {
-                <ValueFieldComponent AtomicPredicate="@AtomicPredicate" />
-            }
+    <MudPaper Class="mud-ap-paper">
+        <MudStack Class="mud-ap-stack" Row="true">
+            <PropertySelectComponent T="T" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
+            <CascadingValue Value="@Filter" IsFixed="true">
+                <OperatorSelectComponent @bind-AtomicPredicate="@this.AtomicPredicate" />
+            </CascadingValue>
+            <ValueFieldComponent @bind-AtomicPredicate="AtomicPredicate" @bind-AtomicPredicate:event="OnAtomicPredicateChangedAsync" />
         </MudStack>
     </MudPaper>
 </div>

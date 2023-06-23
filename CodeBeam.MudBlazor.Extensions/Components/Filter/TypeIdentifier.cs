@@ -5,6 +5,10 @@ namespace MudExtensions
 #nullable enable
     internal class TypeIdentifier
     {
+        protected TypeIdentifier()
+        {
+        }
+
         private static readonly HashSet<Type> _numericTypes = new()
         {
             typeof(int),
@@ -45,7 +49,7 @@ namespace MudExtensions
 
         public static bool IsEnum(Type? type)
         {
-            return IsTypeOrNullableOfType(type, t => t.IsEnum);
+            return IsTypeOrNullableOfType(type, t => t != null && t.IsEnum);
         }
 
         public static bool IsDateTime(Type? type)
@@ -68,14 +72,24 @@ namespace MudExtensions
             if (type == targetType)
                 return true;
 
+            if (type is null)
+            {
+                return false;
+            }
+
             var underlyingType = Nullable.GetUnderlyingType(type);
             return underlyingType == targetType;
         }
 
-        private static bool IsTypeOrNullableOfType(Type? type, Func<Type, bool> predicate)
+        private static bool IsTypeOrNullableOfType(Type? type, Func<Type?, bool> predicate)
         {
             if (predicate(type))
                 return true;
+
+            if (type is null)
+            {
+                return false;
+            }
 
             var underlyingType = Nullable.GetUnderlyingType(type);
             return underlyingType is not null && predicate(underlyingType);

@@ -4,10 +4,13 @@ using MudBlazor.Utilities;
 
 namespace MudExtensions
 {
+#nullable enable
     public partial class ValueFieldComponent<T> : MudComponentBase
     {
-        [Parameter] public AtomicPredicate<T> AtomicPredicate { get; set; }
+        [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
+        [Parameter] public EventCallback<AtomicPredicate<T>> AtomicPredicateChanged { get; set; }
 
+        protected FieldType? FieldType;
         protected string ClassName => new CssBuilder("mud-value-field")
             .AddClass(Class)
             .Build();
@@ -15,5 +18,15 @@ namespace MudExtensions
         protected string StyleString => new StyleBuilder()
             .AddStyle(Style)
             .Build();
+
+
+        protected override void OnParametersSet()
+        {
+            base.OnParametersSet();
+            if(AtomicPredicate is not null)
+            {
+                FieldType = FieldType.Identify(AtomicPredicate.MemberType);
+            }         
+        }
     }
 }
