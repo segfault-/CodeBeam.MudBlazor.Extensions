@@ -983,8 +983,10 @@
   background-color: var(--mud-m3-surface);
   color: var(--mud-m3-on-surface); }
   .mud-filter .mud-compound-predicate {
+    position: relative;
     margin-top: 2px;
-    margin-left: 8px; }
+    border-left: solid;
+    border-left-width: 8px; }
     .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-radio-group {
       margin-left: 8px; }
     .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-remove {
@@ -996,6 +998,18 @@
       border-color: var(--mud-m3-primary);
       color: var(--mud-m3-primary);
       transition: border-color .3s, color .3s; }
+  .mud-filter .mud-compound-predicate::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    /* Adjust according to your needs */
+    width: 15px;
+    /* Adjust according to your needs */
+    border-top: 1px solid var(--mud-m3-primary);
+    border-left: 1px solid var(--mud-m3-primary); }
+  .mud-filter .mud-compound-predicate:first-child::before {
+    display: none; }
   .mud-filter .mud-atomic-predicate {
     margin-top: 2px; }
     .mud-filter .mud-atomic-predicate .mud-ap-stack {
