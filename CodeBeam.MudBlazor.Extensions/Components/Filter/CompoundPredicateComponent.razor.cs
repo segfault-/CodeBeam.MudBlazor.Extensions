@@ -31,7 +31,7 @@ namespace MudExtensions
         protected void RemovePredicateUnit()
         {
             CompoundPredicate?.Remove();
-            //Filter?.CallStateHasChanged();
+            Filter?.CallStateHasChanged();
         }
 
     }

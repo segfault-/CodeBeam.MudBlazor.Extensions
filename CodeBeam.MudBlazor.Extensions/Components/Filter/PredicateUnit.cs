@@ -176,6 +176,13 @@ namespace MudExtensions
         /// </summary>
         public bool? Remove()
         {
+            if(Parent is null)
+            {
+                AtomicPredicates?.Clear();
+                CompoundPredicates?.Clear();
+                return true;
+            }
+
             return Parent?.RemovePredicate(this);
         }
 
