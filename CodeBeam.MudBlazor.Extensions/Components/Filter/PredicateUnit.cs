@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
 
 namespace MudExtensions
 {
@@ -36,7 +37,7 @@ namespace MudExtensions
         public bool IsMultSelect { get; set; } = false;
         public IEnumerable<string> MultiSelectValues { get; set; } = new HashSet<string>();
 
-        public Expression<Func<T, object>> PropertyExpression { get; set; }
+        public Expression<Func<T, object>>? PropertyExpression { get; set; }
 
         public string Member
         {
@@ -54,6 +55,18 @@ namespace MudExtensions
             }
         }
 
+        public void ClearOperatorAndValues()
+        {
+            ValueString = null;
+            ValueNumber = null;
+            ValueEnum = null;
+            ValueBool = null;
+            ValueDate = null;
+            ValueTime = null;
+            Value = null;
+            Operator = null;
+        }
+    
         private string GetMemberName(Expression<Func<T, object>> expression)
         {
             if (expression.Body is MemberExpression member)
@@ -98,13 +111,57 @@ namespace MudExtensions
     public class CompoundPredicate<T> : PredicateUnit<T>
     {
         public CompoundPredicateLogicalOperator LogicalOperator { get; set; }
-        public List<PredicateUnit<T>> FilterDescriptors { get; set; }
+        public List<AtomicPredicate<T>> AtomicPredicates { get; set; }
+        public List<CompoundPredicate<T>> CompoundPredicates { get; set; }
 
         public CompoundPredicate(PredicateUnit<T>? parent)
             : base(parent)
         {
-            FilterDescriptors = new List<PredicateUnit<T>>();
+            AtomicPredicates = new List<AtomicPredicate<T>>();
+            CompoundPredicates = new List<CompoundPredicate<T>>();
         }
+
+        public void AddPredicate(PredicateUnit<T> predicate)
+        {
+            switch (predicate)
+            {
+                case AtomicPredicate<T> atomicPredicate:
+                    AtomicPredicates.Add(atomicPredicate);
+                    break;
+
+                case CompoundPredicate<T> compoundPredicate:
+                    CompoundPredicates.Add(compoundPredicate);
+                    break;
+
+                default:
+                    throw new InvalidOperationException($"Unsupported predicate type: {predicate.GetType()}");
+            }
+        }
+
+        public bool RemovePredicate(PredicateUnit<T> predicate)
+        {
+            switch (predicate)
+            {
+                case AtomicPredicate<T> atomicPredicate:
+                    return AtomicPredicates.Remove(atomicPredicate);
+
+                case CompoundPredicate<T> compoundPredicate:
+                    return CompoundPredicates.Remove(compoundPredicate);
+
+                default:
+                    throw new InvalidOperationException($"Unsupported predicate type: {predicate.GetType()}");
+            }
+        }
+
+        public IEnumerable<PredicateUnit<T>> GetPredicatesInOrder()
+        {
+            foreach (var predicate in AtomicPredicates)
+                yield return predicate;
+
+            foreach (var predicate in CompoundPredicates)
+                yield return predicate;
+        }
+
     }
 
     public enum CompoundPredicateLogicalOperator

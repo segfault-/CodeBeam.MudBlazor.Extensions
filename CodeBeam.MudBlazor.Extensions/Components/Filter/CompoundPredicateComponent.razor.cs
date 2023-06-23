@@ -17,14 +17,14 @@ namespace MudExtensions
             .AddStyle(Style)
             .Build();
 
-        protected void AddPropertyExpression()
+        protected void AddAtomicPredicate()
         {
-            CompoundPredicate?.FilterDescriptors.Add(new AtomicPredicate<T>(this.CompoundPredicate));
+            CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(this.CompoundPredicate));
         }
 
-        protected void AddGroup()
+        protected void AddCompoundPredicate()
         {
-            CompoundPredicate?.FilterDescriptors.Add(new CompoundPredicate<T>(this.CompoundPredicate));
+            CompoundPredicate?.AddPredicate(new CompoundPredicate<T>(this.CompoundPredicate));
         }
 
         protected void RemovePredicateUnit()

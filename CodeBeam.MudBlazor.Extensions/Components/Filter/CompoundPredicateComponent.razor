@@ -9,13 +9,13 @@
                 <MudRadio Option="CompoundPredicateLogicalOperator.And" Color="Color.Primary" UnCheckedColor="Color.Default">And</MudRadio>
                 <MudRadio Option="CompoundPredicateLogicalOperator.Or" Color="Color.Secondary" UnCheckedColor="Color.Default">Or</MudRadio>
             </MudRadioGroup>
-            <MudButton Variant="Variant.Filled" OnClick="AddPropertyExpression">Add atomic predicate</MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="AddGroup">Add compound predicate</MudButton>
+            <MudButton Variant="Variant.Filled" OnClick="AddAtomicPredicate">Add atomic predicate</MudButton>
+            <MudButton Variant="Variant.Filled" OnClick="AddCompoundPredicate">Add compound predicate</MudButton>
             <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="RemovePredicateUnit" />
         </MudStack>
     </MudPaper>
 
-    @foreach (var filterDescriptor in CompoundPredicate.FilterDescriptors)
+    @foreach (var filterDescriptor in CompoundPredicate.GetPredicatesInOrder())
     {
         <CascadingValue Value="@Filter" IsFixed="true">
             <FilterNode T="T" PredicateUnit="@filterDescriptor" />

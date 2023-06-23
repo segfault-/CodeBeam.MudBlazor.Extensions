@@ -17,19 +17,20 @@
             padding: 8px;
             margin-top: 2px;
 
-            .mud-property-select {
-                flex-grow: 1;
-                flex-shrink: 1;
-            }
+            .mud-ap-stack {
+                justify-content: space-between;
 
-            .mud-operator-select {
-                flex-grow: 1;
-                flex-shrink: 1;
-            }
+                .mud-property-select {
+                    flex: 1 1 33.33%
+                }
 
-            .mud-value-field {
-                flex-grow: 1;
-                flex-shrink: 1;
+                .mud-operator-select {
+                    flex: 1 1 33.33%
+                }
+
+                .mud-value-field {
+                    flex: 1 1 33.33%
+                }
             }
         }
     }

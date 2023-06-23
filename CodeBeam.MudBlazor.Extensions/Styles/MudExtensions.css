@@ -992,15 +992,14 @@
     color: var(--mud-m3-on-surface);
     padding: 8px;
     margin-top: 2px; }
-    .mud-filter .mud-filter-node .mud-atomic-predicate .mud-property-select {
-      flex-grow: 1;
-      flex-shrink: 1; }
-    .mud-filter .mud-filter-node .mud-atomic-predicate .mud-operator-select {
-      flex-grow: 1;
-      flex-shrink: 1; }
-    .mud-filter .mud-filter-node .mud-atomic-predicate .mud-value-field {
-      flex-grow: 1;
-      flex-shrink: 1; }
+    .mud-filter .mud-filter-node .mud-atomic-predicate .mud-ap-stack {
+      justify-content: space-between; }
+      .mud-filter .mud-filter-node .mud-atomic-predicate .mud-ap-stack .mud-property-select {
+        flex: 1 1 33.33%; }
+      .mud-filter .mud-filter-node .mud-atomic-predicate .mud-ap-stack .mud-operator-select {
+        flex: 1 1 33.33%; }
+      .mud-filter .mud-filter-node .mud-atomic-predicate .mud-ap-stack .mud-value-field {
+        flex: 1 1 33.33%; }
 
 /*@import '../abstracts/variables';*/
 .mud-list-extended {

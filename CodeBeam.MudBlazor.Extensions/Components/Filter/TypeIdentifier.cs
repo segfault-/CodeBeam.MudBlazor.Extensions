@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Linq.Expressions;
+using System.Numerics;
 
 namespace MudExtensions
 {
@@ -65,6 +66,21 @@ namespace MudExtensions
         public static bool IsGuid(Type? type)
         {
             return IsTypeOrNullableOfType(type, typeof(Guid));
+        }
+
+        internal static Type? GetPropertyTypeFromExpression<T>(Expression<Func<T, object>>? expression)
+        {
+            if(expression is null)
+            {
+                return null;
+            }
+
+            if (expression.Body is UnaryExpression unaryExpression && unaryExpression.NodeType == ExpressionType.Convert)
+            {
+                return unaryExpression.Operand.Type;
+            }
+
+            return expression.Body.Type;
         }
 
         private static bool IsTypeOrNullableOfType(Type? type, Type targetType)

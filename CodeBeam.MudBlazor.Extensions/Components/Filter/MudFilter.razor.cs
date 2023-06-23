@@ -32,12 +32,12 @@ namespace MudExtensions
 
         protected void AddPropertyExpression()
         {
-           FilterRoot.FilterDescriptors.Add(new AtomicPredicate<T>(FilterRoot));
+           FilterRoot.AddPredicate(new AtomicPredicate<T>(FilterRoot));
         }
 
         protected void AddGroup()
         {
-            FilterRoot.FilterDescriptors.Add(new CompoundPredicate<T>(FilterRoot));
+            FilterRoot.AddPredicate(new CompoundPredicate<T>(FilterRoot));
         }
     }
 }

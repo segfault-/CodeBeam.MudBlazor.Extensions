@@ -4,13 +4,15 @@ using MudBlazor.Utilities;
 
 namespace MudExtensions
 {
+#nullable enable
     public partial class AtomicPredicateComponent<T> : MudComponentBase
     {
-        [CascadingParameter] public MudFilter<T> Filter { get; set; }
-        [Parameter] public AtomicPredicate<T> AtomicPredicate { get; set; }
+        [CascadingParameter] public MudFilter<T>? Filter { get; set; }
+        [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
 
         public Task OnPropertySelectChangedAsync()
         {
+            AtomicPredicate?.ClearOperatorAndValues();
             return Task.CompletedTask;
         }
 
