@@ -4,14 +4,14 @@
 
 <div class="@ClassName" style="@StyleString">
     <MudPaper Class="compound-predicate">
-        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
-            <MudRadioGroup @bind-SelectedOption="CompoundPredicate.LogicalOperator" T="CompoundPredicateLogicalOperator">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+            <MudRadioGroup Class="mud-cp-radio-group" @bind-SelectedOption="CompoundPredicate.LogicalOperator" T="CompoundPredicateLogicalOperator">
                 <MudRadio Option="CompoundPredicateLogicalOperator.And" Color="Color.Primary" UnCheckedColor="Color.Default">And</MudRadio>
                 <MudRadio Option="CompoundPredicateLogicalOperator.Or" Color="Color.Secondary" UnCheckedColor="Color.Default">Or</MudRadio>
             </MudRadioGroup>
-            <MudButton Variant="Variant.Filled" OnClick="AddAtomicPredicate">Add atomic predicate</MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="AddCompoundPredicate">Add compound predicate</MudButton>
-            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="RemovePredicateUnit" />
+            <MudButton Class="mud-cp-add-atomic" Variant="Variant.Filled" OnClick="AddAtomicPredicate">Add atomic predicate</MudButton>
+            <MudButton Class="mud-cp-add-compound" Variant="Variant.Filled" OnClick="AddCompoundPredicate">Add compound predicate</MudButton>
+            <MudIconButton Class="mud-cp-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="RemovePredicateUnit" />
         </MudStack>
     </MudPaper>
 

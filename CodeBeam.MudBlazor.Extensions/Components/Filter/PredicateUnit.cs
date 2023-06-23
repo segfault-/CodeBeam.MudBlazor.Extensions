@@ -1,20 +1,20 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace MudExtensions
 {
 #nullable enable
     public abstract class PredicateUnit<T>
     {
-        public Guid Id { get; set; }
-
-        public PredicateUnit<T>? Parent { get; set; }
-
         protected PredicateUnit(PredicateUnit<T>? parent)
             : base()
         {
             Parent = parent;
         }
+
+        public Guid Id { get; set; }
+        public PredicateUnit<T>? Parent { get; set; }
+
+        public abstract bool RemovePredicate(PredicateUnit<T> predicate);
     }
 
     public class AtomicPredicate<T> : PredicateUnit<T>
@@ -66,7 +66,12 @@ namespace MudExtensions
             Value = null;
             Operator = null;
         }
-    
+
+        public override bool RemovePredicate(PredicateUnit<T> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
         private string GetMemberName(Expression<Func<T, object>> expression)
         {
             if (expression.Body is MemberExpression member)
@@ -110,16 +115,16 @@ namespace MudExtensions
 
     public class CompoundPredicate<T> : PredicateUnit<T>
     {
-        public CompoundPredicateLogicalOperator LogicalOperator { get; set; }
-        public List<AtomicPredicate<T>> AtomicPredicates { get; set; }
-        public List<CompoundPredicate<T>> CompoundPredicates { get; set; }
-
         public CompoundPredicate(PredicateUnit<T>? parent)
             : base(parent)
         {
             AtomicPredicates = new List<AtomicPredicate<T>>();
             CompoundPredicates = new List<CompoundPredicate<T>>();
         }
+
+        public CompoundPredicateLogicalOperator LogicalOperator { get; set; }
+        public List<AtomicPredicate<T>> AtomicPredicates { get; set; }
+        public List<CompoundPredicate<T>> CompoundPredicates { get; set; }
 
         public void AddPredicate(PredicateUnit<T> predicate)
         {
@@ -138,7 +143,7 @@ namespace MudExtensions
             }
         }
 
-        public bool RemovePredicate(PredicateUnit<T> predicate)
+        public override bool RemovePredicate(PredicateUnit<T> predicate)
         {
             switch (predicate)
             {
@@ -161,7 +166,6 @@ namespace MudExtensions
             foreach (var predicate in CompoundPredicates)
                 yield return predicate;
         }
-
     }
 
     public enum CompoundPredicateLogicalOperator

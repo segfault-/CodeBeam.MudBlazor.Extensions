@@ -3,12 +3,29 @@
     color: var(--mud-m3-on-surface);
 
     .mud-filter-node {
+        background-color: var(--mud-m3-surface);
+        color: var(--mud-m3-on-surface);
 
         .mud-compound-predicate {
             background-color: var(--mud-m3-surface-container);
             color: var(--mud-m3-on-surface);
             margin: 16px;
             padding: 8px;
+
+            .mud-cp-radio-group {
+                margin-left: 8px
+            }
+
+            .mud-cp-add-atomic {
+            }
+
+            .mud-cp-add-compound {
+            }
+
+            .mud-cp-remove {
+                margin-left: auto;
+                margin-right: 8px;
+            }
         }
 
         .mud-atomic-predicate {

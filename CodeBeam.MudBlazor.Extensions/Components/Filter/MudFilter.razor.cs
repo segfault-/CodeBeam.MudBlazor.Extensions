@@ -29,15 +29,5 @@ namespace MudExtensions
         {
             Properties.Add(property);
         }
-
-        protected void AddPropertyExpression()
-        {
-           FilterRoot.AddPredicate(new AtomicPredicate<T>(FilterRoot));
-        }
-
-        protected void AddGroup()
-        {
-            FilterRoot.AddPredicate(new CompoundPredicate<T>(FilterRoot));
-        }
     }
 }

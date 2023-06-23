@@ -1,18 +1,16 @@
 ﻿@using MudBlazor.Utilities;
 
-<MudPaper>
-    <MudFilter T="CatsDto">
-        <FilterTemplate>
-            <Property T="CatsDto" Title="Name" PropertyExpression="@(x => x.Name)" />
-            <Property T="CatsDto" Title="Gender" PropertyExpression="@(x => x.Gender)" />
-            <Property T="CatsDto" Title="Birthday" PropertyExpression="@(x => x.BirthDate)" />
-            <Property T="CatsDto" Title="Type" PropertyExpression="@(x => x.CatType)" />
-            <Property T="CatsDto" Title="Spade" PropertyExpression="@(x => x.IsSpade)" />
-            <Property T="CatsDto" Title="Temperature" PropertyExpression="@(x => x.Temperature)" />
-            <Property T="CatsDto" Title="Air Tag" PropertyExpression="@(x => x.MicroId)" />
-        </FilterTemplate>
-    </MudFilter>
-</MudPaper>
+<MudFilter T="CatsDto">
+    <FilterTemplate>
+        <Property T="CatsDto" Title="Name" PropertyExpression="@(x => x.Name)" />
+        <Property T="CatsDto" Title="Gender" PropertyExpression="@(x => x.Gender)" />
+        <Property T="CatsDto" Title="Birthday" PropertyExpression="@(x => x.BirthDate)" />
+        <Property T="CatsDto" Title="Type" PropertyExpression="@(x => x.CatType)" />
+        <Property T="CatsDto" Title="Spade" PropertyExpression="@(x => x.IsSpade)" />
+        <Property T="CatsDto" Title="Temperature" PropertyExpression="@(x => x.Temperature)" />
+        <Property T="CatsDto" Title="Air Tag" PropertyExpression="@(x => x.MicroId)" />
+    </FilterTemplate>
+</MudFilter>
 
 @code {
     public class CatsDto
