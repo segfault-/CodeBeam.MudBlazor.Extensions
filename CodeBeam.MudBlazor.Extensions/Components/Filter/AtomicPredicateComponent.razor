@@ -5,10 +5,10 @@
 
 <div class="@ClassName" style="@StyleString">
     <MudStack Class="mud-ap-stack" Row="true">
-        <PropertySelectComponent T="T" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
         <CascadingValue Value="@Filter" IsFixed="true">
-            <OperatorSelectComponent @bind-AtomicPredicate="@AtomicPredicate" />
+            <PropertySelectComponent T="T" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
         </CascadingValue>
+        <OperatorSelectComponent @bind-AtomicPredicate="@AtomicPredicate" />
         <ValueFieldComponent @bind-AtomicPredicate="AtomicPredicate" />
         <MudIconButton Class="mud-cp-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="RemovePredicateUnit" />
     </MudStack>

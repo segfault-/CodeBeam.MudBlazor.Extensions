@@ -80,8 +80,13 @@ namespace MudExtensions
             return Parent?.RemovePredicate(this);
         }
 
-        private string GetMemberName(Expression<Func<T, object>> expression)
+        private string GetMemberName(Expression<Func<T, object>>? expression)
         {
+            if(expression is null)
+            {
+                return string.Empty;
+            }
+
             if (expression.Body is MemberExpression member)
             {
                 return GetFullMemberName(member);
@@ -97,7 +102,7 @@ namespace MudExtensions
 
         private string GetFullMemberName(MemberExpression member)
         {
-            if (member.Expression.NodeType == ExpressionType.MemberAccess)
+            if (member.Expression?.NodeType == ExpressionType.MemberAccess)
             {
                 return GetFullMemberName((MemberExpression)member.Expression) + "." + member.Member.Name;
             }

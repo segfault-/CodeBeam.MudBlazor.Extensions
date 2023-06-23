@@ -15,10 +15,15 @@
         </MudStack>
     </MudPaper>
 
-    @foreach (var filterDescriptor in CompoundPredicate.GetPredicatesInOrder())
+    @foreach (var predicate in CompoundPredicate.GetPredicatesInOrder())
     {
-        <CascadingValue Value="@Filter" IsFixed="true">
-            <FilterNode @key="@filterDescriptor.Id" T="T" PredicateUnit="@filterDescriptor" />
-        </CascadingValue>
+        if (predicate is AtomicPredicate<T> atomicPredicate)
+        {
+            <AtomicPredicateComponent @key="atomicPredicate" @bind-AtomicPredicate="atomicPredicate" />
+        }
+        else if (predicate is CompoundPredicate<T> compoundPredicate)
+        {
+            <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" />
+        }
     }
 </div>

@@ -4,11 +4,11 @@ using MudBlazor.Utilities;
 
 namespace MudExtensions
 {
+#nullable enable
     public partial class FilterNode<T> : MudComponentBase
     {
-        [CascadingParameter] public MudFilter<T> Filter { get; set; }
-        [CascadingParameter] public FilterNode<T> Parent { get; set; }
-        [Parameter, EditorRequired] public PredicateUnit<T> PredicateUnit { get; set; }
+        [Parameter] public MudFilter<T>? Filter { get; set; }
+        [Parameter, EditorRequired] public PredicateUnit<T>? PredicateUnit { get; set; }
 
         protected string ClassName => new CssBuilder("mud-filter-node")
             .AddClass(Class)

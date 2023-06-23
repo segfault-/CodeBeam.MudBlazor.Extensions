@@ -7,7 +7,7 @@ namespace MudExtensions
 #nullable enable
     public partial class AtomicPredicateComponent<T> : MudComponentBase
     {
-        [CascadingParameter] public MudFilter<T>? Filter { get; set; }
+        [Parameter] public MudFilter<T>? Filter { get; set; }
         [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
 
         protected string ClassName => new CssBuilder("mud-atomic-predicate")

@@ -5,9 +5,9 @@
 
 <div class="@ClassName" style="@StyleString">
     <MudSelect T="Expression<Func<T, object>>" @bind-Value="PropertyExpression" @bind-Value:after="@OnPropertyExpressionChangedAsync" FullWidth="true" Required="true" Dense="true">
-        @foreach (var property in Filter.Properties ?? Enumerable.Empty<Property<T>>())
+        @foreach (var property in Filter?.Properties ?? Enumerable.Empty<Property<T>>())
         {
-            <MudSelectItem T="Expression<Func<T, object>>" Value="@property.PropertyExpression">@property.Title</MudSelectItem>
+            <MudSelectItem @key="property" T="Expression<Func<T, object>>" Value="@property.PropertyExpression">@property.Title</MudSelectItem>
         }
     </MudSelect>
 </div>

@@ -6,9 +6,9 @@
 <div class="@ClassName" style="@StyleString">
     <MudButton OnClick="(() => StateHasChanged())">StateHasChanged</MudButton>
     <CascadingValue Value="this" IsFixed="true">
-        @FilterTemplate
-        <FilterNode T="T" PredicateUnit="@FilterRoot" />
+        @FilterTemplate  
     </CascadingValue>
+    <FilterNode T="T" PredicateUnit="@FilterRoot" Filter="this" />
 </div>
 
 

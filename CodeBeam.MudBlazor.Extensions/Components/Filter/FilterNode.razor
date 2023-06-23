@@ -8,14 +8,10 @@
 <div class="@ClassName" style="@StyleString">
     @if (PredicateUnit is CompoundPredicate<T> compoundPredicate)
     {
-        <CascadingValue Value="@Filter" IsFixed="true">
-            <CompoundPredicateComponent T="T" CompoundPredicate="@compoundPredicate" />
-        </CascadingValue>
+        <CompoundPredicateComponent @key="compoundPredicate" T="T" CompoundPredicate="@compoundPredicate" Filter="@Filter" />
     }
     else if (PredicateUnit is AtomicPredicate<T> atomicPredicate)
     {
-        <CascadingValue Value="@Filter" IsFixed="true">
-            <AtomicPredicateComponent T="T" AtomicPredicate="@atomicPredicate" />
-        </CascadingValue> 
+        <AtomicPredicateComponent @key="atomicPredicate" T="T" AtomicPredicate="@atomicPredicate" Filter="@Filter" />
     }
 </div>

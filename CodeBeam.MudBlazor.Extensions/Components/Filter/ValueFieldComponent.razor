@@ -23,7 +23,7 @@
                 <MudSelect T="string" @bind-Value="@AtomicPredicate.ValueString" @bind-SelectedValues="@AtomicPredicate.MultiSelectValues" MultiSelection="true" FullWidth="true" Required="true" Dense="true">
                     @foreach (var item in Enum.GetValues(FieldType.InnerType))
                     {
-                        <MudSelectItem T="string" Value="@((string)@item.ToString())">@item</MudSelectItem>
+                        <MudSelectItem @key="item" T="string" Value="@((string)@item.ToString())">@item</MudSelectItem>
                     }
                 </MudSelect>
             }
@@ -32,7 +32,7 @@
                 <MudSelect T="Enum" @bind-Value="@AtomicPredicate.ValueEnum" MultiSelection="false" FullWidth="true" Required="true" Dense="true">
                     @foreach (var item in Enum.GetValues(FieldType.InnerType))
                     {
-                        <MudSelectItem T="Enum" Value="@((Enum)item)">@item</MudSelectItem>
+                        <MudSelectItem @key="item" T="Enum" Value="@((Enum)item)">@item</MudSelectItem>
                     }
                 </MudSelect>
             }

@@ -4,9 +4,10 @@ using MudBlazor.Utilities;
 
 namespace MudExtensions
 {
+#nullable enable
     public partial class OperatorSelectComponent<T> : MudComponentBase
     {
-        [Parameter] public AtomicPredicate<T> AtomicPredicate { get; set; }
+        [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
 
         protected string ClassName => new CssBuilder("mud-operator-select")
             .AddClass(Class)

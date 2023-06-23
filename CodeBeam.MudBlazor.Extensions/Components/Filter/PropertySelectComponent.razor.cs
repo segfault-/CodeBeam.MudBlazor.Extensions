@@ -8,7 +8,7 @@ namespace MudExtensions
 #nullable enable
     public partial class PropertySelectComponent<T> : MudComponentBase
     {
-        [CascadingParameter] public MudFilter<T>? Filter { get; set; }
+        [Parameter] public MudFilter<T>? Filter { get; set; }
         [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
         [Parameter] public EventCallback PropertySelectChanged { get; set; }
         

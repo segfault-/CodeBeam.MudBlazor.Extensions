@@ -6,7 +6,7 @@
     <MudSelect T="string" @bind-Value="AtomicPredicate.Operator" FullWidth="true" Required="true" Dense="true">
         @foreach (var o in FilterOperator.GetOperatorByDataType(AtomicPredicate.MemberType))
         {
-            <MudSelectItem Value="@o">@o</MudSelectItem>
+            <MudSelectItem @key="o" Value="@o">@o</MudSelectItem>
         }
     </MudSelect>
 </div>
