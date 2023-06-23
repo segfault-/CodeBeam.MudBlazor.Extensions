@@ -6,7 +6,7 @@
 <div class="@ClassName" style="@StyleString">
     <MudStack Class="mud-ap-stack" Row="true">
         <CascadingValue Value="@Filter" IsFixed="true">
-            <PropertySelectComponent T="T" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
+            <PropertySelectComponent T="T" Filter="@Filter" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
         </CascadingValue>
         <OperatorSelectComponent @bind-AtomicPredicate="@AtomicPredicate" />
         <ValueFieldComponent @bind-AtomicPredicate="AtomicPredicate" />

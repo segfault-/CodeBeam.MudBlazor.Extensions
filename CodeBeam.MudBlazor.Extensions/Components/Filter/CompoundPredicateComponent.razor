@@ -19,11 +19,11 @@
     {
         if (predicate is AtomicPredicate<T> atomicPredicate)
         {
-            <AtomicPredicateComponent @key="atomicPredicate" @bind-AtomicPredicate="atomicPredicate" />
+            <AtomicPredicateComponent @key="atomicPredicate" @bind-AtomicPredicate="atomicPredicate" Filter="@Filter" />
         }
         else if (predicate is CompoundPredicate<T> compoundPredicate)
         {
-            <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" />
+            <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" Filter="@Filter" />
         }
     }
 </div>

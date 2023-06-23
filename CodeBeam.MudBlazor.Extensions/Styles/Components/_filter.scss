@@ -2,52 +2,47 @@
     background-color: var(--mud-m3-surface);
     color: var(--mud-m3-on-surface);
 
-    .mud-filter-node {
-        background-color: var(--mud-m3-surface);
+    .mud-compound-predicate {
+        background-color: var(--mud-m3-surface-container);
         color: var(--mud-m3-on-surface);
+        margin: 16px;
+        padding: 8px;
 
-        .mud-compound-predicate {
-            background-color: var(--mud-m3-surface-container);
-            color: var(--mud-m3-on-surface);
-            margin: 16px;
-            padding: 8px;
-
-            .mud-cp-radio-group {
-                margin-left: 8px
-            }
-
-            .mud-cp-add-atomic {
-            }
-
-            .mud-cp-add-compound {
-            }
-
-            .mud-cp-remove {
-                margin-left: auto;
-                margin-right: 8px;
-            }
+        .mud-cp-radio-group {
+            margin-left: 8px
         }
 
-        .mud-atomic-predicate {
-            background-color: var(--mud-m3-surface-container);
-            color: var(--mud-m3-on-surface);
-            padding: 8px;
-            margin-top: 2px;
+        .mud-cp-add-atomic {
+        }
 
-            .mud-ap-stack {
-                justify-content: space-between;
+        .mud-cp-add-compound {
+        }
 
-                .mud-property-select {
-                    flex: 1 1 33.33%
-                }
+        .mud-cp-remove {
+            margin-left: auto;
+            margin-right: 8px;
+        }
+    }
 
-                .mud-operator-select {
-                    flex: 1 1 33.33%
-                }
+    .mud-atomic-predicate {
+        background-color: var(--mud-m3-surface-container);
+        color: var(--mud-m3-on-surface);
+        padding: 8px;
+        margin-top: 2px;
 
-                .mud-value-field {
-                    flex: 1 1 33.33%
-                }
+        .mud-ap-stack {
+            justify-content: space-between;
+
+            .mud-property-select {
+                flex: 1 1 33.33%
+            }
+
+            .mud-operator-select {
+                flex: 1 1 33.33%
+            }
+
+            .mud-value-field {
+                flex: 1 1 33.33%
             }
         }
     }

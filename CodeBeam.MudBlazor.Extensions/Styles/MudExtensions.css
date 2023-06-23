@@ -982,32 +982,29 @@
 .mud-filter {
   background-color: var(--mud-m3-surface);
   color: var(--mud-m3-on-surface); }
-  .mud-filter .mud-filter-node {
-    background-color: var(--mud-m3-surface);
-    color: var(--mud-m3-on-surface); }
-    .mud-filter .mud-filter-node .mud-compound-predicate {
-      background-color: var(--mud-m3-surface-container);
-      color: var(--mud-m3-on-surface);
-      margin: 16px;
-      padding: 8px; }
-      .mud-filter .mud-filter-node .mud-compound-predicate .mud-cp-radio-group {
-        margin-left: 8px; }
-      .mud-filter .mud-filter-node .mud-compound-predicate .mud-cp-remove {
-        margin-left: auto;
-        margin-right: 8px; }
-    .mud-filter .mud-filter-node .mud-atomic-predicate {
-      background-color: var(--mud-m3-surface-container);
-      color: var(--mud-m3-on-surface);
-      padding: 8px;
-      margin-top: 2px; }
-      .mud-filter .mud-filter-node .mud-atomic-predicate .mud-ap-stack {
-        justify-content: space-between; }
-        .mud-filter .mud-filter-node .mud-atomic-predicate .mud-ap-stack .mud-property-select {
-          flex: 1 1 33.33%; }
-        .mud-filter .mud-filter-node .mud-atomic-predicate .mud-ap-stack .mud-operator-select {
-          flex: 1 1 33.33%; }
-        .mud-filter .mud-filter-node .mud-atomic-predicate .mud-ap-stack .mud-value-field {
-          flex: 1 1 33.33%; }
+  .mud-filter .mud-compound-predicate {
+    background-color: var(--mud-m3-surface-container);
+    color: var(--mud-m3-on-surface);
+    margin: 16px;
+    padding: 8px; }
+    .mud-filter .mud-compound-predicate .mud-cp-radio-group {
+      margin-left: 8px; }
+    .mud-filter .mud-compound-predicate .mud-cp-remove {
+      margin-left: auto;
+      margin-right: 8px; }
+  .mud-filter .mud-atomic-predicate {
+    background-color: var(--mud-m3-surface-container);
+    color: var(--mud-m3-on-surface);
+    padding: 8px;
+    margin-top: 2px; }
+    .mud-filter .mud-atomic-predicate .mud-ap-stack {
+      justify-content: space-between; }
+      .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-property-select {
+        flex: 1 1 33.33%; }
+      .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-operator-select {
+        flex: 1 1 33.33%; }
+      .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-value-field {
+        flex: 1 1 33.33%; }
 
 /*@import '../abstracts/variables';*/
 .mud-list-extended {
