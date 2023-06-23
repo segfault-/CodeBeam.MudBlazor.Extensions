@@ -1,4 +1,5 @@
 ﻿@namespace ComponentViewer.Docs.Shared
+@using MudBlazor.Utilities;
 @inherits LayoutComponentBase
 
 <style>
@@ -106,6 +107,20 @@
 </style>
 
 <MudThemeProvider Theme="_theme" @bind-IsDarkMode="IsDarkMode" />
+<MudColorProvider 
+    Override="true" 
+    Primary="@_primaryColor?.Value.ToString()" 
+    Secondary="@_secondaryColor?.Value.ToString()" 
+    Tertiary="@_tertiaryColor?.Value.ToString()"
+    Neutral="@_neutralColor?.Value.ToString()"
+    NeutralVariant="@_neutralVariantColor?.Value.ToString()"
+    Error="@_errorColor?.Value.ToString()"
+    MainTone="_mainTone" 
+    ContainerTone="_containerTone" 
+    DarkMode="IsDarkMode"
+    CustomColors="@_customColors" />
+
+<MudTypographyProvider/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -117,6 +132,33 @@
     bool _drawerOpen = false;
     bool _showFontPicker = false;
     int _borderRadius = 20;
+
+
+    MudColor _primaryColor = new MudColor("#6750A4");
+    MudColor _secondaryColor = new MudColor("#625B71");
+    MudColor _tertiaryColor = new MudColor("#7D5260");
+    MudColor _neutralColor = new MudColor("#615D67");
+    MudColor _neutralVariantColor = new MudColor("#5F5D62");
+    MudColor _errorColor = new MudColor("#B3261E");
+
+    MudColor _customColor1 = new MudColor("#434C56");
+    MudColor _customColor2 = new MudColor("#FBEC5D");
+
+    Dictionary<string, string> _customColors = new()
+    {
+        {"hailnavy", "#434C56"},
+        {"maize", "#FBEC5D"}
+    };
+
+
+    int _mainTone = 40;
+    int _containerTone = 90;
+    bool _showAllTones = true;
+
+
+
+
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

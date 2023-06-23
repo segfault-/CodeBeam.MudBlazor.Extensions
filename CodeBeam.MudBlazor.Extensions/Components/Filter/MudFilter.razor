@@ -7,14 +7,7 @@
     <MudButton OnClick="(() => StateHasChanged())">StateHasChanged</MudButton>
     <CascadingValue Value="this" IsFixed="true">
         @FilterTemplate
-        <Node T="T" PredicateUnit="@FilterRoot" />
-        
-        
-        
-        <ExpressionTree PredicateUnit="@FilterRoot" />
-        <MudSpacer></MudSpacer>
-        <ExpressionTree PredicateUnit="@RootPredicate" />
-
+        <FilterNode T="T" PredicateUnit="@FilterRoot" />
     </CascadingValue>
 </div>
 

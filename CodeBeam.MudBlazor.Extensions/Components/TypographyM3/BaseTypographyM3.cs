@@ -26,9 +26,36 @@
     public class BaseTypographyM3
     {
         public string[] Font { get; set; }
-        public double LineHeight { get; set; }
-        public double Size { get; set; }
-        public double Tracking { get; set; }
+
+        private double _lineHeight;
+        public double LineHeight 
+        { 
+            get => _lineHeight;
+            set
+            {
+                _lineHeight = value / 16;
+            }
+        }
+
+        private double _size;
+        public double Size
+        {
+            get => _size;
+            set
+            {
+                _size = value / 16;
+            }
+        }
+
+        private double _tracking;
+        public double Tracking
+        {
+            get => _tracking;
+            set
+            {
+                _tracking = value / (Size * 16);
+            }
+        }
         public int Weight { get; set; }
     }
 
@@ -36,9 +63,9 @@
     {
         public DisplayLarge() : base()
         {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)64 / 16;
-            Size = (double)57 / 16;
+            Font = new string[] { "Roboto" };
+            LineHeight = 64;
+            Size = 57;
             Tracking = -0.25;
             Weight = 400;
         }
@@ -48,9 +75,9 @@
     {
         public DisplayMedium() : base()
         {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)52 / 16;
-            Size = (double)45 / 16;
+            Font = new string[] { "Roboto" };
+            LineHeight = 52;
+            Size = 45;
             Tracking = 0;
             Weight = 400;
         }
@@ -60,9 +87,9 @@
     {
         public DisplaySmall() : base()
         {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)44 / 16;
-            Size = (double)36 / 16;
+            Font = new string[] { "Roboto" };
+            LineHeight = 44;
+            Size = 36;
             Tracking = 0;
             Weight = 400;
         }
@@ -72,9 +99,9 @@
     {
         public HeadlineLarge() : base()
         {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)40 / 16;
-            Size = (double)32 / 16;
+            Font = new string[] { "Roboto" };
+            LineHeight = 40;
+            Size = 32;
             Tracking = 0;
             Weight = 400;
         }
@@ -84,9 +111,9 @@
     {
         public HeadlineMedium() : base()
         {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)36 / 16;
-            Size = (double)28 / 16;
+            Font = new string[] { "Roboto" };
+            LineHeight = 36;
+            Size = 28;
             Tracking = 0;
             Weight = 400;
         }
@@ -95,9 +122,9 @@
     {
         public HeadlineSmall() : base()
         {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)32 / 16;
-            Size = (double)24 / 16;
+            Font = new string[] { "Roboto" };
+            LineHeight = 32;
+            Size = 24;
             Tracking = 0;
             Weight = 400;
         }
@@ -106,9 +133,9 @@
     {
         public TitleLarge() : base()
         {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)28 / 16;
-            Size = (double)22 / 16;
+            Font = new string[] { "Roboto" };
+            LineHeight = 28;
+            Size = 22;
             Tracking = 0;
             Weight = 400;
         }
@@ -117,9 +144,9 @@
     {
         public TitleMedium() : base()
         {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)24 / 16;
-            Size = (double)16 / 16;
+            Font = new string[] { "Roboto" };
+            LineHeight = 24;
+            Size = 16;
             Tracking = 0.15;
             Weight = 500;
         }
@@ -128,43 +155,10 @@
     {
         public TitleSmall() : base()
         {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)20 / 16;
-            Size = (double)14 / 16;
+            Font = new string[] { "Roboto" };
+            LineHeight = 20;
+            Size = 14;
             Tracking = 0.1;
-            Weight = 500;
-        }
-    }
-    public class LabelLarge : BaseTypographyM3
-    {
-        public LabelLarge() : base()
-        {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)20 / 16;
-            Size = (double)14 / 16;
-            Tracking = 0.1;
-            Weight = 500;
-        }
-    }
-    public class LabelMedium : BaseTypographyM3
-    {
-        public LabelMedium() : base()
-        {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)16 / 16;
-            Size = (double)12 / 16;
-            Tracking = 0.5;
-            Weight = 500;
-        }
-    }
-    public class LabelSmall : BaseTypographyM3
-    {
-        public LabelSmall() : base()
-        {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)16 / 16;
-            Size = (double)11 / 16;
-            Tracking = 0.5;
             Weight = 500;
         }
     }
@@ -172,9 +166,9 @@
     {
         public BodyLarge() : base()
         {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)24 / 16;
-            Size = (double)16 / 16;
+            Font = new string[] { "Roboto" };
+            LineHeight = 24;
+            Size = 16;
             Tracking = 0.5;
             Weight = 400;
         }
@@ -183,9 +177,9 @@
     {
         public BodyMedium() : base()
         {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)20 / 16;
-            Size = (double)14 / 16;
+            Font = new string[] { "Roboto" };
+            LineHeight = 20;
+            Size = 14;
             Tracking = 0.25;
             Weight = 400;
         }
@@ -194,11 +188,44 @@
     {
         public BodySmall() : base()
         {
-            Font = new string[] { "Roboto Regular" };
-            LineHeight = (double)16 / 16;
-            Size = (double)12 / 16;
+            Font = new string[] { "Roboto" };
+            LineHeight = 16;
+            Size = 12;
             Tracking = 0.4;
             Weight = 400;
+        }
+    }
+    public class LabelLarge : BaseTypographyM3
+    {
+        public LabelLarge() : base()
+        {
+            Font = new string[] { "Roboto" };
+            LineHeight = 20;
+            Size = 14;
+            Tracking = 0.1;
+            Weight = 500;
+        }
+    }
+    public class LabelMedium : BaseTypographyM3
+    {
+        public LabelMedium() : base()
+        {
+            Font = new string[] { "Roboto" };
+            LineHeight = 16;
+            Size = 12;
+            Tracking = 0.5;
+            Weight = 500;
+        }
+    }
+    public class LabelSmall : BaseTypographyM3
+    {
+        public LabelSmall() : base()
+        {
+            Font = new string[] { "Roboto" };
+            LineHeight = 16;
+            Size = 11;
+            Tracking = 0.5;
+            Weight = 500;
         }
     }
 }

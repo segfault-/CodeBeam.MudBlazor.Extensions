@@ -982,14 +982,11 @@
 .mud-filter {
   background-color: var(--mud-m3-surface);
   color: var(--mud-m3-on-surface); }
-  .mud-filter .mud-filter-node {
+  .mud-filter .mud-filter-node .compound-predicate {
     background-color: var(--mud-m3-surface-container);
-    color: var(--mud-m3-on-surface); }
-    .mud-filter .mud-filter-node .compound-predicate {
-      background-color: var(--mud-m3-surface-container);
-      color: var(--mud-m3-on-surface);
-      margin: 16px;
-      padding: 8px; }
+    color: var(--mud-m3-on-surface);
+    margin: 16px;
+    padding: 8px; }
 
 /*@import '../abstracts/variables';*/
 .mud-list-extended {

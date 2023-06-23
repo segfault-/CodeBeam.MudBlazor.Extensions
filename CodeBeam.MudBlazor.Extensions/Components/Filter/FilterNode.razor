@@ -1,0 +1,21 @@
+﻿@namespace MudExtensions
+@using MudBlazor.Utilities;
+@using MudExtensions.Enums;
+@using System.Linq.Expressions;
+@inherits MudComponentBase
+@typeparam T
+
+<div class="@ClassName" style="@StyleString">
+    @if (PredicateUnit is CompoundPredicate<T> compoundPredicate)
+    {
+        <CascadingValue Value="@Filter" IsFixed="true">
+            <CompoundPredicateComponent CompoundPredicate="@compoundPredicate" />
+        </CascadingValue>
+    }
+    else if (PredicateUnit is AtomicPredicate<T> atomicPredicate)
+    {
+        <CascadingValue Value="@Filter" IsFixed="true">
+            <AtomicPredicateComponent AtomicPredicate="@atomicPredicate" />
+        </CascadingValue> 
+    }
+</div>
