@@ -26,7 +26,8 @@ namespace MudExtensions
 
         protected void RemovePredicateUnit()
         {
-            AtomicPredicate?.RemovePredicate(AtomicPredicate);
+            AtomicPredicate?.Remove();
+            //Filter?.CallStateHasChanged();
         }
     }
 }

@@ -30,7 +30,9 @@ namespace MudExtensions
 
         protected void RemovePredicateUnit()
         {
-            CompoundPredicate?.RemovePredicate(CompoundPredicate);
+            CompoundPredicate?.Remove();
+            //Filter?.CallStateHasChanged();
         }
+
     }
 }

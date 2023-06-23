@@ -29,5 +29,10 @@ namespace MudExtensions
         {
             Properties.Add(property);
         }
+
+        internal void CallStateHasChanged()
+        {
+            StateHasChanged();
+        }
     }
 }

@@ -18,7 +18,7 @@
     @foreach (var filterDescriptor in CompoundPredicate.GetPredicatesInOrder())
     {
         <CascadingValue Value="@Filter" IsFixed="true">
-            <FilterNode T="T" PredicateUnit="@filterDescriptor" />
+            <FilterNode @key="@filterDescriptor.Id" T="T" PredicateUnit="@filterDescriptor" />
         </CascadingValue>
     }
 </div>

@@ -11,10 +11,10 @@ namespace MudExtensions
             Parent = parent;
         }
 
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public PredicateUnit<T>? Parent { get; set; }
 
-        public abstract bool RemovePredicate(PredicateUnit<T> predicate);
+        public abstract bool? RemovePredicate(PredicateUnit<T> predicate);
     }
 
     public class AtomicPredicate<T> : PredicateUnit<T>
@@ -67,9 +67,17 @@ namespace MudExtensions
             Operator = null;
         }
 
-        public override bool RemovePredicate(PredicateUnit<T> predicate)
+        public override bool? RemovePredicate(PredicateUnit<T> predicate)
         {
-            throw new NotImplementedException();
+            return false;
+        }
+
+        /// <summary>
+        /// Request "this" be removed from parent
+        /// </summary>
+        public bool? Remove()
+        {
+            return Parent?.RemovePredicate(this);
         }
 
         private string GetMemberName(Expression<Func<T, object>> expression)
@@ -143,7 +151,7 @@ namespace MudExtensions
             }
         }
 
-        public override bool RemovePredicate(PredicateUnit<T> predicate)
+        public override bool? RemovePredicate(PredicateUnit<T> predicate)
         {
             switch (predicate)
             {
@@ -156,6 +164,14 @@ namespace MudExtensions
                 default:
                     throw new InvalidOperationException($"Unsupported predicate type: {predicate.GetType()}");
             }
+        }
+
+        /// <summary>
+        /// Request "this" be removed from parent
+        /// </summary>
+        public bool? Remove()
+        {
+            return Parent?.RemovePredicate(this);
         }
 
         public IEnumerable<PredicateUnit<T>> GetPredicatesInOrder()
