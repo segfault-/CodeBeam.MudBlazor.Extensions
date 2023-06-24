@@ -3,10 +3,13 @@
 namespace MudExtensions
 {
 #nullable enable
+
+    /// <summary>
+    /// Base class for predicate units
+    /// </summary>
     public abstract class PredicateUnit<T>
     {
         protected PredicateUnit(PredicateUnit<T>? parent)
-            : base()
         {
             Parent = parent;
         }
@@ -17,6 +20,9 @@ namespace MudExtensions
         public abstract bool? RemovePredicate(PredicateUnit<T> predicate);
     }
 
+    /// <summary>
+    /// Represents atomic predicates
+    /// </summary>
     public class AtomicPredicate<T> : PredicateUnit<T>
     {
         public AtomicPredicate(PredicateUnit<T> parent)
@@ -24,39 +30,30 @@ namespace MudExtensions
         {
         }
 
-        public string? ValueString { get; set; } = null;
-        public double? ValueNumber { get; set; } = null;
-        public Enum? ValueEnum { get; set; } = null;
-        public bool? ValueBool { get; set; } = null;
-        public DateTime? ValueDate { get; set; } = null;
-        public TimeSpan? ValueTime { get; set; } = null;
-        public object? Value { get; set; } = null;
+        public string? ValueString { get; set; }
+        public double? ValueNumber { get; set; }
+        public Enum? ValueEnum { get; set; }
+        public bool? ValueBool { get; set; }
+        public DateTime? ValueDate { get; set; }
+        public TimeSpan? ValueTime { get; set; }
+        public object? Value { get; set; }
 
-        public string? Operator { get; set; } = null;
+        public string? Operator { get; set; }
 
         public bool IsMultiSelect { get; set; } = false;
         public IEnumerable<string> MultiSelectValues { get; set; } = new HashSet<string>();
 
         public Expression<Func<T, object>>? PropertyExpression { get; set; }
 
-        public string Member
-        {
-            get
-            {
-                return GetMemberName(PropertyExpression);
-            }
-        }
+        public string Member => GetMemberName(PropertyExpression);
 
-        public Type? MemberType
-        {
-            get
-            {
-                return GetMemberType(PropertyExpression);
-            }
-        }
+        public Type? MemberType => GetMemberType(PropertyExpression);
 
         public override PredicateUnit<T>? Parent { get; set; }
 
+        /// <summary>
+        /// Clears operator and values
+        /// </summary>
         public void ClearOperatorAndValues()
         {
             ValueString = null;
@@ -128,6 +125,9 @@ namespace MudExtensions
         }
     }
 
+    /// <summary>
+    /// Represents compound predicates
+    /// </summary>
     public class CompoundPredicate<T> : PredicateUnit<T>
     {
         public CompoundPredicate(PredicateUnit<T>? parent)
@@ -142,6 +142,9 @@ namespace MudExtensions
         public List<CompoundPredicate<T>> CompoundPredicates { get; set; }
         public override PredicateUnit<T>? Parent { get; set; }
 
+        /// <summary>
+        /// Adds a predicate to the appropriate list
+        /// </summary>
         public void AddPredicate(PredicateUnit<T> predicate)
         {
             switch (predicate)
@@ -179,7 +182,7 @@ namespace MudExtensions
         /// </summary>
         public bool? Remove()
         {
-            if(Parent is null)
+            if (Parent is null)
             {
                 AtomicPredicates?.Clear();
                 CompoundPredicates?.Clear();
@@ -189,6 +192,9 @@ namespace MudExtensions
             return Parent?.RemovePredicate(this);
         }
 
+        /// <summary>
+        /// Gets the predicates in order of addition
+        /// </summary>
         public IEnumerable<PredicateUnit<T>> GetPredicatesInOrder()
         {
             foreach (var predicate in AtomicPredicates)
