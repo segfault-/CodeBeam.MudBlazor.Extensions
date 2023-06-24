@@ -4,9 +4,9 @@
 
 <div class="@ClassName" style="@StyleString">
     <MudSelect T="string" @bind-Value="AtomicPredicate.Operator" FullWidth="true" Required="true" Dense="true">
-        @foreach (var o in FilterOperator.GetOperatorByDataType(AtomicPredicate.MemberType))
+        @foreach (var filterOperator in FilterOperator.GetOperatorByDataType(AtomicPredicate.MemberType))
         {
-            <MudSelectItem @key="o" Value="@o">@o</MudSelectItem>
+            <MudSelectItem @key="filterOperator" Value="@filterOperator">@filterOperator</MudSelectItem>
         }
     </MudSelect>
 </div>
