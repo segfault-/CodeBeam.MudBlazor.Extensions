@@ -20,12 +20,12 @@ namespace MudExtensions
 
         protected void AddAtomicPredicate()
         {
-            CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(this.CompoundPredicate));
+            CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(CompoundPredicate));
         }
 
         protected void AddCompoundPredicate()
         {
-            CompoundPredicate?.AddPredicate(new CompoundPredicate<T>(this.CompoundPredicate));
+            CompoundPredicate?.AddPredicate(new CompoundPredicate<T>(CompoundPredicate));
         }
 
         protected void RemovePredicateUnit()
