@@ -10,7 +10,7 @@ namespace MudExtensions
         [Parameter] public MudFilter<T>? Filter { get; set; }
         [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
         [Parameter] public bool IsFirstElement { get; set; }
-
+        [Parameter] public CompoundPredicateLogicalOperator LogicalOperator { get; set; }
         protected string ClassName => new CssBuilder("mud-atomic-predicate")
             .AddClass(Class)
             .Build();

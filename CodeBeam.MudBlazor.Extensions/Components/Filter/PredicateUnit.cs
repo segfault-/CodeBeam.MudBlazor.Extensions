@@ -55,7 +55,7 @@ namespace MudExtensions
             }
         }
 
-        public override PredicateUnit<T>? Parent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override PredicateUnit<T>? Parent { get; set; }
 
         public void ClearOperatorAndValues()
         {
@@ -140,6 +140,7 @@ namespace MudExtensions
         public CompoundPredicateLogicalOperator LogicalOperator { get; set; }
         public List<AtomicPredicate<T>> AtomicPredicates { get; set; }
         public List<CompoundPredicate<T>> CompoundPredicates { get; set; }
+        public override PredicateUnit<T>? Parent { get; set; }
 
         public void AddPredicate(PredicateUnit<T> predicate)
         {

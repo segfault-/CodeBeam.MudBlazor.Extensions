@@ -3,7 +3,7 @@
 @typeparam T
 
 <div class="@ClassName" style="@StyleString">
-@*     <MudStack Class="mud-cp-stack" Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+    <MudStack Class="mud-cp-stack" Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
         @if (IsFirstElement)
         {
             <MudTextM3 Class="mud-first-logical-operator"></MudTextM3>
@@ -19,7 +19,7 @@
         <MudButton Class="mud-cp-add-atomic" Size="Size.Small" Variant="Variant.Filled" OnClick="AddAtomicPredicate">Add atomic predicate</MudButton>
         <MudButton Class="mud-cp-add-compound" Size="Size.Small" Variant="Variant.Filled" OnClick="AddCompoundPredicate">Add compound predicate</MudButton>
         <MudIconButton Class="mud-cp-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="RemovePredicateUnit" />
-    </MudStack> *@
+    </MudStack>
 
     @{
         bool isFirstElement = true;

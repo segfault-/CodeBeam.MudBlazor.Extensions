@@ -5,6 +5,7 @@ using System.Text.Json;
 
 namespace MudExtensions
 {
+#nullable enable
     public class ExpressionGenerator
     {
         private readonly MethodInfo _methodContains = typeof(Enumerable)
