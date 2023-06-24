@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Utilities;
+using System.Linq.Expressions;
 
 namespace MudExtensions
 {
@@ -33,6 +34,20 @@ namespace MudExtensions
         internal void CallStateHasChanged()
         {
             StateHasChanged();
+        }
+
+        protected void CompileExpression()
+        {
+            ExpressionGenerator expressionGenerator = new ExpressionGenerator();
+
+            var expression = expressionGenerator.ParseExpressionOf(FilterRoot);
+
+            var prettyPrinter = new PrettyPrintExpressionVisitor();
+            Console.WriteLine(prettyPrinter.GetExpression(expression));
+
+            var compactPrinter = new CompactExpressionPrinter();
+            Console.WriteLine(compactPrinter.GetExpression(expression));
+
         }
     }
 }

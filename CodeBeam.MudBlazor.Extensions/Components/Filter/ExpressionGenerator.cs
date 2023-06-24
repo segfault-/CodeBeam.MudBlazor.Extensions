@@ -14,110 +14,118 @@ namespace MudExtensions
 
         private delegate Expression Binder(Expression left, Expression right);
 
-        private Expression ParseTree<T>(FilterRule<T> condition, ParameterExpression parm)
+        private Expression ParseTree<T>(CompoundPredicate<T> compoundPredicate, ParameterExpression parm)
         {
             Expression left = null;
 
-            var binder = condition.Condition == Condition.AND ? (Binder)Expression.And : Expression.Or;
+            var binder = compoundPredicate.LogicalOperator == CompoundPredicateLogicalOperator.And ? (Binder)Expression.And : Expression.Or;
 
             Expression Bind(Expression left, Expression right) =>
                 left == null ? right : binder(left, right);
 
-            foreach (var rule in condition.Rules)
+            foreach (var predicateUnit in compoundPredicate.GetPredicatesInOrder())
             {
-                if (rule.Condition != null)
+
+
+                if (predicateUnit is CompoundPredicate<T> childCompoundPredicate)
                 {
-                    var right = ParseTree<T>(rule, parm);
+
+                    var right = ParseTree<T>(childCompoundPredicate, parm);
                     left = Bind(left, right);
                     continue;
+
                 }
 
-                var @operator = rule.Operator;
-                var field = rule.Field;
-                var property = Expression.Property(parm, field);
-
-                if (@operator.Equals("is one of") || @operator.Equals("is not one of"))
+                if (predicateUnit is AtomicPredicate<T> atomicPredicate)
                 {
-                    var jsonElement = (JsonElement)rule.Value;
-                    var propertyType = typeof(T).GetProperty(rule.Field).PropertyType;
-                    var contains = _methodContains.MakeGenericMethod(propertyType);
 
-                    var val = jsonElement.ToString().Split(',').Select(v => v.Trim()).ToList();
+                    var @operator = atomicPredicate.Operator;
+                    var property = Expression.Property(parm, atomicPredicate.Member);
 
-                    var genericListType = typeof(List<>).MakeGenericType(propertyType);
-                    var listy = (IList)Activator.CreateInstance(genericListType);
-
-                    foreach (var s in val)
+                    if (@operator.Equals("is one of") || @operator.Equals("is not one of"))
                     {
-                        if (TypeIdentifier.IsEnum(propertyType))
+                        var jsonElement = (JsonElement)atomicPredicate.Value;
+                        var propertyType = atomicPredicate.MemberType;
+                        var contains = _methodContains.MakeGenericMethod(propertyType);
+
+                        var val = jsonElement.ToString().Split(',').Select(v => v.Trim()).ToList();
+
+                        var genericListType = typeof(List<>).MakeGenericType(propertyType);
+                        var listy = (IList)Activator.CreateInstance(genericListType);
+
+                        foreach (var s in val)
                         {
-                            var nullableEnumType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
-                            listy.Add(Enum.Parse(nullableEnumType, s));
+                            if (TypeIdentifier.IsEnum(propertyType))
+                            {
+                                var nullableEnumType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+                                listy.Add(Enum.Parse(nullableEnumType, s));
+                            }
+                            else
+                            {
+                                listy.Add(s);
+                            }
+
+                        }
+
+                        if (@operator.Equals("is not one of"))
+                        {
+                            var right = Expression.Not(Expression.Call(
+                                contains,
+                                Expression.Constant(listy),
+                                property));
+                            left = Bind(left, right);
                         }
                         else
                         {
-                            listy.Add(s);
+                            var right = Expression.Call(
+                                contains,
+                                Expression.Constant(listy),
+                                property);
+                            left = Bind(left, right);
+                        }
+                    }
+                    else
+                    {
+                        Expression expression = null;
+                        if (property.Type == typeof(string))
+                        {
+                            expression = GenerateFilterExpressionForStringType<T>(atomicPredicate, property);
+                        }
+                        else if (TypeIdentifier.IsEnum(property.Type))
+                        {
+                            expression = GenerateFilterExpressionForEnumType<T>(atomicPredicate, property);
+                        }
+                        else if (TypeIdentifier.IsNumber(property.Type))
+                        {
+                            expression = GenerateFilterExpressionForNumericType<T>(atomicPredicate, property);
+                        }
+                        else if (TypeIdentifier.IsBoolean(property.Type))
+                        {
+                            expression = GenerateFilterExpressionForBooleanType<T>(atomicPredicate, property);
+                        }
+                        else if (TypeIdentifier.IsDateTime(property.Type))
+                        {
+                            expression = GenerateFilterExpressionForDateTimeType<T>(atomicPredicate, property);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Unhandled property type");
                         }
 
-                    }
-
-                    if (@operator.Equals("is not one of"))
-                    {
-                        var right = Expression.Not(Expression.Call(
-                            contains,
-                            Expression.Constant(listy),
-                            property));
-                        left = Bind(left, right);
-                    }
-                    else
-                    {
-                        var right = Expression.Call(
-                            contains,
-                            Expression.Constant(listy),
-                            property);
-                        left = Bind(left, right);
-                    }
-                }
-                else
-                {
-                    Expression expression = null;
-                    if (property.Type == typeof(string))
-                    {
-                        expression = GenerateFilterExpressionForStringType<T>(rule, property);
-                    }
-                    else if (TypeIdentifier.IsEnum(property.Type))
-                    {
-                        expression = GenerateFilterExpressionForEnumType<T>(rule, property);
-                    }
-                    else if (TypeIdentifier.IsNumber(property.Type))
-                    {
-                        expression = GenerateFilterExpressionForNumericType<T>(rule, property);
-                    }
-                    else if (TypeIdentifier.IsBoolean(property.Type))
-                    {
-                        expression = GenerateFilterExpressionForBooleanType<T>(rule, property);
-                    }
-                    else if (TypeIdentifier.IsDateTime(property.Type))
-                    {
-                        expression = GenerateFilterExpressionForDateTimeType<T>(rule, property);
-                    }
-                    else
-                    {
-                        throw new ArgumentException("Unhandled property type");
-                    }
 
 
-
-                    left = Bind(left, expression);
+                        left = Bind(left, expression);
+                    }
                 }
             }
+
 
             return left;
         }
 
-        private static Expression GenerateFilterExpressionForStringType<T>(FilterRule<T> rule, Expression parameter)
+        private static Expression GenerateFilterExpressionForStringType<T>(AtomicPredicate<T> rule, Expression parameter)
         {
-            var dataType = typeof(T).GetProperty(rule.Field).PropertyType;
+            var dataType = rule.MemberType;
             var field = parameter;
             var valueString = rule.Value?.ToString();
             var trim = Expression.Call(field, dataType.GetMethod("Trim", Type.EmptyTypes));
@@ -162,9 +170,9 @@ namespace MudExtensions
             };
         }
 
-        private static Expression GenerateFilterExpressionForEnumType<T>(FilterRule<T> rule, Expression parameter)
+        private static Expression GenerateFilterExpressionForEnumType<T>(AtomicPredicate<T> rule, Expression parameter)
         {
-            var dataType = typeof(T).GetProperty(rule.Field).PropertyType;
+            var dataType = rule.MemberType;
             var field = parameter;
             var valueEnum = GetEnumFromObject(rule.Value, dataType);
             var @null = Expression.Convert(Expression.Constant(null), dataType);
@@ -189,9 +197,9 @@ namespace MudExtensions
 
         }
 
-        private static Expression GenerateFilterExpressionForNumericType<T>(FilterRule<T> rule, Expression parameter)
+        private static Expression GenerateFilterExpressionForNumericType<T>(AtomicPredicate<T> rule, Expression parameter)
         {
-            var dataType = typeof(T).GetProperty(rule.Field).PropertyType;
+            var dataType = rule.MemberType;
             var field = Expression.Convert(parameter, typeof(double?));
             var valueNumber = GetDoubleFromObject(rule.Value);
             var notNullNumber = Expression.Convert(field, typeof(double?));
@@ -228,9 +236,9 @@ namespace MudExtensions
             };
         }
 
-        private static Expression GenerateFilterExpressionForDateTimeType<T>(FilterRule<T> rule, Expression parameter)
+        private static Expression GenerateFilterExpressionForDateTimeType<T>(AtomicPredicate<T> rule, Expression parameter)
         {
-            var dataType = typeof(T).GetProperty(rule.Field).PropertyType;
+            var dataType = rule.MemberType;
             if (dataType == typeof(DateTime))
             {
                 var field = parameter;
@@ -306,9 +314,9 @@ namespace MudExtensions
 
         }
 
-        private static Expression GenerateFilterExpressionForBooleanType<T>(FilterRule<T> rule, Expression parameter)
+        private static Expression GenerateFilterExpressionForBooleanType<T>(AtomicPredicate<T> rule, Expression parameter)
         {
-            var dataType = typeof(T).GetProperty(rule.Field).PropertyType;
+            var dataType = rule.MemberType;
 
             if (dataType == typeof(bool))
             {
@@ -436,7 +444,7 @@ namespace MudExtensions
             }
         }
 
-        public Expression<Func<T, bool>> ParseExpressionOf<T>(FilterRule<T> root)
+        public Expression<Func<T, bool>> ParseExpressionOf<T>(CompoundPredicate<T> root)
         {
             Expression<Func<T, bool>> query = null;
             var itemExpression = Expression.Parameter(typeof(T));
@@ -456,7 +464,7 @@ namespace MudExtensions
             return query;
         }
 
-        public Func<T, bool> ParsePredicateOf<T>(FilterRule<T> root)
+        public Func<T, bool> ParsePredicateOf<T>(CompoundPredicate<T> root)
         {
             var query = ParseExpressionOf<T>(root);
             if (query != null)

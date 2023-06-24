@@ -30,9 +30,29 @@ namespace MudExtensions
         {
         }
 
-        public string? ValueString { get; set; }
+
+        private string? _valueString;
+        public string? ValueString 
+        {
+            get => _valueString;
+            set
+            {
+                _valueString = value;
+                Value = value;
+            }
+        }
         public double? ValueNumber { get; set; }
-        public Enum? ValueEnum { get; set; }
+
+        private Enum? _valueEnum;
+        public Enum? ValueEnum
+        {
+            get => _valueEnum;
+            set
+            {
+                _valueEnum = value;
+                Value = value;
+            }
+        }
         public bool? ValueBool { get; set; }
         public DateTime? ValueDate { get; set; }
         public TimeSpan? ValueTime { get; set; }
