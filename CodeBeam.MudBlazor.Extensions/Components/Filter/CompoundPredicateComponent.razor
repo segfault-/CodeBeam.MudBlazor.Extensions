@@ -3,7 +3,15 @@
 @typeparam T
 
 <div class="@ClassName" style="@StyleString">
-    <MudStack Class="mud-cp-stack" Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+@*     <MudStack Class="mud-cp-stack" Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+        @if (IsFirstElement)
+        {
+            <MudTextM3 Class="mud-first-logical-operator"></MudTextM3>
+        }
+        else
+        {
+            <MudTextM3 Class="mud-logical-operator">@ParentLogicalOperator</MudTextM3>
+        }
         <MudRadioGroup Class="mud-cp-radio-group" @bind-SelectedOption="CompoundPredicate.LogicalOperator" T="CompoundPredicateLogicalOperator">
             <MudRadio Option="CompoundPredicateLogicalOperator.And" Size="Size.Small" Color="Color.Primary" UnCheckedColor="Color.Default">And</MudRadio>
             <MudRadio Option="CompoundPredicateLogicalOperator.Or" Size="Size.Small" Color="Color.Secondary" UnCheckedColor="Color.Default">Or</MudRadio>
@@ -11,7 +19,7 @@
         <MudButton Class="mud-cp-add-atomic" Size="Size.Small" Variant="Variant.Filled" OnClick="AddAtomicPredicate">Add atomic predicate</MudButton>
         <MudButton Class="mud-cp-add-compound" Size="Size.Small" Variant="Variant.Filled" OnClick="AddCompoundPredicate">Add compound predicate</MudButton>
         <MudIconButton Class="mud-cp-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="RemovePredicateUnit" />
-    </MudStack>
+    </MudStack> *@
 
     @{
         bool isFirstElement = true;
@@ -24,7 +32,7 @@
         }
         else if (predicate is CompoundPredicate<T> compoundPredicate)
         {
-            <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" Filter="@Filter" />
+            <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" Filter="@Filter" ParentLogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="@isFirstElement" />
         }
         isFirstElement = false;
     }

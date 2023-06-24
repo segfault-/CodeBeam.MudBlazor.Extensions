@@ -10,17 +10,17 @@
     {
         @if (FieldType.IsString && !(AtomicPredicate.Operator ?? "").EndsWith("empty"))
         {
-            <MudTextField Class="flex-shrink-1" T="string" @bind-Value="@AtomicPredicate.ValueString" Required="true" />
+            <MudTextField Class="flex-shrink-1" T="string" @bind-Value="@AtomicPredicate.ValueString" Required="true" Variant="Variant.Outlined" />
         }
         else if (FieldType.IsNumber && !(AtomicPredicate.Operator ?? "").EndsWith("empty"))
         {
-            <MudNumericField Class="flex-shrink-1" T="double?" @bind-Value="@AtomicPredicate.ValueNumber" Required="true" />
+            <MudNumericField Class="flex-shrink-1" T="double?" @bind-Value="@AtomicPredicate.ValueNumber" Required="true" Variant="Variant.Outlined" />
         }
         else if (FieldType.IsEnum)
         {
             @if ((AtomicPredicate.Operator ?? "").Equals("is one of") || (AtomicPredicate.Operator ?? "").Equals("is not one of"))
             {
-                <MudSelect T="string" @bind-Value="@AtomicPredicate.ValueString" @bind-SelectedValues="@AtomicPredicate.MultiSelectValues" MultiSelection="true" FullWidth="true" Required="true" Dense="true">
+                <MudSelect T="string" @bind-Value="@AtomicPredicate.ValueString" @bind-SelectedValues="@AtomicPredicate.MultiSelectValues" Variant="Variant.Outlined" MultiSelection="true" FullWidth="true" Required="true" Dense="true">
                     @foreach (var item in Enum.GetValues(FieldType.InnerType))
                     {
                         <MudSelectItem @key="item" T="string" Value="@((string)@item.ToString())">@item</MudSelectItem>
@@ -29,7 +29,7 @@
             }
             else
             {
-                <MudSelect T="Enum" @bind-Value="@AtomicPredicate.ValueEnum" MultiSelection="false" FullWidth="true" Required="true" Dense="true">
+                <MudSelect T="Enum" @bind-Value="@AtomicPredicate.ValueEnum" Variant="Variant.Outlined" MultiSelection="false" FullWidth="true" Required="true" Dense="true">
                     @foreach (var item in Enum.GetValues(FieldType.InnerType))
                     {
                         <MudSelectItem @key="item" T="Enum" Value="@((Enum)item)">@item</MudSelectItem>
@@ -39,15 +39,15 @@
         }
         else if (FieldType.IsBoolean)
         {
-            <MudSelect Class="flex-shrink-1" T="bool?" @bind-Value="@AtomicPredicate.ValueBool" Required="true" Dense="true">
+            <MudSelect Class="flex-shrink-1" T="bool?" @bind-Value="@AtomicPredicate.ValueBool" Variant="Variant.Outlined" Required="true" Dense="true">
                 <MudSelectItem T="bool?" Value="@(true)">true</MudSelectItem>
                 <MudSelectItem T="bool?" Value="@(false)">false</MudSelectItem>
             </MudSelect>
         }
         else if (FieldType.IsDateTime && !(AtomicPredicate.Operator ?? "").EndsWith("empty"))
         {
-            <MudDatePicker Class="flex-shrink-1" @bind-Date="@AtomicPredicate.ValueDate" Required="true" />
-            <MudTimePicker Class="flex-shrink-1" @bind-Time="@AtomicPredicate.ValueTime" Required="true" />
+            <MudDatePicker Class="flex-shrink-1" @bind-Date="@AtomicPredicate.ValueDate" Required="true" Variant="Variant.Outlined" />
+            <MudTimePicker Class="flex-shrink-1" @bind-Time="@AtomicPredicate.ValueTime" Required="true" Variant="Variant.Outlined" />
         }
     }
 </div>

@@ -12,7 +12,7 @@ namespace MudExtensions
         }
 
         public Guid Id { get; set; } = Guid.NewGuid();
-        public PredicateUnit<T>? Parent { get; set; }
+        public abstract PredicateUnit<T>? Parent { get; set; }
 
         public abstract bool? RemovePredicate(PredicateUnit<T> predicate);
     }
@@ -54,6 +54,8 @@ namespace MudExtensions
                 return GetMemberType(PropertyExpression);
             }
         }
+
+        public override PredicateUnit<T>? Parent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void ClearOperatorAndValues()
         {

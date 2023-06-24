@@ -981,10 +981,16 @@
 
 .mud-filter {
   background-color: var(--mud-m3-surface);
-  color: var(--mud-m3-on-surface); }
+  color: var(--mud-m3-on-surface);
+  padding-bottom: 128px; }
   .mud-filter .mud-compound-predicate {
     margin-top: 2px;
     margin-left: 8px; }
+    .mud-filter .mud-compound-predicate .mud-first-logical-operator {
+      padding-top: 21px;
+      padding-left: -8px; }
+    .mud-filter .mud-compound-predicate .mud-logical-operator {
+      padding-top: 21px; }
     .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-radio-group {
       margin-left: 8px; }
     .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-remove {

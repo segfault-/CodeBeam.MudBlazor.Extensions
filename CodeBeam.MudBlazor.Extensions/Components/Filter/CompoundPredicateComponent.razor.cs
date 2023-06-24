@@ -9,6 +9,8 @@ namespace MudExtensions
     {
         [Parameter] public MudFilter<T>? Filter { get; set; }
         [Parameter] public CompoundPredicate<T>? CompoundPredicate { get; set; }
+        [Parameter] public CompoundPredicateLogicalOperator ParentLogicalOperator { get; set; }
+        [Parameter] public bool IsFirstElement { get; set; }
 
         protected string ClassName => new CssBuilder("mud-compound-predicate")
             .AddClass(Class)
@@ -32,6 +34,18 @@ namespace MudExtensions
         {
             CompoundPredicate?.Remove();
             Filter?.CallStateHasChanged();
+        }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+
+            if(CompoundPredicate?.AtomicPredicates.Any() == false)
+            {
+                CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(CompoundPredicate));
+                CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(CompoundPredicate));
+            }
         }
 
     }

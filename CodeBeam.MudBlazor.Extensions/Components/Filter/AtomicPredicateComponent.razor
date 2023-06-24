@@ -4,15 +4,26 @@
 @typeparam T
 
 <div class="@ClassName" style="@StyleString">
-    <MudStack Class="mud-ap-stack" Row="true" AlignItems="AlignItems.Center">
+    <MudStack Class="mud-ap-stack" Row="true">
         @if(IsFirstElement)
         {
             <MudTextM3 Class="mud-logical-operator"></MudTextM3>
         }
         else
         {
+            CompoundPredicateLogicalOperator
+
+            @AtomicPredicate.Parent?.
+
             <MudTextM3 Class="mud-logical-operator">@LogicalOperator</MudTextM3>
         }
+
+        <MudRadioGroup Class="mud-cp-radio-group" @bind-SelectedOption="@LogicalOperator" T="CompoundPredicateLogicalOperator">
+            <MudRadio Option="CompoundPredicateLogicalOperator.And" Size="Size.Small" Color="Color.Primary" UnCheckedColor="Color.Default">And</MudRadio>
+            <MudRadio Option="CompoundPredicateLogicalOperator.Or" Size="Size.Small" Color="Color.Secondary" UnCheckedColor="Color.Default">Or</MudRadio>
+        </MudRadioGroup>
+
+
         <CascadingValue Value="@Filter" IsFixed="true">
             <PropertySelectComponent T="T" Filter="@Filter" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
         </CascadingValue>
