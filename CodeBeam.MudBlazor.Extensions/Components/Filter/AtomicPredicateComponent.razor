@@ -5,6 +5,14 @@
 
 <div class="@ClassName" style="@StyleString">
     <MudStack Class="mud-ap-stack" Row="true" AlignItems="AlignItems.Center">
+        @if(IsFirstElement)
+        {
+            <MudTextM3 Class="mud-logical-operator"></MudTextM3>
+        }
+        else
+        {
+            <MudTextM3 Class="mud-logical-operator">@LogicalOperator</MudTextM3>
+        }
         <CascadingValue Value="@Filter" IsFixed="true">
             <PropertySelectComponent T="T" Filter="@Filter" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
         </CascadingValue>

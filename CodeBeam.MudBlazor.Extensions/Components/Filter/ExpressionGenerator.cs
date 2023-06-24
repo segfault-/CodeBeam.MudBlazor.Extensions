@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.Json;
@@ -189,7 +188,6 @@ namespace MudExtensions
 
         }
 
-        [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "<Pending>")]
         private static Expression GenerateFilterExpressionForNumericType<T>(FilterRule<T> rule, Expression parameter)
         {
             var dataType = typeof(T).GetProperty(rule.Field).PropertyType;
@@ -307,7 +305,6 @@ namespace MudExtensions
 
         }
 
-        [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "<Pending>")]
         private static Expression GenerateFilterExpressionForBooleanType<T>(FilterRule<T> rule, Expression parameter)
         {
             var dataType = typeof(T).GetProperty(rule.Field).PropertyType;

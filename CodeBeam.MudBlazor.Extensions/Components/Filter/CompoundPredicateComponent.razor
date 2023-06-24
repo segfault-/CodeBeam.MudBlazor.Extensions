@@ -13,15 +13,19 @@
         <MudIconButton Class="mud-cp-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="RemovePredicateUnit" />
     </MudStack>
 
+    @{
+        bool isFirstElement = true;
+    }
     @foreach (var predicate in CompoundPredicate.GetPredicatesInOrder())
     {
         if (predicate is AtomicPredicate<T> atomicPredicate)
         {
-            <AtomicPredicateComponent @key="atomicPredicate" @bind-AtomicPredicate="atomicPredicate" Filter="@Filter" />
+            <AtomicPredicateComponent @key="atomicPredicate" @bind-AtomicPredicate="atomicPredicate" Filter="@Filter" LogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="@isFirstElement" />
         }
         else if (predicate is CompoundPredicate<T> compoundPredicate)
         {
             <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" Filter="@Filter" />
         }
+        isFirstElement = false;
     }
 </div>
