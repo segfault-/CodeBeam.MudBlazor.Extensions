@@ -34,7 +34,7 @@ namespace MudExtensions
 
         public string? Operator { get; set; } = null;
 
-        public bool IsMultSelect { get; set; } = false;
+        public bool IsMultiSelect { get; set; } = false;
         public IEnumerable<string> MultiSelectValues { get; set; } = new HashSet<string>();
 
         public Expression<Func<T, object>>? PropertyExpression { get; set; }
