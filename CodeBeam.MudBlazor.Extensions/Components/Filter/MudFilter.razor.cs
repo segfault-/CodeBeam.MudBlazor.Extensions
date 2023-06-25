@@ -23,7 +23,8 @@ namespace MudExtensions
         [Parameter] public CompoundPredicate<T>? FilterRoot { get; set; } = new(null);
         [Parameter] public ICollection<Property<T>>? Properties { get; set; } = new List<Property<T>>();
         [Parameter] public Expression<Func<T, bool>>? Expression { get; set; }
-        [Parameter] public EventCallback ExpressionChanged { get; set; }
+        [Parameter] public EventCallback<Expression<Func<T, bool>>> ExpressionChanged { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
@@ -49,9 +50,9 @@ namespace MudExtensions
 
             var compactPrinter = new CompactExpressionPrinter();
             Console.WriteLine(compactPrinter.GetExpression(expression));
-            Expression = expression;
-            await ExpressionChanged.InvokeAsync();
 
+            Expression = expression;
+            await ExpressionChanged.InvokeAsync(expression);
         }
 
         protected async Task OnOnExpressionChangedAsync()

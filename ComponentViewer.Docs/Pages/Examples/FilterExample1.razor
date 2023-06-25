@@ -4,7 +4,7 @@
 @using System.Linq.Expressions;
 
 
-<MudFilter T="CatsDto" @bind-Expression="_expression" @bind-Expression:event="ExpressionChangedAsync">
+<MudFilter T="CatsDto" @bind-Expression="_expression" @bind-Expression:after="ExpressionChangedAsync">
     <FilterTemplate>
         <Property T="CatsDto" Title="Name"          PropertyExpression="@(x => x.Name)"         />
         <Property T="CatsDto" Title="Gender"        PropertyExpression="@(x => x.Gender)"       />
@@ -15,7 +15,7 @@
         <Property T="CatsDto" Title="Air Tag"       PropertyExpression="@(x => x.MicroId)"      />
     </FilterTemplate>
 </MudFilter>
-<MudDataGrid T="CatsDto" Items="@_cats" Filterable="false">
+<MudDataGrid T="CatsDto" Items="@__cats" Filterable="false">
     <Columns>
         <PropertyColumn Property="@(x => x.Name)" />
         <PropertyColumn Property="@(x => x.Gender)" />
@@ -45,12 +45,13 @@
         }
     }
 
+    IEnumerable<CatsDto> __cats;
     IEnumerable<CatsDto> _cats;
     Expression<Func<CatsDto, bool>> _expression;
 
     protected Task ExpressionChangedAsync()
     {
-        _cats = _cats.AsQueryable<CatsDto>().Where(_expression);
+        __cats = _cats.AsQueryable<CatsDto>().Where(_expression);
         return Task.CompletedTask;
     }
 
@@ -66,7 +67,7 @@
         var genders = new[] { "Male", "Female" };
         var types = Enum.GetValues(typeof(CatsDto.TabbyType)).Cast<CatsDto.TabbyType>().ToArray();
 
-        _cats = Enumerable.Range(1, 100).Select(i => new CatsDto
+        __cats = _cats = Enumerable.Range(1, 100).Select(i => new CatsDto
             {
                 Name = names[random.Next(names.Length)],
                 Gender = genders[random.Next(genders.Length)],
