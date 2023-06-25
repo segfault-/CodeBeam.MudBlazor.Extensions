@@ -444,7 +444,7 @@ namespace MudExtensions
             }
         }
 
-        public Expression<Func<T, bool>> ParseExpressionOf<T>(CompoundPredicate<T> root)
+        public Expression<Func<T, bool>> ParseExpressionOf<T>(CompoundPredicate<T>? root)
         {
             Expression<Func<T, bool>> query = null;
             var itemExpression = Expression.Parameter(typeof(T));

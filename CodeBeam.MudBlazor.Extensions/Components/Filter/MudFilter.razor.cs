@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 
 namespace MudExtensions
 {
+#nullable enable
     public partial class MudFilter<T> : MudComponentBase
     {
         protected string ClassName => new CssBuilder("mud-filter")
@@ -18,17 +19,18 @@ namespace MudExtensions
         /// <summary>
         /// Represents what members of T are eligible for filtering
         /// </summary>
-        [Parameter] public RenderFragment FilterTemplate { get; set; }
-        [Parameter] public CompoundPredicate<T> FilterRoot { get; set; } = new(null);
-        [Parameter] public ICollection<Property<T>> Properties { get; set; } = new List<Property<T>>();
-
+        [Parameter] public RenderFragment? FilterTemplate { get; set; }
+        [Parameter] public CompoundPredicate<T>? FilterRoot { get; set; } = new(null);
+        [Parameter] public ICollection<Property<T>>? Properties { get; set; } = new List<Property<T>>();
+        [Parameter] public Expression<Func<T, bool>>? Expression { get; set; }
+        [Parameter] public EventCallback ExpressionChanged { get; set; }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="property"></param>
         internal void AddProperty(Property<T> property)
         {
-            Properties.Add(property);
+            Properties?.Add(property);
         }
 
         internal void CallStateHasChanged()
@@ -36,7 +38,7 @@ namespace MudExtensions
             StateHasChanged();
         }
 
-        protected void CompileExpression()
+        protected async Task CompileExpressionAsync()
         {
             ExpressionGenerator expressionGenerator = new ExpressionGenerator();
 
@@ -47,7 +49,16 @@ namespace MudExtensions
 
             var compactPrinter = new CompactExpressionPrinter();
             Console.WriteLine(compactPrinter.GetExpression(expression));
+            Expression = expression;
+            await ExpressionChanged.InvokeAsync();
 
         }
+
+        protected async Task OnOnExpressionChangedAsync()
+        {
+            await ExpressionChanged.InvokeAsync();
+        }
+
+
     }
 }

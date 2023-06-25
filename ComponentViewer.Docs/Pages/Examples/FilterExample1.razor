@@ -1,7 +1,10 @@
-﻿@using MudBlazor
-@using MudBlazor.Utilities;
+﻿@using MudExtensions.Enums
+@using MudBlazor
+@using MudBlazor.Extensions
+@using System.Linq.Expressions;
 
-<MudFilter T="CatsDto">
+
+<MudFilter T="CatsDto" @bind-Expression="_expression" @bind-Expression:event="ExpressionChangedAsync">
     <FilterTemplate>
         <Property T="CatsDto" Title="Name"          PropertyExpression="@(x => x.Name)"         />
         <Property T="CatsDto" Title="Gender"        PropertyExpression="@(x => x.Gender)"       />
@@ -13,12 +16,14 @@
     </FilterTemplate>
 </MudFilter>
 <MudDataGrid T="CatsDto" Items="@_cats" Filterable="false">
-    <PropertyColumn Property="@(x => x.Name)"           Title="Nr (fixed)" DragAndDropEnabled="false" />
-    <PropertyColumn Property="@(x => x.Gender)"         />
-    <PropertyColumn Property="@(x => x.BirthDate)"      Title="Name (fixed)" DragAndDropEnabled="false" />
-    <PropertyColumn Property="@(x => x.CatType)"        />
-    <PropertyColumn Property="@(x => x.IsSpade)"        Title="Molar mass" />
-    <PropertyColumn Property="@(x => x.MicroId)"        Title="Category" />
+    <Columns>
+        <PropertyColumn Property="@(x => x.Name)" />
+        <PropertyColumn Property="@(x => x.Gender)" />
+        <PropertyColumn Property="@(x => x.BirthDate)" />
+        <PropertyColumn Property="@(x => x.CatType)" Title="Type" />
+        <PropertyColumn Property="@(x => x.IsSpade)" Title="Spade" />
+        <PropertyColumn Property="@(x => x.MicroId)" Title="Air Tag" />
+    </Columns>
 </MudDataGrid>
 
 @code {
@@ -41,6 +46,18 @@
     }
 
     IEnumerable<CatsDto> _cats;
+    Expression<Func<CatsDto, bool>> _expression;
+
+    protected Task ExpressionChangedAsync()
+    {
+        _cats = _cats.AsQueryable<CatsDto>().Where(_expression);
+        return Task.CompletedTask;
+    }
+
+
+
+
+
 
     protected override void OnInitialized()
     {
