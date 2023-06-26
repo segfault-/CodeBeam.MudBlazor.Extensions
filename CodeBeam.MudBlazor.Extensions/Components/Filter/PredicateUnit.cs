@@ -41,7 +41,17 @@ namespace MudExtensions
                 Value = value;
             }
         }
-        public double? ValueNumber { get; set; }
+
+        private double? _valueNumber;
+        public double? ValueNumber 
+        {
+            get => _valueNumber;
+            set
+            {
+                _valueNumber = value;
+                Value = value;
+            }
+        }
 
         private Enum? _valueEnum;
         public Enum? ValueEnum
@@ -53,7 +63,18 @@ namespace MudExtensions
                 Value = value;
             }
         }
-        public bool? ValueBool { get; set; }
+
+        private bool? _valueBool;
+        public bool? ValueBool 
+        {
+            get => _valueBool;
+            set
+            {
+                _valueBool = value;
+                Value = value;
+            }
+        }
+
         public DateTime? ValueDate { get; set; }
         public TimeSpan? ValueTime { get; set; }
         public object? Value { get; set; }

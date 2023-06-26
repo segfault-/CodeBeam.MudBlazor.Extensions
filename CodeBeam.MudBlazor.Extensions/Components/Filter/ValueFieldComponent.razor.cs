@@ -8,7 +8,7 @@ namespace MudExtensions
     public partial class ValueFieldComponent<T> : MudComponentBase
     {
         [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
-        [Parameter] public EventCallback<AtomicPredicate<T>> AtomicPredicateChanged { get; set; }
+        [Parameter] public EventCallback ValueFieldChanged { get; set; }
 
         protected FieldType? FieldType;
         protected string ClassName => new CssBuilder("mud-value-field")
@@ -28,5 +28,11 @@ namespace MudExtensions
                 FieldType = FieldType.Identify(AtomicPredicate.MemberType);
             }         
         }
+
+        protected async Task OnValueFieldChangedAsync()
+        {
+            await ValueFieldChanged.InvokeAsync();
+        }
+
     }
 }

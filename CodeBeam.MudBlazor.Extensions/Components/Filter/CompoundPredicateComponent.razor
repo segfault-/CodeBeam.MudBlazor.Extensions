@@ -19,14 +19,14 @@
             }          
         }
          
-        <MudSelectExtended Class="mud-cp-radio-group" T="CompoundPredicateLogicalOperator" @bind-Value="CompoundPredicate.LogicalOperator" ValuePresenter="Enums.ValuePresenter.Chip" ChipSize="Size.Small" Variant="Variant.Outlined" Dense="true">
+        <MudSelectExtended Class="mud-cp-radio-group" T="CompoundPredicateLogicalOperator" @bind-Value="CompoundPredicate.LogicalOperator" @bind-Value:after="OnLogicalOperatorChangedAsync" ValuePresenter="Enums.ValuePresenter.Chip" ChipSize="Size.Small" Variant="Variant.Outlined" Dense="true" Margin="Margin.Dense">
             <MudSelectItemExtended T="CompoundPredicateLogicalOperator" Value="CompoundPredicateLogicalOperator.And" Text="AND" />
             <MudSelectItemExtended T="CompoundPredicateLogicalOperator" Value="CompoundPredicateLogicalOperator.Or" Text="OR" />
         </MudSelectExtended>
 
 
-        <MudIconButton Class="mud-cp-add-atomic" Icon="@Icons.Material.Filled.AddCircleOutline" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="AddAtomicPredicate" />
-        <MudIconButton Class="mud-cp-add-compound" Icon="@Icons.Material.Filled.LibraryAdd" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" OnClick="AddCompoundPredicate" />
+        <MudIconButton Class="mud-cp-add-atomic" Icon="@Icons.Material.Filled.AddCircleOutline" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="AddAtomicPredicate" />
+        <MudIconButton Class="mud-cp-add-compound" Icon="@Icons.Material.Filled.LibraryAdd" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="AddCompoundPredicate" />
         <MudIconButton Class="mud-cp-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="RemovePredicateUnit" />
     </MudStack>
 
@@ -41,7 +41,7 @@
         }
         else if (predicate is CompoundPredicate<T> compoundPredicate)
         {
-            <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" Filter="@Filter" ParentLogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="@isFirstElement" Depth="(Depth + 1)"/>
+            <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" Filter="@Filter" ParentLogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="@isFirstElement" Depth="(Depth + 1)" LogicalOperatorChanged="OnLogicalOperatorChangedAsync" />
         }
         isFirstElement = false;
     }

@@ -24,6 +24,9 @@
         <PropertyColumn Property="@(x => x.IsSpade)" Title="Spade" />
         <PropertyColumn Property="@(x => x.MicroId)" Title="Air Tag" />
     </Columns>
+    <PagerContent>
+        <MudDataGridPager T="CatsDto" />
+    </PagerContent>
 </MudDataGrid>
 
 @code {
@@ -51,6 +54,7 @@
 
     protected Task ExpressionChangedAsync()
     {
+        
         __cats = _cats.AsQueryable<CatsDto>().Where(_expression);
         return Task.CompletedTask;
     }

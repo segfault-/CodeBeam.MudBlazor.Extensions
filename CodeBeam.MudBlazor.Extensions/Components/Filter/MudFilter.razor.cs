@@ -39,7 +39,7 @@ namespace MudExtensions
             StateHasChanged();
         }
 
-        protected async Task CompileExpressionAsync()
+        public async Task CompileExpressionAsync()
         {
             ExpressionGenerator expressionGenerator = new ExpressionGenerator();
 
@@ -53,7 +53,6 @@ namespace MudExtensions
         {
             await ExpressionChanged.InvokeAsync();
         }
-
 
     }
 }

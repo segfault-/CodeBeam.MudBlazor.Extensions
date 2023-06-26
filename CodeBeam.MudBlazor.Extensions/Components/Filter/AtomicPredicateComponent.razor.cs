@@ -21,16 +21,39 @@ namespace MudExtensions
             .AddStyle(Style)
             .Build();
 
-        public Task OnPropertySelectChangedAsync()
+        protected async Task OnPropertySelectChangedAsync()
         {
             AtomicPredicate?.ClearOperatorAndValues();
-            return Task.CompletedTask;
+            if (Filter is not null)
+            {
+                await Filter.CompileExpressionAsync();
+            }
         }
 
-        protected void RemovePredicateUnit()
+        protected async Task OnValueFieldChangedAsync()
+        {
+            if(Filter is not null)
+            {
+                await Filter.CompileExpressionAsync();
+            }
+        }
+
+        protected async Task OnOperatorSelectChangedAsync()
+        {
+            if (Filter is not null)
+            {
+                await Filter.CompileExpressionAsync();
+            }
+        }
+
+        protected async Task RemovePredicateUnitAsync()
         {
             AtomicPredicate?.Remove();
             Filter?.CallStateHasChanged();
+            if (Filter is not null)
+            {
+                await Filter.CompileExpressionAsync();
+            }
         }
     }
 }

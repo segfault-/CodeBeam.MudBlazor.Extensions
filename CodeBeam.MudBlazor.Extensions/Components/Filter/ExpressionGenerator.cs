@@ -39,12 +39,18 @@ namespace MudExtensions
                 if (predicateUnit is AtomicPredicate<T> atomicPredicate)
                 {
 
+                    if(atomicPredicate.Operator is null || atomicPredicate.Value is null || atomicPredicate.MemberType is null)
+                    {
+                        continue;
+                    }
+
+
                     var @operator = atomicPredicate.Operator;
                     var property = Expression.Property(parm, atomicPredicate.Member);
 
                     if (@operator.Equals("is one of") || @operator.Equals("is not one of"))
                     {
-                        var jsonElement = (JsonElement)atomicPredicate.Value;
+                        var jsonElement = atomicPredicate.Value as string;
                         var propertyType = atomicPredicate.MemberType;
                         var contains = _methodContains.MakeGenericMethod(propertyType);
 
@@ -446,7 +452,7 @@ namespace MudExtensions
 
         public Expression<Func<T, bool>> ParseExpressionOf<T>(CompoundPredicate<T>? root)
         {
-            Expression<Func<T, bool>> query = null;
+            Expression<Func<T, bool>>? query = item => true;
             var itemExpression = Expression.Parameter(typeof(T));
             var conditions = ParseTree<T>(root, itemExpression);
             if (conditions != null)

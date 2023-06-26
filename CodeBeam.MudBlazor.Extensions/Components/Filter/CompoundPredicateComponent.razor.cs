@@ -12,6 +12,7 @@ namespace MudExtensions
         [Parameter] public CompoundPredicateLogicalOperator? ParentLogicalOperator { get; set; }
         [Parameter] public bool IsFirstElement { get; set; }
         [Parameter] public uint Depth { get; set; }
+        [Parameter] public EventCallback LogicalOperatorChanged { get; set; }
 
         protected string ClassName => new CssBuilder("mud-compound-predicate")
             .AddClass($"depth-{Depth}")
@@ -48,6 +49,11 @@ namespace MudExtensions
                 CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(CompoundPredicate));
                 CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(CompoundPredicate));
             }
+        }
+
+        protected async Task OnLogicalOperatorChangedAsync()
+        {
+            await LogicalOperatorChanged.InvokeAsync();
         }
 
     }
