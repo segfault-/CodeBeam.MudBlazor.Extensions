@@ -4,7 +4,7 @@
 @using System.Linq.Expressions;
 
 
-<MudFilter T="CatsDto" @bind-Expression="_expression" @bind-Expression:after="ExpressionChangedAsync">
+<MudFilter T="CatsDto" @bind-Expression="_expression" @bind-Expression:after="ExpressionChangedAsync" >
     <FilterTemplate>
         <Property T="CatsDto" Title="Name"          PropertyExpression="@(x => x.Name)"         />
         <Property T="CatsDto" Title="Gender"        PropertyExpression="@(x => x.Gender)"       />
@@ -15,7 +15,7 @@
         <Property T="CatsDto" Title="Air Tag"       PropertyExpression="@(x => x.MicroId)"      />
     </FilterTemplate>
 </MudFilter>
-<MudDataGrid T="CatsDto" Items="@__cats" Filterable="false">
+<MudDataGrid T="CatsDto" Items="@__cats" Filterable="false" Hover="true" Dense="true">
     <Columns>
         <PropertyColumn Property="@(x => x.Name)" />
         <PropertyColumn Property="@(x => x.Gender)" />

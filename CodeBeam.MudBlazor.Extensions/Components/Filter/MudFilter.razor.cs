@@ -45,12 +45,6 @@ namespace MudExtensions
 
             var expression = expressionGenerator.ParseExpressionOf(FilterRoot);
 
-            var prettyPrinter = new PrettyPrintExpressionVisitor();
-            Console.WriteLine(prettyPrinter.GetExpression(expression));
-
-            var compactPrinter = new CompactExpressionPrinter();
-            Console.WriteLine(compactPrinter.GetExpression(expression));
-
             Expression = expression;
             await ExpressionChanged.InvokeAsync(expression);
         }

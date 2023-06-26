@@ -1024,6 +1024,10 @@
       color: var(--mud-m3-primary);
       transition: border-color .3s, color .3s; }
 
+.mud-data-grid {
+  background-color: var(--mud-m3-surface);
+  color: var(--mud-m3-on-surface); }
+
 /*@import '../abstracts/variables';*/
 .mud-list-extended {
   margin: 0;
