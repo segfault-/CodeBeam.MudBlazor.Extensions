@@ -1,86 +1,87 @@
-.mud-filter {
-    background-color: var(--mud-m3-surface);
-    color: var(--mud-m3-on-surface);
-    padding-bottom: 128px;
 
-    .mud-compound-predicate {
-        margin-top: 2px;
-        margin-left: 8px;
+@mixin hover-effects {
+    align-self: center;
+    border-color: var(--mud-m3-primary);
+    color: var(--mud-m3-primary);
+    margin-left: auto;
+    margin-right: 8px;
 
-        .mud-first-logical-operator {
-            padding-top: 21px;
-            padding-left: -8px;
-        }
+    &:hover {
+        border-color: var(--mud-m3-primary);
+        color: var(--mud-m3-primary);
+        transition: border-color .3s, color .3s;
+    }
+}
 
-        .mud-logical-operator {
-            padding-top: 21px;
-        }
+@mixin stack {
+    margin-top: 2px;
+}
 
-        .mud-cp-stack {
-            .mud-cp-radio-group {
-                margin-left: 8px
-            }
-
-            .mud-cp-add-atomic {
-            }
-
-            .mud-cp-add-compound {
-            }
-
-            .mud-cp-remove {
-                border-color: var(--mud-m3-surface);
-                color: var(--mud-m3-surface);
-                margin-left: auto;
-                margin-right: 8px;
-            }
-        }
-
-        .mud-cp-stack:hover .mud-cp-remove {
+.mud-compound-predicate, .mud-atomic-predicate {
+    &:hover {
+        .mud-cp-add-atomic, .mud-cp-add-compound, .mud-cp-remove, .mud-ap-remove {
+            @include hover-effects;
             border-color: var(--mud-m3-primary);
             color: var(--mud-m3-primary);
             transition: border-color .3s, color .3s;
+        }
+    }
+}
+
+.mud-filter, .mud-data-grid {
+    background-color: var(--mud-m3-surface);
+    color: var(--mud-m3-on-surface);
+}
+
+@for $i from 0 through 10 {
+    .compound-predicate-component.depth-#{$i} {
+        padding-left: #{1em * $i};
+    }
+}
+
+.mud-filter {
+    padding-bottom: 128px;
+
+    .mud-compound-predicate {
+        @include stack;
+
+        .mud-first-logical-operator, .mud-logical-operator {
+            padding-top: 21px;
+        }
+
+        .mud-logical-operator {
+            width: 50px;
+        }
+
+        .mud-cp-stack {
+            .mud-cp-add-atomic, .mud-cp-add-compound, .mud-cp-remove {
+                @include hover-effects;
+            }
         }
     }
 
     .mud-atomic-predicate {
-        margin-top: 2px;
+        @include stack;
 
         .mud-ap-stack {
             justify-content: space-between;
 
+            .mud-filter-def {
+                flex-grow: 1;
+            }
+
             .mud-logical-operator {
-                flex: 1 1 3%
+                width: 50px;
             }
 
-            .mud-property-select {
-                flex: 1 1 32.33%
-            }
-
-            .mud-operator-select {
-                flex: 1 1 32.33%
-            }
-
-            .mud-value-field {
-                flex: 1 1 32.33%
+            .mud-property-select, .mud-operator-select, .mud-value-field {
+                flex: 1 1 33.33%
             }
 
             .mud-ap-remove {
-                border-color: var(--mud-m3-surface);
-                color: var(--mud-m3-surface);
-                margin-left: auto;
-                margin-right: 8px;
+                @include hover-effects;
             }
-        }
-
-        .mud-ap-stack:hover .mud-ap-remove {
-            border-color: var(--mud-m3-primary);
-            color: var(--mud-m3-primary);
-            transition: border-color .3s, color .3s;
         }
     }
 }
 
-.mud-data-grid {
-    background-color: var(--mud-m3-surface);
-    color: var(--mud-m3-on-surface);
-}

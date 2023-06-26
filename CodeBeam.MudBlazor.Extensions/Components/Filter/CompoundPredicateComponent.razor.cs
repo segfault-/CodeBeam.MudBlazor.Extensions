@@ -9,10 +9,12 @@ namespace MudExtensions
     {
         [Parameter] public MudFilter<T>? Filter { get; set; }
         [Parameter] public CompoundPredicate<T>? CompoundPredicate { get; set; }
-        [Parameter] public CompoundPredicateLogicalOperator ParentLogicalOperator { get; set; }
+        [Parameter] public CompoundPredicateLogicalOperator? ParentLogicalOperator { get; set; }
         [Parameter] public bool IsFirstElement { get; set; }
+        [Parameter] public uint Depth { get; set; }
 
         protected string ClassName => new CssBuilder("mud-compound-predicate")
+            .AddClass($"depth-{Depth}")
             .AddClass(Class)
             .Build();
 

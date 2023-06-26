@@ -2,23 +2,32 @@
 @inherits MudComponentBase
 @typeparam T
 
+
 <div class="@ClassName" style="@StyleString">
-    <MudStack Class="mud-cp-stack" Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
-        @if (IsFirstElement)
+    <MudStack Class="mud-cp-stack" Row="true">
+
+        @for(int i = 0; i <= Depth; i++)
         {
-            <MudTextM3 Class="mud-first-logical-operator"></MudTextM3>
+            int j = i;
+            if(j == Depth - 1)
+            {
+                <MudTextM3 Class="mud-logical-operator">@ParentLogicalOperator</MudTextM3>
+            }
+            else
+            {
+                <MudTextM3 Class="mud-logical-operator" />
+            }          
         }
-        else
-        {
-            <MudTextM3 Class="mud-logical-operator">@ParentLogicalOperator</MudTextM3>
-        }
-        <MudRadioGroup Class="mud-cp-radio-group" @bind-SelectedOption="CompoundPredicate.LogicalOperator" T="CompoundPredicateLogicalOperator">
-            <MudRadio Option="CompoundPredicateLogicalOperator.And" Size="Size.Small" Color="Color.Primary" UnCheckedColor="Color.Default">And</MudRadio>
-            <MudRadio Option="CompoundPredicateLogicalOperator.Or" Size="Size.Small" Color="Color.Secondary" UnCheckedColor="Color.Default">Or</MudRadio>
-        </MudRadioGroup>
-        <MudButton Class="mud-cp-add-atomic" Size="Size.Small" Variant="Variant.Filled" OnClick="AddAtomicPredicate">Add atomic predicate</MudButton>
-        <MudButton Class="mud-cp-add-compound" Size="Size.Small" Variant="Variant.Filled" OnClick="AddCompoundPredicate">Add compound predicate</MudButton>
-        <MudIconButton Class="mud-cp-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="RemovePredicateUnit" />
+         
+        <MudSelectExtended Class="mud-cp-radio-group" T="CompoundPredicateLogicalOperator" @bind-Value="CompoundPredicate.LogicalOperator" ValuePresenter="Enums.ValuePresenter.Chip" ChipSize="Size.Small" Variant="Variant.Outlined" Dense="true">
+            <MudSelectItemExtended T="CompoundPredicateLogicalOperator" Value="CompoundPredicateLogicalOperator.And" Text="AND" />
+            <MudSelectItemExtended T="CompoundPredicateLogicalOperator" Value="CompoundPredicateLogicalOperator.Or" Text="OR" />
+        </MudSelectExtended>
+
+
+        <MudIconButton Class="mud-cp-add-atomic" Icon="@Icons.Material.Filled.AddCircleOutline" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="AddAtomicPredicate" />
+        <MudIconButton Class="mud-cp-add-compound" Icon="@Icons.Material.Filled.LibraryAdd" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" OnClick="AddCompoundPredicate" />
+        <MudIconButton Class="mud-cp-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="RemovePredicateUnit" />
     </MudStack>
 
     @{
@@ -28,11 +37,11 @@
     {
         if (predicate is AtomicPredicate<T> atomicPredicate)
         {
-            <AtomicPredicateComponent @key="atomicPredicate" @bind-AtomicPredicate="atomicPredicate" Filter="@Filter" LogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="@isFirstElement" />
+            <AtomicPredicateComponent @key="atomicPredicate" @bind-AtomicPredicate="atomicPredicate" Filter="@Filter" LogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="@isFirstElement" Parent="CompoundPredicate" Depth="Depth" />
         }
         else if (predicate is CompoundPredicate<T> compoundPredicate)
         {
-            <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" Filter="@Filter" ParentLogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="@isFirstElement" />
+            <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" Filter="@Filter" ParentLogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="@isFirstElement" Depth="(Depth + 1)"/>
         }
         isFirstElement = false;
     }

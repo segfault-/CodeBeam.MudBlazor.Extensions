@@ -979,54 +979,95 @@
   letter-spacing: var(--mud-typographym3-label-small-tracking);
   font-weight: var(--mud-typographym3-label-small-weight); }
 
-.mud-filter {
+.mud-compound-predicate:hover .mud-cp-add-atomic, .mud-compound-predicate:hover .mud-cp-add-compound, .mud-compound-predicate:hover .mud-cp-remove, .mud-compound-predicate:hover .mud-ap-remove, .mud-atomic-predicate:hover .mud-cp-add-atomic, .mud-atomic-predicate:hover .mud-cp-add-compound, .mud-atomic-predicate:hover .mud-cp-remove, .mud-atomic-predicate:hover .mud-ap-remove {
+  align-self: center;
+  border-color: var(--mud-m3-primary);
+  color: var(--mud-m3-primary);
+  margin-left: auto;
+  margin-right: 8px;
+  border-color: var(--mud-m3-primary);
+  color: var(--mud-m3-primary);
+  transition: border-color .3s, color .3s; }
+  .mud-compound-predicate:hover .mud-cp-add-atomic:hover, .mud-compound-predicate:hover .mud-cp-add-compound:hover, .mud-compound-predicate:hover .mud-cp-remove:hover, .mud-compound-predicate:hover .mud-ap-remove:hover, .mud-atomic-predicate:hover .mud-cp-add-atomic:hover, .mud-atomic-predicate:hover .mud-cp-add-compound:hover, .mud-atomic-predicate:hover .mud-cp-remove:hover, .mud-atomic-predicate:hover .mud-ap-remove:hover {
+    border-color: var(--mud-m3-primary);
+    color: var(--mud-m3-primary);
+    transition: border-color .3s, color .3s; }
+
+.mud-filter, .mud-data-grid {
   background-color: var(--mud-m3-surface);
-  color: var(--mud-m3-on-surface);
+  color: var(--mud-m3-on-surface); }
+
+.compound-predicate-component.depth-0 {
+  padding-left: 0em; }
+
+.compound-predicate-component.depth-1 {
+  padding-left: 1em; }
+
+.compound-predicate-component.depth-2 {
+  padding-left: 2em; }
+
+.compound-predicate-component.depth-3 {
+  padding-left: 3em; }
+
+.compound-predicate-component.depth-4 {
+  padding-left: 4em; }
+
+.compound-predicate-component.depth-5 {
+  padding-left: 5em; }
+
+.compound-predicate-component.depth-6 {
+  padding-left: 6em; }
+
+.compound-predicate-component.depth-7 {
+  padding-left: 7em; }
+
+.compound-predicate-component.depth-8 {
+  padding-left: 8em; }
+
+.compound-predicate-component.depth-9 {
+  padding-left: 9em; }
+
+.compound-predicate-component.depth-10 {
+  padding-left: 10em; }
+
+.mud-filter {
   padding-bottom: 128px; }
   .mud-filter .mud-compound-predicate {
-    margin-top: 2px;
-    margin-left: 8px; }
-    .mud-filter .mud-compound-predicate .mud-first-logical-operator {
-      padding-top: 21px;
-      padding-left: -8px; }
-    .mud-filter .mud-compound-predicate .mud-logical-operator {
+    margin-top: 2px; }
+    .mud-filter .mud-compound-predicate .mud-first-logical-operator, .mud-filter .mud-compound-predicate .mud-logical-operator {
       padding-top: 21px; }
-    .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-radio-group {
-      margin-left: 8px; }
-    .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-remove {
-      border-color: var(--mud-m3-surface);
-      color: var(--mud-m3-surface);
-      margin-left: auto;
-      margin-right: 8px; }
-    .mud-filter .mud-compound-predicate .mud-cp-stack:hover .mud-cp-remove {
+    .mud-filter .mud-compound-predicate .mud-logical-operator {
+      width: 50px; }
+    .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-add-atomic, .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-add-compound, .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-remove {
+      align-self: center;
       border-color: var(--mud-m3-primary);
       color: var(--mud-m3-primary);
-      transition: border-color .3s, color .3s; }
+      margin-left: auto;
+      margin-right: 8px; }
+      .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-add-atomic:hover, .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-add-compound:hover, .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-remove:hover {
+        border-color: var(--mud-m3-primary);
+        color: var(--mud-m3-primary);
+        transition: border-color .3s, color .3s; }
   .mud-filter .mud-atomic-predicate {
     margin-top: 2px; }
     .mud-filter .mud-atomic-predicate .mud-ap-stack {
       justify-content: space-between; }
+      .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-filter-def {
+        flex-grow: 1; }
       .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-logical-operator {
-        flex: 1 1 3%; }
-      .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-property-select {
-        flex: 1 1 32.33%; }
-      .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-operator-select {
-        flex: 1 1 32.33%; }
-      .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-value-field {
-        flex: 1 1 32.33%; }
+        width: 50px; }
+      .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-property-select, .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-operator-select, .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-value-field {
+        flex: 1 1 33.33%; }
       .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-ap-remove {
-        border-color: var(--mud-m3-surface);
-        color: var(--mud-m3-surface);
+        align-self: center;
+        border-color: var(--mud-m3-primary);
+        color: var(--mud-m3-primary);
         margin-left: auto;
         margin-right: 8px; }
-    .mud-filter .mud-atomic-predicate .mud-ap-stack:hover .mud-ap-remove {
-      border-color: var(--mud-m3-primary);
-      color: var(--mud-m3-primary);
-      transition: border-color .3s, color .3s; }
-
-.mud-data-grid {
-  background-color: var(--mud-m3-surface);
-  color: var(--mud-m3-on-surface); }
+        .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-ap-remove:hover {
+          border-color: var(--mud-m3-primary);
+          color: var(--mud-m3-primary);
+          transition: border-color .3s, color .3s; }
 
 /*@import '../abstracts/variables';*/
 .mud-list-extended {
