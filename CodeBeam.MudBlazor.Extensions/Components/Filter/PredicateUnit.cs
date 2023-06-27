@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Text.Json.Serialization;
 
 namespace MudExtensions
 {
@@ -9,6 +10,8 @@ namespace MudExtensions
     /// </summary>
     public abstract class PredicateUnit<T>
     {
+        public PredicateUnit() { }
+
         protected PredicateUnit(PredicateUnit<T>? parent)
         {
             Parent = parent;
@@ -25,6 +28,11 @@ namespace MudExtensions
     /// </summary>
     public class AtomicPredicate<T> : PredicateUnit<T>
     {
+        public AtomicPredicate() 
+            :base(null)
+        { 
+        }
+
         public AtomicPredicate(PredicateUnit<T> parent)
             : base(parent)
         {
@@ -84,11 +92,11 @@ namespace MudExtensions
         public bool IsMultiSelect { get; set; } = false;
         public IEnumerable<string> MultiSelectValues { get; set; } = new HashSet<string>();
 
-        public Expression<Func<T, object>>? PropertyExpression { get; set; }
+        [JsonIgnore] public Expression<Func<T, object>>? PropertyExpression { get; set; }
 
         public string Member => GetMemberName(PropertyExpression);
 
-        public Type? MemberType => GetMemberType(PropertyExpression);
+        [JsonIgnore] public Type? MemberType => GetMemberType(PropertyExpression);
 
         public override PredicateUnit<T>? Parent { get; set; }
 
@@ -171,6 +179,12 @@ namespace MudExtensions
     /// </summary>
     public class CompoundPredicate<T> : PredicateUnit<T>
     {
+        public CompoundPredicate()
+            : base(null)
+        {
+            AtomicPredicates = new List<AtomicPredicate<T>>();
+            CompoundPredicates = new List<CompoundPredicate<T>>();
+        }
         public CompoundPredicate(PredicateUnit<T>? parent)
             : base(parent)
         {

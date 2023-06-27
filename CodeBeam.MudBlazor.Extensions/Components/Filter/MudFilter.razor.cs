@@ -2,6 +2,8 @@
 using MudBlazor;
 using MudBlazor.Utilities;
 using System.Linq.Expressions;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MudExtensions
 {
@@ -15,6 +17,8 @@ namespace MudExtensions
         protected string StyleString => new StyleBuilder()
             .AddStyle(Style)
             .Build();
+
+        protected string JsonString = string.Empty;
 
         /// <summary>
         /// Represents what members of T are eligible for filtering
@@ -54,5 +58,27 @@ namespace MudExtensions
             await ExpressionChanged.InvokeAsync();
         }
 
+        protected async Task SerializeAsync()
+        {
+            JsonSerializerOptions jsonSerializerOptions = new();
+            jsonSerializerOptions.TypeInfoResolver = new PredicateUnitJsonTypeInfoResolver<T>();
+            jsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            //jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+
+
+            JsonString = JsonSerializer.Serialize(FilterRoot, jsonSerializerOptions);
+
+            var x = JsonSerializer.Deserialize<PredicateUnit<T>>(JsonString);
+
+
+            JsonSerializer.Deserialize<PredicateUnit<T>>(JsonSerializer.Serialize<PredicateUnit<T>>(FilterRoot, jsonSerializerOptions), jsonSerializerOptions);
+
+
+            var JsonStringToCompoundPredicate = JsonSerializer.Deserialize<CompoundPredicate<T>>(JsonString, jsonSerializerOptions);
+
+
+        }
+
     }
+
 }

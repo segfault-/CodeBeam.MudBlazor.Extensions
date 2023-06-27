@@ -32,6 +32,11 @@
 @code {
     public class CatsDto
     {
+        public CatsDto()
+        {
+
+        }
+
         public string Name { get; set; }
         public string Gender { get; set; }
         public DateTime BirthDate { get; set; }
@@ -39,6 +44,7 @@
         public bool IsSpade { get; set; }
         public double Temperature { get; set; }
         public Guid MicroId { get; set; }
+        
 
         public enum TabbyType
         {
@@ -53,16 +59,10 @@
     Expression<Func<CatsDto, bool>> _expression;
 
     protected Task ExpressionChangedAsync()
-    {
-        
+    {        
         __cats = _cats.AsQueryable<CatsDto>().Where(_expression);
         return Task.CompletedTask;
     }
-
-
-
-
-
 
     protected override void OnInitialized()
     {
