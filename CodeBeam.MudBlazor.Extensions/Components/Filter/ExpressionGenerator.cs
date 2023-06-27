@@ -176,6 +176,8 @@ namespace MudExtensions
             };
         }
 
+
+
         private static Expression GenerateFilterExpressionForEnumType<T>(AtomicPredicate<T> rule, Expression parameter)
         {
             var dataType = rule.MemberType;
@@ -200,7 +202,6 @@ namespace MudExtensions
 
                 _ => Expression.Constant(true, typeof(bool))
             };
-
         }
 
         private static Expression GenerateFilterExpressionForNumericType<T>(AtomicPredicate<T> rule, Expression parameter)
@@ -415,24 +416,29 @@ namespace MudExtensions
             }
         }
 
-        public static Enum GetEnumFromObject(object o, Type t)
-        {
-            if (o == null)
-                return null;
+        //public static Enum GetEnumFromObject(object o, Type t)
+        //{
+        //    if (o == null)
+        //        return null;
 
-            var enumType = Nullable.GetUnderlyingType(t) ?? t;
-            if (o is JsonElement element)
-            {
-                return (Enum)Enum.ToObject(enumType, element.GetInt32());
-            }
-            else if (enumType != null)
-            {
-                return (Enum)Enum.ToObject(enumType, o);
-            }
-            else
-            {
-                return (Enum)Enum.ToObject(t, o);
-            }
+        //    var enumType = Nullable.GetUnderlyingType(t) ?? t;
+        //    if (o is JsonElement element)
+        //    {
+        //        return (Enum)Enum.ToObject(enumType, element.GetInt32());
+        //    }
+        //    else if (enumType != null)
+        //    {
+        //        return (Enum)Enum.ToObject(enumType, o);
+        //    }
+        //    else
+        //    {
+        //        return (Enum)Enum.ToObject(t, o);
+        //    }
+        //}
+
+        private static object GetEnumFromObject(object enumString, Type enumType)
+        {
+            return Enum.Parse(enumType, enumString.ToString());
         }
 
         public static double? GetDoubleFromObject(object o)

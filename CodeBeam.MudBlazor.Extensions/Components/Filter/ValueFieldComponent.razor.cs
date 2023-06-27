@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Utilities;
-using System.Text.Json;
+using System;
 
 namespace MudExtensions
 {
@@ -20,10 +20,10 @@ namespace MudExtensions
             set
             {
                 _valueObject = value;
-                if(AtomicPredicate is not null)
+                if (AtomicPredicate is not null)
                 {
                     AtomicPredicate.Value = value;
-                }             
+                }
             }
         }
 
@@ -49,14 +49,18 @@ namespace MudExtensions
             }
         }
 
-        private Enum? _valueEnum;
-        protected Enum? ValueEnum
+        private string? _valueEnum;
+        protected string? ValueEnum
         {
             get => _valueEnum;
             set
             {
                 _valueEnum = value;
-                ValueObject = value;
+                if(FieldType is not null && FieldType.InnerType is not null && value is not null)
+                {
+                    ValueObject = Enum.Parse(FieldType.InnerType, value);
+                }
+                
             }
         }
 
@@ -122,10 +126,9 @@ namespace MudExtensions
             .AddStyle(Style)
             .Build();
 
-
         protected override void OnParametersSet()
-        {        
-            if(AtomicPredicate is not null)
+        {
+            if (AtomicPredicate is not null)
             {
 
                 FieldType = FieldType.Identify(AtomicPredicate.MemberType);
@@ -139,12 +142,12 @@ namespace MudExtensions
 
                     if (FieldType.IsNumber)
                     {
-                        ValueNumber = (double)ValueObject;
+                        ValueNumber = Convert.ToDouble(ValueObject);
                     }
 
-                    if(FieldType.IsEnum)
+                    if (FieldType.IsEnum)
                     {
-                        ValueEnum = (Enum)ValueObject;
+                        ValueEnum = ValueObject.ToString();
                     }
 
                     if (FieldType.IsBoolean)
@@ -152,13 +155,16 @@ namespace MudExtensions
                         ValueBool = (bool)ValueObject;
                     }
 
-                    if(FieldType.IsDateTime)
+                    if (FieldType.IsDateTime)
                     {
-                        ValueDate = (DateTime)ValueObject;
-                        ValueTime = (TimeSpan)ValueObject;
+                        if (ValueObject is DateTime dateTime)
+                        {
+                            ValueDate = dateTime;
+                            ValueTime = dateTime.TimeOfDay;
+                        }
                     }
 
-                    if(FieldType.IsGuid)
+                    if (FieldType.IsGuid)
                     {
                         ValueGuid = (Guid)ValueObject;
                     }
@@ -167,10 +173,25 @@ namespace MudExtensions
             base.OnParametersSet();
         }
 
+
+        public static object? ConvertToEnum(Type enumType, object value)
+        {
+            if (value is null || !enumType.IsEnum)
+            {
+                return null;
+            }
+
+            if (Enum.IsDefined(enumType, value))
+            {
+                return Enum.ToObject(enumType, value);
+            }
+
+            return null;
+        }
+
         protected async Task OnValueFieldChangedAsync()
         {
             await ValueFieldChanged.InvokeAsync();
         }
-
     }
 }
