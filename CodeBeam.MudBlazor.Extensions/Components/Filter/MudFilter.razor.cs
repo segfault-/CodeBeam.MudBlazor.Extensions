@@ -66,16 +66,9 @@ namespace MudExtensions
             //jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 
 
-            JsonString = JsonSerializer.Serialize(FilterRoot, jsonSerializerOptions);
+            JsonString = JsonSerializer.Serialize<PredicateUnit<T>>(FilterRoot, jsonSerializerOptions);
 
-            var x = JsonSerializer.Deserialize<PredicateUnit<T>>(JsonString);
-
-
-            JsonSerializer.Deserialize<PredicateUnit<T>>(JsonSerializer.Serialize<PredicateUnit<T>>(FilterRoot, jsonSerializerOptions), jsonSerializerOptions);
-
-
-            var JsonStringToCompoundPredicate = JsonSerializer.Deserialize<CompoundPredicate<T>>(JsonString, jsonSerializerOptions);
-
+            PredicateUnit<T> x = JsonSerializer.Deserialize<PredicateUnit<T>>(JsonString, jsonSerializerOptions);
 
         }
 
