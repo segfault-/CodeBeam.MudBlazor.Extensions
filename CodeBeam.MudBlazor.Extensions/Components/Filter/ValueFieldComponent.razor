@@ -10,17 +10,21 @@
     {
         @if (FieldType.IsString && !(AtomicPredicate.Operator ?? "").EndsWith("empty"))
         {
-            <MudTextField Class="flex-shrink-1" T="string" @bind-Value="@AtomicPredicate.ValueString" @bind-Value:after="@OnValueFieldChangedAsync" Required="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+            <MudTextField Class="flex-shrink-1" T="string" @bind-Value="ValueString" @bind-Value:after="@OnValueFieldChangedAsync" Required="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
         }
+@*         else if(FieldType.IsGuid)
+        {
+            <MudTextField Class="flex-shrink-1" T="string" @bind-Value="(_valueGuid?.ToString())" @bind-Value:after="@OnValueFieldChangedAsync" Required="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        } *@
         else if (FieldType.IsNumber && !(AtomicPredicate.Operator ?? "").EndsWith("empty"))
         {
-            <MudNumericField Class="flex-shrink-1" T="double?" @bind-Value="@AtomicPredicate.ValueNumber" @bind-Value:after="@OnValueFieldChangedAsync" Required="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+            <MudNumericField Class="flex-shrink-1" T="double?" @bind-Value="ValueNumber" @bind-Value:after="@OnValueFieldChangedAsync" Required="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
         }
         else if (FieldType.IsEnum)
         {
             @if ((AtomicPredicate.Operator ?? "").Equals("is one of") || (AtomicPredicate.Operator ?? "").Equals("is not one of"))
             {
-                <MudSelect T="string" @bind-Value="@AtomicPredicate.ValueString" @bind-Value:after="@OnValueFieldChangedAsync" @bind-SelectedValues="@AtomicPredicate.MultiSelectValues" Variant="Variant.Outlined" MultiSelection="true" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
+                <MudSelect T="string" @bind-Value="ValueString" @bind-Value:after="@OnValueFieldChangedAsync" @bind-SelectedValues="@AtomicPredicate.MultiSelectValues" Variant="Variant.Outlined" MultiSelection="true" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
                     @foreach (var item in Enum.GetValues(FieldType.InnerType))
                     {
                         <MudSelectItem @key="item" T="string" Value="@((string)@item.ToString())">@item</MudSelectItem>
@@ -29,7 +33,7 @@
             }
             else
             {
-                <MudSelect T="Enum" @bind-Value="@AtomicPredicate.ValueEnum" @bind-Value:after="@OnValueFieldChangedAsync" Variant="Variant.Outlined" MultiSelection="false" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
+                <MudSelect T="Enum" @bind-Value="ValueEnum" @bind-Value:after="@OnValueFieldChangedAsync" Variant="Variant.Outlined" MultiSelection="false" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
                     @foreach (var item in Enum.GetValues(FieldType.InnerType))
                     {
                         <MudSelectItem @key="item" T="Enum" Value="@((Enum)item)">@item</MudSelectItem>
@@ -39,15 +43,15 @@
         }
         else if (FieldType.IsBoolean)
         {
-            <MudSelect Class="flex-shrink-1" T="bool?" @bind-Value="@AtomicPredicate.ValueBool" @bind-Value:after="@OnValueFieldChangedAsync" Variant="Variant.Outlined" Required="true" Dense="true" Margin="Margin.Dense">
+            <MudSelect Class="flex-shrink-1" T="bool?" @bind-Value="ValueBool" @bind-Value:after="@OnValueFieldChangedAsync" Variant="Variant.Outlined" Required="true" Dense="true" Margin="Margin.Dense">
                 <MudSelectItem  T="bool?" Value="@(true)">true</MudSelectItem>
                 <MudSelectItem T="bool?" Value="@(false)">false</MudSelectItem>
             </MudSelect>
         }
         else if (FieldType.IsDateTime && !(AtomicPredicate.Operator ?? "").EndsWith("empty"))
         {
-            <MudDatePicker Class="flex-shrink-1" @bind-Date="@AtomicPredicate.ValueDate" @bind-Date:after="@OnValueFieldChangedAsync" Required="true" Variant="Variant.Outlined" Margin="Margin.Dense" AdornmentColor="Color.Primary" />
-            <MudTimePicker Class="flex-shrink-1" @bind-Time="@AtomicPredicate.ValueTime" @bind-Time:after="@OnValueFieldChangedAsync" Required="true" Variant="Variant.Outlined" Margin="Margin.Dense" AdornmentColor="Color.Primary" />
+            <MudDatePicker Class="flex-shrink-1" @bind-Date="ValueDate" @bind-Date:after="@OnValueFieldChangedAsync" Required="true" Variant="Variant.Outlined" Margin="Margin.Dense" AdornmentColor="Color.Primary" />
+            <MudTimePicker Class="flex-shrink-1" @bind-Time="ValueTime" @bind-Time:after="@OnValueFieldChangedAsync" Required="true" Variant="Variant.Outlined" Margin="Margin.Dense" AdornmentColor="Color.Primary" />
         }
     }
 </div>

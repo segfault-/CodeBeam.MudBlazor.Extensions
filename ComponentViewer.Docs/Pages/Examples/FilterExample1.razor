@@ -4,22 +4,22 @@
 @using System.Linq.Expressions;
 
 
-<MudFilter T="CatsDto" @bind-Expression="_expression" @bind-Expression:after="ExpressionChangedAsync" >
+<MudFilter T="CatsDto" FilterRoot="@Filter" @bind-Expression="_expression" @bind-Expression:after="ExpressionChangedAsync" >
     <FilterTemplate>
-        <Property T="CatsDto" Title="Name"          PropertyExpression="@(x => x.Name)"         />
-        <Property T="CatsDto" Title="Gender"        PropertyExpression="@(x => x.Gender)"       />
-        <Property T="CatsDto" Title="Birthday"      PropertyExpression="@(x => x.BirthDate)"    />
-        <Property T="CatsDto" Title="Type"          PropertyExpression="@(x => x.CatType)"      />
-        <Property T="CatsDto" Title="Spade"         PropertyExpression="@(x => x.IsSpade)"      />
-        <Property T="CatsDto" Title="Temperature"   PropertyExpression="@(x => x.Temperature)"  />
-        <Property T="CatsDto" Title="Air Tag"       PropertyExpression="@(x => x.MicroId)"      />
+        <Property T="CatsDto" PropertyExpression="@(x => x.Name)" />
+        <Property T="CatsDto" PropertyExpression="@(x => x.Gender)" />
+        <Property T="CatsDto" PropertyExpression="@(x => x.BirthDate)" Title="Birthday" />
+        <Property T="CatsDto" PropertyExpression="@(x => x.CatType)" Title="Type" />
+        <Property T="CatsDto" PropertyExpression="@(x => x.IsSpade)" Title="Spade" />
+        <Property T="CatsDto" PropertyExpression="@(x => x.Temperature)" />
+        <Property T="CatsDto" PropertyExpression="@(x => x.MicroId)" Title="Air Tag" />
     </FilterTemplate>
 </MudFilter>
 <MudDataGrid T="CatsDto" Items="@__cats" Filterable="false" Hover="true" Dense="true">
     <Columns>
         <PropertyColumn Property="@(x => x.Name)" />
         <PropertyColumn Property="@(x => x.Gender)" />
-        <PropertyColumn Property="@(x => x.BirthDate)" />
+        <PropertyColumn Property="@(x => x.BirthDate)" Title="Birthday" />
         <PropertyColumn Property="@(x => x.CatType)" Title="Type" />
         <PropertyColumn Property="@(x => x.IsSpade)" Title="Spade" />
         <PropertyColumn Property="@(x => x.MicroId)" Title="Air Tag" />
@@ -44,7 +44,7 @@
         public bool IsSpade { get; set; }
         public double Temperature { get; set; }
         public Guid MicroId { get; set; }
-        
+
 
         public enum TabbyType
         {
@@ -57,6 +57,22 @@
     IEnumerable<CatsDto> __cats;
     IEnumerable<CatsDto> _cats;
     Expression<Func<CatsDto, bool>> _expression;
+
+
+    public CompoundPredicate<CatsDto> Filter { get; set; } = new CompoundPredicate<CatsDto>()
+    {
+        LogicalOperator = CompoundPredicateLogicalOperator.And,
+        AtomicPredicates = new List<AtomicPredicate<CatsDto>>()
+        {
+            new AtomicPredicate<CatsDto>()
+            {
+                Id = Guid.NewGuid(),
+                Value = "Male",
+                Operator = "equals",
+                Member = nameof(CatsDto.Gender)
+            }    
+        }
+    };
 
     protected Task ExpressionChangedAsync()
     {        

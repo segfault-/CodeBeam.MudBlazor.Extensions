@@ -21,9 +21,7 @@
         }
 
         <MudStack Class="mud-filter-def" Row="true">
-            <CascadingValue Value="@Filter" IsFixed="true">
-                <PropertySelectComponent T="T" Filter="@Filter" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
-            </CascadingValue>
+            <PropertySelectComponent T="T" Filter="@Filter" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
             <OperatorSelectComponent @bind-AtomicPredicate="@AtomicPredicate" OperatorSelectChanged="OnOperatorSelectChangedAsync" />
             <ValueFieldComponent @bind-AtomicPredicate="AtomicPredicate" ValueFieldChanged="OnValueFieldChangedAsync" />
             <MudIconButton Class="mud-ap-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="RemovePredicateUnitAsync" />

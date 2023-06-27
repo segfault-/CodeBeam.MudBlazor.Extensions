@@ -7,7 +7,15 @@
     <MudSelect T="Expression<Func<T, object>>" @bind-Value="PropertyExpression" @bind-Value:after="@OnPropertyExpressionChangedAsync" Variant="Variant.Outlined" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
         @foreach (var property in Filter?.Properties ?? Enumerable.Empty<Property<T>>())
         {
-            <MudSelectItem @key="property" T="Expression<Func<T, object>>" Value="@property.PropertyExpression">@property.Title</MudSelectItem>
+            <MudSelectItem @key="property" T="Expression<Func<T, object>>" Value="@property.PropertyExpression">@property.ComputedTitle</MudSelectItem>
         }
     </MudSelect>
+    <MudSelect T="string" @bind-Value="PropertyName" @bind-Value:after="@OnPropertyNameChangedAsync" Variant="Variant.Outlined" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
+        @foreach (var property in Filter?.Properties ?? Enumerable.Empty<Property<T>>())
+        {
+            <MudSelectItem @key="property" T="string" Value="@property.PropertyName">@property.ComputedTitle</MudSelectItem>
+        }
+    </MudSelect>
+
+
 </div>

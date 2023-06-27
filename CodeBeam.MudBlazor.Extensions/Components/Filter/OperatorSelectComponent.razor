@@ -3,7 +3,7 @@
 @typeparam T
 
 <div class="@ClassName" style="@StyleString">
-    <MudSelect T="string" @bind-Value="AtomicPredicate.Operator" @bind-Value:after="OnOperatorSelectChangedAsync" Variant="Variant.Outlined" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
+    <MudSelect T="string" @bind-Value="Operator" @bind-Value:after="OnOperatorSelectChangedAsync" Variant="Variant.Outlined" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
         @foreach (var filterOperator in FilterOperator.GetOperatorByDataType(AtomicPredicate.MemberType))
         {
             <MudSelectItem @key="filterOperator" Value="@filterOperator">@filterOperator</MudSelectItem>

@@ -23,7 +23,8 @@ namespace MudExtensions
 
         protected async Task OnPropertySelectChangedAsync()
         {
-            AtomicPredicate?.ClearOperatorAndValues();
+            Console.WriteLine("--> AtomicPredicateComponent<T>:OnPropertySelectChangedAsync()");
+            //AtomicPredicate?.ClearOperatorAndValues();
             if (Filter is not null)
             {
                 await Filter.CompileExpressionAsync();
@@ -32,7 +33,8 @@ namespace MudExtensions
 
         protected async Task OnValueFieldChangedAsync()
         {
-            if(Filter is not null)
+            Console.WriteLine("--> AtomicPredicateComponent<T>:OnValueFieldChangedAsync()");
+            if (Filter is not null)
             {
                 await Filter.CompileExpressionAsync();
             }
@@ -40,6 +42,7 @@ namespace MudExtensions
 
         protected async Task OnOperatorSelectChangedAsync()
         {
+            Console.WriteLine("--> AtomicPredicateComponent<T>:OnOperatorSelectChangedAsync()");
             if (Filter is not null)
             {
                 await Filter.CompileExpressionAsync();
@@ -48,6 +51,7 @@ namespace MudExtensions
 
         protected async Task RemovePredicateUnitAsync()
         {
+            Console.WriteLine("--> AtomicPredicateComponent<T>:RemovePredicateUnitAsync()");
             AtomicPredicate?.Remove();
             Filter?.CallStateHasChanged();
             if (Filter is not null)

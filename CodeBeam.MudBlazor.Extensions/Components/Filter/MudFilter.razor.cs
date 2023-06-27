@@ -3,7 +3,6 @@ using MudBlazor;
 using MudBlazor.Utilities;
 using System.Linq.Expressions;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace MudExtensions
 {
@@ -18,7 +17,7 @@ namespace MudExtensions
             .AddStyle(Style)
             .Build();
 
-        protected string JsonString = string.Empty;
+        protected string jsonString = string.Empty;
 
         /// <summary>
         /// Represents what members of T are eligible for filtering
@@ -45,6 +44,7 @@ namespace MudExtensions
 
         public async Task CompileExpressionAsync()
         {
+            Console.WriteLine("--> MudFilter<T>:CompileExpressionAsync()");
             ExpressionGenerator expressionGenerator = new ExpressionGenerator();
 
             var expression = expressionGenerator.ParseExpressionOf(FilterRoot);
@@ -62,13 +62,19 @@ namespace MudExtensions
         {
             JsonSerializerOptions jsonSerializerOptions = new();
             jsonSerializerOptions.TypeInfoResolver = new PredicateUnitJsonTypeInfoResolver<T>();
-            jsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            jsonSerializerOptions.Converters.Add(new AtomicPredicateConverter<T>());
+            //jsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             //jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 
 
-            JsonString = JsonSerializer.Serialize<PredicateUnit<T>>(FilterRoot, jsonSerializerOptions);
+            jsonString = JsonSerializer.Serialize<PredicateUnit<T>>(FilterRoot, jsonSerializerOptions);
 
-            PredicateUnit<T> x = JsonSerializer.Deserialize<PredicateUnit<T>>(JsonString, jsonSerializerOptions);
+
+
+            PredicateUnit<T> pUnit = JsonSerializer.Deserialize<PredicateUnit<T>>(jsonString, jsonSerializerOptions);
+
+            FilterRoot = (CompoundPredicate<T>)pUnit;
+            StateHasChanged();
 
         }
 

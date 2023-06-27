@@ -10,6 +10,8 @@ namespace MudExtensions
         [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
         [Parameter] public EventCallback OperatorSelectChanged { get; set; }
 
+        protected string? Operator { get; set; }
+
         protected string ClassName => new CssBuilder("mud-operator-select")
             .AddClass(Class)
             .Build();
@@ -18,8 +20,25 @@ namespace MudExtensions
             .AddStyle(Style)
             .Build();
 
+        protected override async Task OnParametersSetAsync()
+        {
+            Console.WriteLine("--> OperatorSelectComponent<T>:OnParametersSetAsync");
+
+            await base.OnParametersSetAsync();
+            if (AtomicPredicate is not null)
+            {
+                Operator = AtomicPredicate.Operator;
+
+            }
+        }
+
         protected async Task OnOperatorSelectChangedAsync()
         {
+            Console.WriteLine("--> OperatorSelectComponent<T>:OnOperatorSelectChangedAsync");
+            if (AtomicPredicate is not null)
+            {
+                AtomicPredicate.Operator = Operator;
+            }
             await OperatorSelectChanged.InvokeAsync();
         }
     }

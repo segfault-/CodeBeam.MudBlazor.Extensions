@@ -18,7 +18,7 @@ namespace MudExtensions
         }
 
         public Guid Id { get; set; } = Guid.NewGuid();
-        public abstract PredicateUnit<T>? Parent { get; set; }
+        [JsonIgnore] public abstract PredicateUnit<T>? Parent { get; set; }
 
         public abstract bool? RemovePredicate(PredicateUnit<T> predicate);
     }
@@ -38,53 +38,6 @@ namespace MudExtensions
         {
         }
 
-
-        private string? _valueString;
-        public string? ValueString 
-        {
-            get => _valueString;
-            set
-            {
-                _valueString = value;
-                Value = value;
-            }
-        }
-
-        private double? _valueNumber;
-        public double? ValueNumber 
-        {
-            get => _valueNumber;
-            set
-            {
-                _valueNumber = value;
-                Value = value;
-            }
-        }
-
-        private Enum? _valueEnum;
-        public Enum? ValueEnum
-        {
-            get => _valueEnum;
-            set
-            {
-                _valueEnum = value;
-                Value = value;
-            }
-        }
-
-        private bool? _valueBool;
-        public bool? ValueBool 
-        {
-            get => _valueBool;
-            set
-            {
-                _valueBool = value;
-                Value = value;
-            }
-        }
-
-        public DateTime? ValueDate { get; set; }
-        public TimeSpan? ValueTime { get; set; }
         public object? Value { get; set; }
 
         public string? Operator { get; set; }
@@ -94,23 +47,42 @@ namespace MudExtensions
 
         [JsonIgnore] public Expression<Func<T, object>>? PropertyExpression { get; set; }
 
-        public string Member => GetMemberName(PropertyExpression);
+        //public string Member => GetMemberName(PropertyExpression);
 
-        [JsonIgnore] public Type? MemberType => GetMemberType(PropertyExpression);
+        private string? _member;
+        public string? Member
+        {
+            get => _member;
+            set
+            {
+                _member = value;
+                if (_member is not null)
+                {
+                    var parameter = Expression.Parameter(typeof(T), "x");
+                    var memberExpression = Expression.PropertyOrField(parameter, _member);
+                    PropertyExpression = Expression.Lambda<Func<T, object>>(memberExpression, parameter);
+                    MemberType = memberExpression.Type;
+                }
+                else
+                {
+                    PropertyExpression = null;
+                    MemberType = null;
+                }
+            }
+        }
 
-        public override PredicateUnit<T>? Parent { get; set; }
+
+        //[JsonIgnore] public Type? MemberType => GetMemberType(PropertyExpression);
+        [JsonIgnore] public Type? MemberType { get; set; }
+
+
+        [JsonIgnore] public override PredicateUnit<T>? Parent { get; set; }
 
         /// <summary>
         /// Clears operator and values
         /// </summary>
         public void ClearOperatorAndValues()
         {
-            ValueString = null;
-            ValueNumber = null;
-            ValueEnum = null;
-            ValueBool = null;
-            ValueDate = null;
-            ValueTime = null;
             Value = null;
             Operator = null;
         }
@@ -195,7 +167,7 @@ namespace MudExtensions
         public CompoundPredicateLogicalOperator LogicalOperator { get; set; }
         public List<AtomicPredicate<T>> AtomicPredicates { get; set; }
         public List<CompoundPredicate<T>> CompoundPredicates { get; set; }
-        public override PredicateUnit<T>? Parent { get; set; }
+        [JsonIgnore] public override PredicateUnit<T>? Parent { get; set; }
 
         /// <summary>
         /// Adds a predicate to the appropriate list
