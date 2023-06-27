@@ -124,16 +124,9 @@ namespace MudExtensions
 
 
         protected override void OnParametersSet()
-        {
-            base.OnParametersSet();
+        {        
             if(AtomicPredicate is not null)
             {
-
-
-                // member seralized is the correct string representation.  deseralization cant set a string type to a get only property.
-                // ?? hmm..... custom deserilzer?
-
-
 
                 FieldType = FieldType.Identify(AtomicPredicate.MemberType);
                 ValueObject = AtomicPredicate.Value;
@@ -170,7 +163,8 @@ namespace MudExtensions
                         ValueGuid = (Guid)ValueObject;
                     }
                 }
-            }         
+            }
+            base.OnParametersSet();
         }
 
         protected async Task OnValueFieldChangedAsync()

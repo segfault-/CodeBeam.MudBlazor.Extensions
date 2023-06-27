@@ -47,6 +47,7 @@ namespace MudExtensions
         [JsonIgnore] public Type? MemberType { get; set; }
         [JsonIgnore] public override PredicateUnit<T>? Parent { get; set; }
 
+
         private string? _member;
         public string? Member
         {
@@ -54,11 +55,15 @@ namespace MudExtensions
             set
             {
                 _member = value;
-                if (_member is not null)
+                if (_member != null)
                 {
                     var parameter = Expression.Parameter(typeof(T), "x");
                     var memberExpression = Expression.PropertyOrField(parameter, _member);
-                    PropertyExpression = Expression.Lambda<Func<T, object>>(memberExpression, parameter);
+
+                    // Convert the expression to object
+                    var convertedExpression = Expression.Convert(memberExpression, typeof(object));
+
+                    PropertyExpression = Expression.Lambda<Func<T, object>>(convertedExpression, parameter);
                     MemberType = memberExpression.Type;
                 }
                 else

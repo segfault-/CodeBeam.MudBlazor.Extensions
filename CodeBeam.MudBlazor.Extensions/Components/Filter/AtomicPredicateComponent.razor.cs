@@ -24,7 +24,7 @@ namespace MudExtensions
         protected async Task OnPropertySelectChangedAsync()
         {
             Console.WriteLine("--> AtomicPredicateComponent<T>:OnPropertySelectChangedAsync()");
-            //AtomicPredicate?.ClearOperatorAndValues();
+            AtomicPredicate?.ClearOperatorAndValues();
             if (Filter is not null)
             {
                 await Filter.CompileExpressionAsync();

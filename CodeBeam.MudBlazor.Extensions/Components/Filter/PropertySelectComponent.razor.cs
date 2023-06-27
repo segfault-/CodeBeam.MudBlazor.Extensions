@@ -12,6 +12,7 @@ namespace MudExtensions
         [Parameter] public AtomicPredicate<TItem>? AtomicPredicate { get; set; }
         [Parameter] public EventCallback PropertySelectChanged { get; set; }
 
+
         protected Property<TItem>? Property { get; set; }
         protected string ClassName => new CssBuilder("mud-property-select")
             .AddClass(Class)
@@ -21,25 +22,47 @@ namespace MudExtensions
             .Build();
 
 
+
+        protected override void OnInitialized()
+        {
+            Console.WriteLine("--> PropertySelectComponent<T>:OnInitialized()");
+            base.OnInitialized();
+        }
+
         protected override void OnParametersSet()
         {
             Console.WriteLine("--> PropertySelectComponent<T>:OnParametersSet()");
-            base.OnParametersSet();
+            
 
             if(AtomicPredicate is not null)
             {
                 Property = Filter?.Properties?.SingleOrDefault(p => GetPropertyName(p.PropertyExpression) == AtomicPredicate.Member);
+               
             }
+            base.OnParametersSet();
         }
 
         protected async Task OnPropertyChangedAsync()
         {
             Console.WriteLine("--> PropertySelectComponent<T>:OnPropertyChangedAsync()");
+
+            Type? oldType = TypeIdentifier.GetPropertyTypeFromExpression(AtomicPredicate?.PropertyExpression);
+            Type? newType = TypeIdentifier.GetPropertyTypeFromExpression(Property?.PropertyExpression);
+
+
             if (AtomicPredicate is not null)
             {
-                AtomicPredicate.Member = GetPropertyName(Property?.PropertyExpression);
+                var foo = GetPropertyName(Property?.PropertyExpression);
+                Console.WriteLine(foo);
+                AtomicPredicate.Member = foo;
             }
-            await PropertySelectChanged.InvokeAsync();
+
+            if (oldType != newType)
+            {
+                await PropertySelectChanged.InvokeAsync();
+            }
+
+            
         }
 
         public static string? GetPropertyName(Expression<Func<TItem, object>>? expression)
@@ -62,6 +85,7 @@ namespace MudExtensions
                 return ((MemberExpression)unaryExpression.Operand).Member.Name;
             }
 
+            Console.WriteLine("----> throwing exception");
             throw new ArgumentException("Invalid expression", nameof(expression));
         }
     }
