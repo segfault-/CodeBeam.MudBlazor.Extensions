@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
 using MudBlazor;
 using MudBlazor.Utilities;
 using System.Linq.Expressions;
@@ -7,86 +6,58 @@ using System.Linq.Expressions;
 namespace MudExtensions
 {
 #nullable enable
-    public partial class PropertySelectComponent<T> : MudComponentBase
+    public partial class PropertySelectComponent<TItem> : MudComponentBase
     {
-        [Parameter] public MudFilter<T>? Filter { get; set; }
-        [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
+        [Parameter] public MudFilter<TItem>? Filter { get; set; }
+        [Parameter] public AtomicPredicate<TItem>? AtomicPredicate { get; set; }
         [Parameter] public EventCallback PropertySelectChanged { get; set; }
 
-        protected string? PropertyName { get; set; }
-
-        private Expression<Func<T, object>>? _propertyExpression;
-        protected Expression<Func<T, object>>? PropertyExpression 
-        {
-            get => _propertyExpression;
-            set
-            {
-                if (_propertyExpression != value)
-                {
-                    _propertyExpression = value;
-                    OnPropertyExpressionChangedAsync().Wait();
-                }
-            }
-        }
-
+        protected Property<TItem>? Property { get; set; }
         protected string ClassName => new CssBuilder("mud-property-select")
             .AddClass(Class)
             .Build();
-
         protected string StyleString => new StyleBuilder()
             .AddStyle(Style)
             .Build();
 
 
-        protected override async Task OnParametersSetAsync()
+        protected override void OnParametersSet()
         {
-            Console.WriteLine("--> PropertySelectComponent<T>:OnParametersSetAsync");
+            Console.WriteLine("--> PropertySelectComponent<T>:OnParametersSet()");
+            base.OnParametersSet();
 
-            await base.OnParametersSetAsync();
-            if (AtomicPredicate is not null)
+            if(AtomicPredicate is not null)
             {
-                PropertyExpression = AtomicPredicate.PropertyExpression;
-                PropertyName = GetPropertyName(AtomicPredicate.PropertyExpression) ?? "foo";
+                Property = Filter?.Properties?.SingleOrDefault(p => GetPropertyName(p.PropertyExpression) == AtomicPredicate.Member);
             }
         }
 
-        protected async Task OnPropertyExpressionChangedAsync()
+        protected async Task OnPropertyChangedAsync()
         {
-            Console.WriteLine("--> PropertySelectComponent<T>:OnPropertyExpressionChangedAsync()");
-
+            Console.WriteLine("--> PropertySelectComponent<T>:OnPropertyChangedAsync()");
             if (AtomicPredicate is not null)
             {
-                AtomicPredicate.PropertyExpression = PropertyExpression;
+                AtomicPredicate.Member = GetPropertyName(Property?.PropertyExpression);
             }
-            
             await PropertySelectChanged.InvokeAsync();
         }
 
-        protected async Task OnPropertyNameChangedAsync()
+        public static string? GetPropertyName(Expression<Func<TItem, object>>? expression)
         {
-            Console.WriteLine("--> PropertySelectComponent<T>:OnPropertyNameChangedAsync()");
-
-            if (AtomicPredicate is not null)
+            Console.WriteLine("--> PropertySelectComponent<T>:GetPropertyName()");
+            if(expression is null)
             {
-                AtomicPredicate.PropertyExpression = PropertyExpression;
-            }
-
-            await PropertySelectChanged.InvokeAsync();
-        }
-
-        protected string? GetPropertyName(Expression<Func<T, object>>? expression)
-        {
-            if (expression is null)
-            {
+                Console.WriteLine("----> null");
                 return null;
             }
             else if (expression.Body is MemberExpression memberExpression)
             {
+                Console.WriteLine($"----> {memberExpression.Member.Name}");
                 return memberExpression.Member.Name;
             }
-            else if (expression.Body is UnaryExpression unaryExpression &&
-                unaryExpression.Operand is MemberExpression)
+            else if (expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression)
             {
+                Console.WriteLine($"----> {((MemberExpression)unaryExpression.Operand).Member.Name}");
                 // If the property is nullable, expression.Body will be an UnaryExpression
                 return ((MemberExpression)unaryExpression.Operand).Member.Name;
             }

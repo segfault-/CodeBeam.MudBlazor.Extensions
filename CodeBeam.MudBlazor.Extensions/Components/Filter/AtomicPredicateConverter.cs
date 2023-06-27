@@ -34,9 +34,6 @@ namespace MudExtensions
 
                     switch (propertyName)
                     {
-                        case nameof(AtomicPredicate<T>.Id):
-                            atomicPredicate.Id = reader.GetGuid();
-                            break;
                         case nameof(AtomicPredicate<T>.Value):
                             atomicPredicate.Value = reader.GetString();
                             break;
@@ -94,7 +91,6 @@ namespace MudExtensions
         {
             writer.WriteStartObject();
 
-            writer.WriteString(nameof(AtomicPredicate<T>.Id), value.Id.ToString());
             writer.WriteString(nameof(AtomicPredicate<T>.Value), value.Value?.ToString());
             writer.WriteString(nameof(AtomicPredicate<T>.Operator), value.Operator);
             writer.WriteBoolean(nameof(AtomicPredicate<T>.IsMultiSelect), value.IsMultiSelect);

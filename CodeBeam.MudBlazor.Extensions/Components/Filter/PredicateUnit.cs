@@ -10,17 +10,17 @@ namespace MudExtensions
     /// </summary>
     public abstract class PredicateUnit<T>
     {
-        public PredicateUnit() { }
-
         protected PredicateUnit(PredicateUnit<T>? parent)
         {
             Parent = parent;
         }
 
-        public Guid Id { get; set; } = Guid.NewGuid();
         [JsonIgnore] public abstract PredicateUnit<T>? Parent { get; set; }
 
-        public abstract bool? RemovePredicate(PredicateUnit<T> predicate);
+        public virtual bool? RemovePredicate(PredicateUnit<T> predicate) 
+        { 
+            return false; 
+        }
     }
 
     /// <summary>
@@ -39,15 +39,13 @@ namespace MudExtensions
         }
 
         public object? Value { get; set; }
-
         public string? Operator { get; set; }
-
         public bool IsMultiSelect { get; set; } = false;
         public IEnumerable<string> MultiSelectValues { get; set; } = new HashSet<string>();
 
         [JsonIgnore] public Expression<Func<T, object>>? PropertyExpression { get; set; }
-
-        //public string Member => GetMemberName(PropertyExpression);
+        [JsonIgnore] public Type? MemberType { get; set; }
+        [JsonIgnore] public override PredicateUnit<T>? Parent { get; set; }
 
         private string? _member;
         public string? Member
@@ -72,11 +70,6 @@ namespace MudExtensions
         }
 
 
-        //[JsonIgnore] public Type? MemberType => GetMemberType(PropertyExpression);
-        [JsonIgnore] public Type? MemberType { get; set; }
-
-
-        [JsonIgnore] public override PredicateUnit<T>? Parent { get; set; }
 
         /// <summary>
         /// Clears operator and values
@@ -87,62 +80,12 @@ namespace MudExtensions
             Operator = null;
         }
 
-        public override bool? RemovePredicate(PredicateUnit<T> predicate)
-        {
-            return false;
-        }
-
         /// <summary>
         /// Request "this" be removed from parent
         /// </summary>
         public bool? Remove()
         {
             return Parent?.RemovePredicate(this);
-        }
-
-        private string GetMemberName(Expression<Func<T, object>>? expression)
-        {
-            if(expression is null)
-            {
-                return string.Empty;
-            }
-
-            if (expression.Body is MemberExpression member)
-            {
-                return GetFullMemberName(member);
-            }
-
-            if (expression.Body is UnaryExpression unary)
-            {
-                return GetFullMemberName((MemberExpression)unary.Operand);
-            }
-
-            throw new ArgumentException("Could not get the member name.");
-        }
-
-        private string GetFullMemberName(MemberExpression member)
-        {
-            if (member.Expression?.NodeType == ExpressionType.MemberAccess)
-            {
-                return GetFullMemberName((MemberExpression)member.Expression) + "." + member.Member.Name;
-            }
-
-            return member.Member.Name;
-        }
-
-        private Type? GetMemberType(Expression<Func<T, object>>? expression)
-        {
-            if (expression?.Body is MemberExpression member)
-            {
-                return member.Type;
-            }
-
-            if (expression?.Body is UnaryExpression unary)
-            {
-                return unary.Operand.Type;
-            }
-
-            return null;
         }
     }
 

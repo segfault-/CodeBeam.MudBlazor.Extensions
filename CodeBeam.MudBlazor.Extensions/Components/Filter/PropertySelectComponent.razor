@@ -1,21 +1,25 @@
 ﻿@namespace MudExtensions
 @using System.Linq.Expressions;
+@using MudExtensions.Enums;
 @inherits MudComponentBase
-@typeparam T
+@typeparam TItem
 
 <div class="@ClassName" style="@StyleString">
-    <MudSelect T="Expression<Func<T, object>>" @bind-Value="PropertyExpression" @bind-Value:after="@OnPropertyExpressionChangedAsync" Variant="Variant.Outlined" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
-        @foreach (var property in Filter?.Properties ?? Enumerable.Empty<Property<T>>())
-        {
-            <MudSelectItem @key="property" T="Expression<Func<T, object>>" Value="@property.PropertyExpression">@property.ComputedTitle</MudSelectItem>
-        }
-    </MudSelect>
-    <MudSelect T="string" @bind-Value="PropertyName" @bind-Value:after="@OnPropertyNameChangedAsync" Variant="Variant.Outlined" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
-        @foreach (var property in Filter?.Properties ?? Enumerable.Empty<Property<T>>())
-        {
-            <MudSelectItem @key="property" T="string" Value="@property.PropertyName">@property.ComputedTitle</MudSelectItem>
-        }
-    </MudSelect>
-
-
+    <MudSelectExtended MultiSelection="false"
+                       ItemCollection="Filter?.Properties"
+                       @bind-Value="Property"
+                       @bind-Value:after="OnPropertyChangedAsync"
+                       ValuePresenter="ValuePresenter.ItemContent"
+                       SearchBox="true"
+                       SearchBoxAutoFocus="false"
+                       T="Property<TItem>"
+                       AnchorOrigin="Origin.BottomCenter"
+                       Variant="Variant.Outlined"
+                       SearchBoxClearable="true"
+                       Dense="true"
+                       Margin="Margin.Dense">
+        <ItemTemplate>
+            <MudTextM3 TypeStyle="Enums.TypeStyle.Body" TypeSize="Enums.TypeSize.Large">@context.Value.ComputedTitle</MudTextM3>
+        </ItemTemplate>
+    </MudSelectExtended>
 </div>
