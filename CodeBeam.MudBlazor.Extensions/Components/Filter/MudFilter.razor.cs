@@ -17,7 +17,7 @@ namespace MudExtensions
             .AddStyle(Style)
             .Build();
 
-        protected string jsonString = string.Empty;
+        protected string JsonString = string.Empty;
 
         /// <summary>
         /// Represents what members of T are eligible for filtering
@@ -60,24 +60,28 @@ namespace MudExtensions
 
         protected async Task SerializeAsync()
         {
-            JsonSerializerOptions jsonSerializerOptions = new();
-            jsonSerializerOptions.TypeInfoResolver = new PredicateUnitJsonTypeInfoResolver<T>();
+            JsonSerializerOptions jsonSerializerOptions = new()
+            {
+                TypeInfoResolver = new PredicateUnitJsonTypeInfoResolver<T>()
+            };
             jsonSerializerOptions.Converters.Add(new AtomicPredicateConverter<T>());
-            //jsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-            //jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 
+            if(FilterRoot is not null)
+            {
+                JsonString = JsonSerializer.Serialize<PredicateUnit<T>>(FilterRoot, jsonSerializerOptions);
 
-            jsonString = JsonSerializer.Serialize<PredicateUnit<T>>(FilterRoot, jsonSerializerOptions);
-
-
-
-            PredicateUnit<T> pUnit = JsonSerializer.Deserialize<PredicateUnit<T>>(jsonString, jsonSerializerOptions);
-
-            FilterRoot = (CompoundPredicate<T>)pUnit;
-            StateHasChanged();
-
+                if(JsonString is not null)
+                {
+                    PredicateUnit<T>? pUnit = JsonSerializer.Deserialize<PredicateUnit<T>>(JsonString, jsonSerializerOptions);
+                    
+                    if(pUnit is not null)
+                    {
+                        FilterRoot = (CompoundPredicate<T>)pUnit;
+                        StateHasChanged();
+                    }
+                }
+            }
         }
-
     }
 
 }

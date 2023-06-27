@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Text.Json.Serialization;
+﻿using System.Linq.Expressions;
 using System.Text.Json;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace MudExtensions
 {
@@ -47,8 +42,7 @@ namespace MudExtensions
                             atomicPredicate.MultiSelectValues = JsonSerializer.Deserialize<IEnumerable<string>>(ref reader);
                             break;
                         case nameof(AtomicPredicate<T>.Member):
-                            var memberName = reader.GetString();
-                            atomicPredicate.PropertyExpression = CreateExpression(memberName);
+                            atomicPredicate.Member = reader.GetString(); // Set the Member property instead
                             break;
                     }
                 }
@@ -96,10 +90,9 @@ namespace MudExtensions
             writer.WriteBoolean(nameof(AtomicPredicate<T>.IsMultiSelect), value.IsMultiSelect);
             writer.WritePropertyName(nameof(AtomicPredicate<T>.MultiSelectValues));
             JsonSerializer.Serialize(writer, value.MultiSelectValues, options);
-            writer.WriteString(nameof(AtomicPredicate<T>.Member), value.Member);
+            writer.WriteString(nameof(AtomicPredicate<T>.Member), value.Member); // Serialize Member, not PropertyExpression
 
             writer.WriteEndObject();
         }
     }
-
 }
