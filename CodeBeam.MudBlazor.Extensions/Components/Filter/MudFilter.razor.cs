@@ -47,7 +47,7 @@ namespace MudExtensions
             Console.WriteLine("--> MudFilter<T>:CompileExpressionAsync()");
             ExpressionGenerator expressionGenerator = new ExpressionGenerator();
 
-            var expression = expressionGenerator.ParseExpressionOf(FilterRoot);
+            var expression = expressionGenerator.CompilePredicateExpression(FilterRoot);
 
             Expression = expression;
             await ExpressionChanged.InvokeAsync(expression);
