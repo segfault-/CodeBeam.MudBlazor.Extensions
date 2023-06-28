@@ -19,12 +19,12 @@ namespace MudExtensions
             .GetMethods(BindingFlags.Static | BindingFlags.Public)
             .Single(m => m.Name == nameof(Enumerable.Contains) && m.GetParameters().Length == 2);
 
-        private static bool IsNullableEnum(Type t)
+        internal static bool IsNullableEnum(Type t)
         {
             Type? u = Nullable.GetUnderlyingType(t);
             return (u is not null) && u.IsEnum;
         }
-        private static Expression GenerateStringFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
+        internal static Expression GenerateStringFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
             // As the data type is known to be string, no need to convert
             var valueAsString = rule.Value?.ToString();
@@ -74,46 +74,83 @@ namespace MudExtensions
                 _ => Expression.Constant(true, typeof(bool))
             };
         }
-        private static Expression GenerateEnumFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
+        internal static Expression GenerateEnumFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
-            // Given the predicate 'rule', the property type is known, no need to convert
             var propertyType = rule.MemberType;
 
             // Parse the enum value from the rule's Value property
             var enumValue = ParseToEnum(rule.Value, propertyType);
 
             // Create expressions to handle null and not null cases
-            var nullExpression = Expression.Convert(Expression.Constant(null), propertyType);
-            var isNullExpression = Expression.Equal(parameterExpression, nullExpression);
-            var isNotNullExpression = Expression.NotEqual(parameterExpression, nullExpression);
+            var nullExpression = Expression.Constant(null, typeof(T?));
 
-            // Create a constant expression with the parsed enum value
-            var enumConstantExpression = Expression.Constant(enumValue, propertyType);
-
-            // Filter operations for enum type are "Is" and "IsNot"
-            return rule.Operator switch
+            // Check if the property type is nullable enum
+            if (IsNullableEnum(propertyType))
             {
-                // If operator is 'Is' and enum value is not null
-                FilterOperator.Enum.Is when rule.Value != null =>
-                    // Check if enum is nullable, if so make sure it's not null before comparing
-                    IsNullableEnum(propertyType) ?
-                        Expression.AndAlso(isNotNullExpression, Expression.Equal(parameterExpression, enumConstantExpression))
-                        :
+                // Create a constant expression with the parsed enum value
+                var enumConstantExpression = Expression.Constant(enumValue, Nullable.GetUnderlyingType(propertyType));
+
+                // Filter operations for nullable enum type are "Is" and "IsNot"
+                return rule.Operator switch
+                {
+                    // If operator is 'Is' and enum value is not null
+                    FilterOperator.Enum.Is when rule.Value != null =>
+                        Expression.OrElse(
+                            Expression.NotEqual(parameterExpression, nullExpression),
+                            Expression.Equal(Expression.Property(parameterExpression, "Value"), enumConstantExpression)
+                        ),
+
+                    // If operator is 'IsNot' and enum value is not null
+                    FilterOperator.Enum.IsNot when rule.Value != null =>
+                        Expression.AndAlso(
+                            Expression.Equal(parameterExpression, nullExpression),
+                            Expression.NotEqual(Expression.Property(parameterExpression, "Value"), enumConstantExpression)
+                        ),
+
+                    // For any other operator, return true, no filtering is performed
+                    _ => Expression.Constant(true, typeof(bool))
+                };
+            }
+            else
+            {
+                // Create a constant expression with the parsed enum value
+                var enumConstantExpression = Expression.Constant(enumValue, propertyType);
+
+                // Filter operations for non-nullable enum type are "Is" and "IsNot"
+                return rule.Operator switch
+                {
+                    // If operator is 'Is' and enum value is not null
+                    FilterOperator.Enum.Is when rule.Value != null =>
                         Expression.Equal(parameterExpression, enumConstantExpression),
 
-                // If operator is 'IsNot' and enum value is not null
-                FilterOperator.Enum.IsNot when rule.Value != null =>
-                    // Check if enum is nullable, if so it could be unequal by being null or having a different value
-                    IsNullableEnum(propertyType) ?
-                        Expression.OrElse(isNullExpression, Expression.NotEqual(parameterExpression, enumConstantExpression))
-                        :
+                    // If operator is 'IsNot' and enum value is not null
+                    FilterOperator.Enum.IsNot when rule.Value != null =>
                         Expression.NotEqual(parameterExpression, enumConstantExpression),
 
-                // For any other operator, return true, no filtering is performed
-                _ => Expression.Constant(true, typeof(bool))
-            };
+                    // If operator is 'Is' and enum value is null
+                    FilterOperator.Enum.Is when rule.Value == null =>
+                        Expression.Equal(parameterExpression, nullExpression),
+
+                    // If operator is 'IsNot' and enum value is null
+                    FilterOperator.Enum.IsNot when rule.Value == null =>
+                        Expression.NotEqual(parameterExpression, nullExpression),
+
+                    // For any other operator, return true, no filtering is performed
+                    _ => Expression.Constant(true, typeof(bool))
+                };
+            }
         }
-        private static Expression GenerateNumericFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
+
+
+
+
+
+
+
+
+
+
+        internal static Expression GenerateNumericFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
             // Parse the numeric value from the rule's Value property
             var numericValue = ParseToNullableDouble(rule.Value);
@@ -163,7 +200,7 @@ namespace MudExtensions
                 _ => Expression.Constant(true, typeof(bool))
             };
         }
-        private static Expression GenerateDateTimeFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
+        internal static Expression GenerateDateTimeFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
             var propertyType = rule.MemberType;
 
@@ -222,7 +259,7 @@ namespace MudExtensions
             // If the property type is neither DateTime nor DateTime?
             throw new ArgumentException($"Unhandled property type: {propertyType}");
         }       
-        private static Expression GenerateBooleanFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
+        internal static Expression GenerateBooleanFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
             var propertyType = rule.MemberType;
 
@@ -477,8 +514,14 @@ namespace MudExtensions
         /// <param name="enumStringValue"></param>
         /// <param name="enumType"></param>
         /// <returns></returns>
-        public static object ParseToEnum(object enumStringValue, Type enumType)
+        public static object? ParseToEnum(object enumStringValue, Type enumType)
         {
+            // If null, return null
+            if (enumStringValue == null)
+            {
+                return null;
+            }
+
             // Parse the input string to the specified enum type.
             return Enum.Parse(enumType, enumStringValue.ToString());
         }
