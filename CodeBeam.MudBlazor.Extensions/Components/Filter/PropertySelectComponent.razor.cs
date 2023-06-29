@@ -22,6 +22,29 @@ namespace MudExtensions
             .Build();
 
 
+        public override async Task SetParametersAsync(ParameterView parameters)
+        {
+            Console.WriteLine("--> PropertySelectComponent<T>:SetParametersAsync()");
+            await base.SetParametersAsync(parameters);
+
+            if (parameters.TryGetValue<MudFilter<TItem>>("Filter", out var filter))
+            {
+                Filter = filter;
+                Console.WriteLine($"SomeParameter: {Filter}");
+            }
+
+            if (parameters.TryGetValue<AtomicPredicate<TItem>>("AtomicPredicate", out var atomicPredicate))
+            {
+                AtomicPredicate = atomicPredicate;
+                Console.WriteLine($"SomeParameter: {AtomicPredicate}");
+            }
+
+            if (parameters.TryGetValue<EventCallback>("PropertySelectChanged", out var propertySelectChanged))
+            {
+                PropertySelectChanged = propertySelectChanged;
+                Console.WriteLine($"SomeParameter: {PropertySelectChanged}");
+            }
+        }
 
         protected override void OnInitialized()
         {

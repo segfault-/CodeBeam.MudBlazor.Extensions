@@ -126,6 +126,65 @@ namespace MudExtensions
             .AddStyle(Style)
             .Build();
 
+
+        public override async Task SetParametersAsync(ParameterView parameters)
+        {
+            Console.WriteLine("--> ValueFieldComponent<T>:SetParametersAsync()");
+            await base.SetParametersAsync(parameters);
+
+            if (parameters.TryGetValue<AtomicPredicate<T>>("AtomicPredicate", out var atomicPredicate))
+            {
+                AtomicPredicate = atomicPredicate;
+                Console.WriteLine($"SomeParameter: {AtomicPredicate}");
+
+                FieldType = FieldType.Identify(AtomicPredicate.MemberType);
+                ValueObject = AtomicPredicate.Value;
+                if (ValueObject is not null && FieldType is not null)
+                {
+                    if (FieldType.IsString)
+                    {
+                        ValueString = (string)ValueObject;
+                    }
+
+                    if (FieldType.IsNumber)
+                    {
+                        ValueNumber = Convert.ToDouble(ValueObject);
+                    }
+
+                    if (FieldType.IsEnum)
+                    {
+                        ValueEnum = ValueObject.ToString();
+                    }
+
+                    if (FieldType.IsBoolean)
+                    {
+                        ValueBool = (bool)ValueObject;
+                    }
+
+                    if (FieldType.IsDateTime)
+                    {
+                        if (ValueObject is DateTime dateTime)
+                        {
+                            ValueDate = dateTime;
+                            ValueTime = dateTime.TimeOfDay;
+                        }
+                    }
+
+                    if (FieldType.IsGuid)
+                    {
+                        ValueGuid = (Guid)ValueObject;
+                    }
+                }
+            }
+
+            if (parameters.TryGetValue<EventCallback>("ValueFieldChanged", out var valueFieldChanged))
+            {
+                ValueFieldChanged = valueFieldChanged;
+                Console.WriteLine($"SomeParameter: {ValueFieldChanged}");
+            }
+
+        }
+
         protected override void OnParametersSet()
         {
             if (AtomicPredicate is not null)
