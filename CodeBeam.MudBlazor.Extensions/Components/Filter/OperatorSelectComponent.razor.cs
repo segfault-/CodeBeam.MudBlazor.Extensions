@@ -25,12 +25,17 @@ namespace MudExtensions
             Console.WriteLine("--> OperatorSelectComponent<T>:SetParametersAsync");
             await base.SetParametersAsync(parameters);
 
-            if (parameters.TryGetValue<AtomicPredicate<T>>("AtomicPredicate", out var atomicPredicate))
+            if (AtomicPredicate is not null)
             {
-                AtomicPredicate = atomicPredicate;
                 Operator = AtomicPredicate.Operator;
-                Console.WriteLine($"SomeParameter: {AtomicPredicate}");
             }
+
+            //if (parameters.TryGetValue<AtomicPredicate<T>>("AtomicPredicate", out var atomicPredicate))
+            //{
+            //    AtomicPredicate = atomicPredicate;
+            //    Operator = AtomicPredicate.Operator;
+            //    Console.WriteLine($"SomeParameter: {AtomicPredicate}");
+            //}
 
             if (parameters.TryGetValue<EventCallback>("OperatorSelectChanged", out var operatorSelectChanged))
             {
