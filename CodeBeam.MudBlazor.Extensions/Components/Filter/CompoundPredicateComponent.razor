@@ -25,9 +25,9 @@
         </MudSelectExtended>
 
 
-        <MudIconButton Class="mud-cp-add-atomic" Icon="@Icons.Material.Filled.AddCircleOutline" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="AddAtomicPredicate" />
-        <MudIconButton Class="mud-cp-add-compound" Icon="@Icons.Material.Filled.LibraryAdd" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="AddCompoundPredicate" />
-        <MudIconButton Class="mud-cp-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="RemovePredicateUnit" />
+        <MudIconButton Class="mud-cp-add-atomic" Icon="@Icons.Material.Filled.AddCircleOutline" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="AddAtomicPredicateAsync" />
+        <MudIconButton Class="mud-cp-add-compound" Icon="@Icons.Material.Filled.LibraryAdd" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="AddCompoundPredicateAsync" />
+        <MudIconButton Class="mud-cp-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="RemovePredicateUnitAsync" />
     </MudStack>
 
     @{
@@ -37,11 +37,11 @@
     {
         if (predicate is AtomicPredicate<T> atomicPredicate)
         {
-            <AtomicPredicateComponent @key="atomicPredicate" @bind-AtomicPredicate="atomicPredicate" Filter="@Filter" LogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="@isFirstElement" Parent="CompoundPredicate" Depth="Depth" />
+            <AtomicPredicateComponent @key="atomicPredicate" @bind-AtomicPredicate="atomicPredicate" Filter="@Filter" LogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="@isFirstElement" Parent="CompoundPredicate" Depth="Depth" AtomicPredicateComponentChanged="OnAtomicPredicateChangedAsync" RemoveAtomicPredicateComponent="OnRemoveAtomicPredicateComponentAsync" />
         }
         else if (predicate is CompoundPredicate<T> compoundPredicate)
         {
-            <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" Filter="@Filter" ParentLogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="@isFirstElement" Depth="(Depth + 1)" LogicalOperatorChanged="OnLogicalOperatorChangedAsync" />
+            <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" Filter="@Filter" ParentLogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="@isFirstElement" Depth="(Depth + 1)" CompoundPredicateComponentChanged="OnLogicalOperatorChangedAsync"  />
         }
         isFirstElement = false;
     }

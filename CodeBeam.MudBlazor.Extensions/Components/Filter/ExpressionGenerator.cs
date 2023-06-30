@@ -303,8 +303,11 @@ namespace MudExtensions
             bool isAndOperator = compoundPredicate.LogicalOperator == CompoundPredicateLogicalOperator.And;
 
             // Helper function to bind two expressions with a binary operator
+            //Expression CombineExpressions(Expression left, Expression right) =>
+            //    left == null ? right : (isAndOperator ? Expression.AndAlso(left, right) : Expression.OrElse(left, right));
             Expression CombineExpressions(Expression left, Expression right) =>
-                left == null ? right : (isAndOperator ? Expression.AndAlso(left, right) : Expression.OrElse(left, right));
+                right == null ? left : (left == null ? right : (isAndOperator ? Expression.AndAlso(left, right) : Expression.OrElse(left, right)));
+
 
             foreach (var predicate in compoundPredicate.GetPredicatesInOrder())
             {
@@ -417,12 +420,12 @@ namespace MudExtensions
         /// <typeparam name="T"></typeparam>
         /// <param name="rootPredicate"></param>
         /// <returns></returns>
-        public Func<T, bool> CompilePredicateFunction<T>(CompoundPredicate<T> rootPredicate)
+        public Func<T, bool>? CompilePredicateFunction<T>(CompoundPredicate<T> rootPredicate)
         {
             var parameterExpression = Expression.Parameter(typeof(T), "x");
             var expressionTree = GenerateExpressionTree(rootPredicate, parameterExpression);
 
-            if (expressionTree != null)
+            if (expressionTree is not null)
             {
                 var lambda = Expression.Lambda<Func<T, bool>>(expressionTree, parameterExpression);
                 return lambda.Compile();
@@ -437,8 +440,9 @@ namespace MudExtensions
         /// <typeparam name="T"></typeparam>
         /// <param name="rootPredicate"></param>
         /// <returns></returns>
-        public Expression<Func<T, bool>> CompilePredicateExpression<T>(CompoundPredicate<T> rootPredicate)
+        public Expression<Func<T, bool>>? CompilePredicateExpression<T>(CompoundPredicate<T>? rootPredicate)
         {
+
             // Generate parameter for the lambda expression
             var parameterExpression = Expression.Parameter(typeof(T), "item");
 
@@ -446,7 +450,7 @@ namespace MudExtensions
             var expressionBody = GenerateExpressionTree(rootPredicate, parameterExpression);
 
             // Check if an expression body was generated
-            if (expressionBody == null)
+            if (expressionBody is null)
             {
                 return null;
             }

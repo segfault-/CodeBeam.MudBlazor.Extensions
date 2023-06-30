@@ -13,6 +13,7 @@ namespace MudExtensions
         [Parameter] public bool IsFirstElement { get; set; }
         [Parameter] public CompoundPredicateLogicalOperator LogicalOperator { get; set; }
         [Parameter] public uint Depth { get; set; }
+        [Parameter] public EventCallback AtomicPredicateComponentChanged { get; set; }
         protected string ClassName => new CssBuilder("mud-atomic-predicate")
             .AddClass(Class)
             .Build();
@@ -25,39 +26,27 @@ namespace MudExtensions
         {
             Console.WriteLine("--> AtomicPredicateComponent<T>:OnPropertySelectChangedAsync()");
             AtomicPredicate?.ClearOperatorAndValues();
-            if (Filter is not null)
-            {
-                await Filter.CompileExpressionAsync();
-            }
+            await AtomicPredicateComponentChanged.InvokeAsync();
+
         }
 
         protected async Task OnValueFieldChangedAsync()
         {
             Console.WriteLine("--> AtomicPredicateComponent<T>:OnValueFieldChangedAsync()");
-            if (Filter is not null)
-            {
-                await Filter.CompileExpressionAsync();
-            }
+            await AtomicPredicateComponentChanged.InvokeAsync();
         }
 
         protected async Task OnOperatorSelectChangedAsync()
         {
             Console.WriteLine("--> AtomicPredicateComponent<T>:OnOperatorSelectChangedAsync()");
-            if (Filter is not null)
-            {
-                await Filter.CompileExpressionAsync();
-            }
+            await AtomicPredicateComponentChanged.InvokeAsync();
         }
 
         protected async Task RemovePredicateUnitAsync()
         {
             Console.WriteLine("--> AtomicPredicateComponent<T>:RemovePredicateUnitAsync()");
             AtomicPredicate?.Remove();
-            Filter?.CallStateHasChanged();
-            if (Filter is not null)
-            {
-                await Filter.CompileExpressionAsync();
-            }
+            await AtomicPredicateComponentChanged.InvokeAsync();
         }
     }
 }

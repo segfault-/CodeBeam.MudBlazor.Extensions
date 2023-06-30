@@ -56,26 +56,22 @@
 
     IEnumerable<CatsDto> __cats;
     IEnumerable<CatsDto> _cats;
-    Expression<Func<CatsDto, bool>> _expression;
+    Expression<Func<CatsDto, bool>>? _expression;
 
 
     public CompoundPredicate<CatsDto> Filter { get; set; } = new CompoundPredicate<CatsDto>()
     {
-        LogicalOperator = CompoundPredicateLogicalOperator.And,
-        AtomicPredicates = new List<AtomicPredicate<CatsDto>>()
-        {
-            new AtomicPredicate<CatsDto>()
-            {
-                Value = "Male",
-                Operator = "equals",
-                Member = nameof(CatsDto.Gender)
-            }    
-        }
+        LogicalOperator = CompoundPredicateLogicalOperator.And
     };
 
+
+
     protected Task ExpressionChangedAsync()
-    {        
-        __cats = _cats.AsQueryable<CatsDto>().Where(_expression);
+    {
+        if (_expression is not null)
+        {
+            __cats = _cats.AsQueryable<CatsDto>().Where(_expression);
+        }
         return Task.CompletedTask;
     }
 
@@ -96,6 +92,16 @@
                 Temperature = 36 + random.NextDouble() * 2, // Temperature between 36.0 and 38.0
                 MicroId = Guid.NewGuid(),
             }).ToList();
+
+        var defaultAtomicPredicate = new AtomicPredicate<CatsDto>()
+       {
+           Parent = Filter,
+           Value = "Male",
+           Operator = "equals",
+           Member = nameof(CatsDto.Gender)
+       };
+
+        Filter.AtomicPredicates.Add(defaultAtomicPredicate);
 
         base.OnInitialized();
     }

@@ -12,7 +12,7 @@ namespace MudExtensions
         [Parameter] public CompoundPredicateLogicalOperator? ParentLogicalOperator { get; set; }
         [Parameter] public bool IsFirstElement { get; set; }
         [Parameter] public uint Depth { get; set; }
-        [Parameter] public EventCallback LogicalOperatorChanged { get; set; }
+        [Parameter] public EventCallback CompoundPredicateComponentChanged { get; set; }
 
         protected string ClassName => new CssBuilder("mud-compound-predicate")
             .AddClass($"depth-{Depth}")
@@ -23,37 +23,53 @@ namespace MudExtensions
             .AddStyle(Style)
             .Build();
 
-        protected void AddAtomicPredicate()
+        protected async Task AddAtomicPredicateAsync()
         {
             CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(CompoundPredicate));
+            await CompoundPredicateComponentChanged.InvokeAsync();
         }
 
-        protected void AddCompoundPredicate()
+        protected async Task AddCompoundPredicateAsync()
         {
             CompoundPredicate?.AddPredicate(new CompoundPredicate<T>(CompoundPredicate));
+            await CompoundPredicateComponentChanged.InvokeAsync();
         }
 
-        protected void RemovePredicateUnit()
+        protected async Task RemovePredicateUnitAsync()
         {
             CompoundPredicate?.Remove();
-            Filter?.CallStateHasChanged();
+            await CompoundPredicateComponentChanged.InvokeAsync();
         }
 
-        protected override void OnInitialized()
+        public override async Task SetParametersAsync(ParameterView parameters)
         {
-            base.OnInitialized();
-
-
-            if(CompoundPredicate?.AtomicPredicates.Any() == false)
+            await base.SetParametersAsync(parameters);
+            if (CompoundPredicate?.AtomicPredicates.Any() == false)
             {
                 CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(CompoundPredicate));
                 CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(CompoundPredicate));
             }
+
         }
 
         protected async Task OnLogicalOperatorChangedAsync()
         {
-            await LogicalOperatorChanged.InvokeAsync();
+            await CompoundPredicateComponentChanged.InvokeAsync();
+        }
+
+        protected async Task OnAtomicPredicateChangedAsync()
+        {
+            await CompoundPredicateComponentChanged.InvokeAsync();
+        }
+
+        protected Task OnRemoveAtomicPredicateComponentAsync(AtomicPredicate<T> item)
+        {
+            if (item is not null)
+            {
+                CompoundPredicate?.AtomicPredicates.Remove(item);
+            }
+
+            return Task.CompletedTask;
         }
 
     }

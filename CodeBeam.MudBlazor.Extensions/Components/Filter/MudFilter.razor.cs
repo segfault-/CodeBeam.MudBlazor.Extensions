@@ -26,7 +26,7 @@ namespace MudExtensions
         [Parameter] public CompoundPredicate<T>? FilterRoot { get; set; } = new(null);
         [Parameter] public ICollection<Property<T>>? Properties { get; set; } = new List<Property<T>>();
         [Parameter] public Expression<Func<T, bool>>? Expression { get; set; }
-        [Parameter] public EventCallback<Expression<Func<T, bool>>> ExpressionChanged { get; set; }
+        [Parameter] public EventCallback<Expression<Func<T, bool>>?> ExpressionChanged { get; set; }
 
         /// <summary>
         /// 
@@ -35,11 +35,6 @@ namespace MudExtensions
         internal void AddProperty(Property<T> property)
         {
             Properties?.Add(property);
-        }
-
-        internal void CallStateHasChanged()
-        {
-            StateHasChanged();
         }
 
         public async Task CompileExpressionAsync()
