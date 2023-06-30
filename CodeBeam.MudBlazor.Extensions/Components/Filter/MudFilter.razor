@@ -4,12 +4,11 @@
 @typeparam T
 
 <div class="@ClassName" style="@StyleString">
-    <MudButton Variant="Variant.Outlined" OnClick="SerializeAsync">Serialize</MudButton>
     <CascadingValue Value="this" IsFixed="true">
         @FilterTemplate  
     </CascadingValue>
     <CompoundPredicateComponent @key="this" T="T" CompoundPredicate="@FilterRoot" Filter="this" Depth="0" LogicalOperatorChanged="CompileExpressionAsync" />
-
+@* 
     <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Square="true" Class="my-2 mt-16">
         <MudTextM3 TypeSize="TypeSize.Large" TypeStyle="TypeStyle.Body">@Expression?.ToString()</MudTextM3>  
     </MudAlert>
@@ -17,7 +16,7 @@
     <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Square="true" Class="my-2 mt-16">
         <MudTextM3 TypeSize="TypeSize.Large" TypeStyle="TypeStyle.Body">@JsonString?.ToString()</MudTextM3>
     </MudAlert>
-
+ *@
 </div>
 
 
