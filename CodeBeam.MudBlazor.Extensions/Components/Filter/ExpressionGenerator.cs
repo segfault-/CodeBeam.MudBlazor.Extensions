@@ -452,7 +452,7 @@ namespace MudExtensions
             // Check if an expression body was generated
             if (expressionBody is null)
             {
-                return null;
+                expressionBody = Expression.Constant(true);
             }
 
             // Create a lambda expression with the generated body and parameter

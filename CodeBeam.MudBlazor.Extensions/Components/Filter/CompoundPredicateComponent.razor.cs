@@ -41,15 +41,24 @@ namespace MudExtensions
             await CompoundPredicateComponentChanged.InvokeAsync();
         }
 
-        public override async Task SetParametersAsync(ParameterView parameters)
+        protected override void OnInitialized()
         {
-            await base.SetParametersAsync(parameters);
-            if (CompoundPredicate?.AtomicPredicates.Any() == false)
+            base.OnInitialized();
+
+
+            if(CompoundPredicate?.AtomicPredicates.Any() == false)
             {
                 CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(CompoundPredicate));
                 CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(CompoundPredicate));
             }
 
+
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+            await CompoundPredicateComponentChanged.InvokeAsync();
         }
 
         protected async Task OnLogicalOperatorChangedAsync()
