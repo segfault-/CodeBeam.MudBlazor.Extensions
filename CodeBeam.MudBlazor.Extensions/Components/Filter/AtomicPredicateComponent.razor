@@ -3,7 +3,6 @@
 @inherits MudComponentBase
 @typeparam T
 
-
 <div class="@ClassName" style="@StyleString">
     <MudStack Class="mud-ap-stack" Row="true">
 
@@ -24,7 +23,7 @@
             <PropertySelectComponent Filter="@Filter" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
             <OperatorSelectComponent @bind-AtomicPredicate="@AtomicPredicate" OperatorSelectChanged="OnOperatorSelectChangedAsync" />
             <ValueFieldComponent @bind-AtomicPredicate="AtomicPredicate" ValueFieldChanged="OnValueFieldChangedAsync" />
-            <PredicateUnitActionsComponent IsCompoundPredicate="false" RemovePredicateUnitAsync="RemovePredicateUnitAsync" IsFirstElement="IsFirstElement" />
+            <PredicateUnitActionsComponent T="AtomicPredicateComponent<T>" RemovePredicateUnitAsync="RemovePredicateUnitAsync" IsFirstElement="IsFirstElement" />
         </MudStack>
     </MudStack>
 </div>

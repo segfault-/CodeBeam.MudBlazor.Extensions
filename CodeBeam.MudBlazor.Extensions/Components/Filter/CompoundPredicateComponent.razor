@@ -26,12 +26,12 @@
         @if (CompoundPredicate.GetPredicatesInOrder().FirstOrDefault() is AtomicPredicate<T> atomicPredicate)
         {
             <div class="flex-grow-1">
-                <AtomicPredicateComponent @key="atomicPredicate" @bind-AtomicPredicate="atomicPredicate" Filter="@Filter" LogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="true" Parent="CompoundPredicate" Depth="Depth" AtomicPredicateComponentChanged="OnAtomicPredicateChangedAsync" RemoveAtomicPredicateComponent="OnRemoveAtomicPredicateComponentAsync" />
+                <AtomicPredicateComponent @key="atomicPredicate" @bind-AtomicPredicate="atomicPredicate" Filter="@Filter" LogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="true" Parent="CompoundPredicate" Depth="Depth" AtomicPredicateComponentChanged="OnAtomicPredicateChangedAsync"  />
             </div>
         }
 
 
-        <PredicateUnitActionsComponent IsCompoundPredicate="false" AddAtomicPredicateAsync="AddAtomicPredicateAsync" AddCompoundPredicateAsync="AddCompoundPredicateAsync" RemovePredicateUnitAsync="RemovePredicateUnitAsync" />
+        <PredicateUnitActionsComponent T="CompoundPredicateComponent<T>" AddAtomicPredicateAsync="AddAtomicPredicateAsync" AddCompoundPredicateAsync="AddCompoundPredicateAsync" RemovePredicateUnitAsync="RemovePredicateUnitAsync" />
 
     </MudStack>
 
