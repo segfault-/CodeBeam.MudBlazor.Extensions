@@ -3,19 +3,22 @@
 @typeparam T
 
 <div class="mud-filter-operator-column">
-    <div>
-        @if (IsCompoundPredicate && !IsFirstElement)
-        {
-            <MudSpeedDial Origin="Origin.TopRight" Style="position:relative" OpenOnHover="false" OpenOnClick="true">
-                <MudFab Class="z-60" Size="Size.Small" IconSize="Size.Small" Color="Color.Primary" StartIcon="@Icons.Material.Filled.AddCircleOutline" OnClick="AddAtomicPredicateAsync" />
-                <MudFab Class="z-60" Size="Size.Small" IconSize="Size.Small" Color="Color.Primary" StartIcon="@Icons.Material.Filled.LibraryAdd" OnClick="AddCompoundPredicateAsync" />
-            </MudSpeedDial>
-        }
-    </div>
-    <div>
-        @if (IsCompoundPredicate || (IsAtomicPredicate && !IsFirstElement))
-        {
-            <MudIconButton Class="mud-ap-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="RemovePredicateUnitAsync" />
-        }
-    </div>
+    <MudStack Row="true">
+        <div>
+            @if (IsCompoundPredicate && !IsFirstElement)
+            {
+                <MudSpeedDial Origin="Origin.TopRight" Style="position:relative" OpenOnHover="false" OpenOnClick="true">
+                    <MudFab Class="z-60" Size="Size.Small" IconSize="Size.Small" Color="Color.Primary" StartIcon="@Icons.Material.Filled.AddCircleOutline" OnClick="AddAtomicPredicateAsync" />
+                    <MudFab Class="z-60" Size="Size.Small" IconSize="Size.Small" Color="Color.Primary" StartIcon="@Icons.Material.Filled.LibraryAdd" OnClick="AddCompoundPredicateAsync" />
+                </MudSpeedDial>
+            }
+        </div>
+        <div>
+            @if (IsCompoundPredicate || (IsAtomicPredicate && !IsFirstElement))
+            {
+                <MudIconButton Class="mud-ap-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="RemovePredicateUnitAsync" />
+            }
+        </div>
+    </MudStack>
+
 </div>

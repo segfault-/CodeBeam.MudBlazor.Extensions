@@ -6,14 +6,15 @@
 <div class="@ClassName" style="@StyleString">
     <MudStack Class="mud-cp-stack" Row="true">
 
-        @for(int i = 0; i <= Depth; i++)
+@*         @for(int i = 0; i <= Depth; i++)
         {
             int j = i;
             if(j == Depth - 1)
             {
                 <MudTextM3 Class="mud-logical-operator">@ParentLogicalOperator</MudTextM3>
             }
-        }
+        } *@
+        <LogicalOperatorComponent Depth="@Depth" ParentLogicalOperator="ParentLogicalOperator" />
         <div class="mud-logical-operator mud-cp-radio-group flex-grow-0" style="flex-basis:unset">
             <MudSelectExtended T="CompoundPredicateLogicalOperator" @bind-Value="CompoundPredicate.LogicalOperator" @bind-Value:after="OnLogicalOperatorChangedAsync" ValuePresenter="Enums.ValuePresenter.Chip" ChipSize="Size.Small" Variant="Variant.Outlined" Dense="true" Margin="Margin.Dense">
                 <MudSelectItemExtended T="CompoundPredicateLogicalOperator" Value="CompoundPredicateLogicalOperator.And" Text="AND" />

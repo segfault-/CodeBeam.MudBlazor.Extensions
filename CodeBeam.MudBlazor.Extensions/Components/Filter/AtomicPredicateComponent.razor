@@ -18,7 +18,7 @@
                 <MudTextM3 Class="mud-logical-operator" />
             }
         }
-
+        <LogicalOperatorComponent Depth="Depth" IsFirstElement="IsFirstElement" ParentLogicalOperator="LogicalOperator" />
         <MudStack Class="mud-filter-def" Row="true">
             <PropertySelectComponent Filter="@Filter" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
             <OperatorSelectComponent @bind-AtomicPredicate="@AtomicPredicate" OperatorSelectChanged="OnOperatorSelectChangedAsync" />
