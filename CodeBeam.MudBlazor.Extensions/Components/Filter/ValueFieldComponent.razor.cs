@@ -56,7 +56,7 @@ namespace MudExtensions
             set
             {
                 _valueEnum = value;
-                if(FieldType is not null && FieldType.InnerType is not null && value is not null)
+                if(FieldType is not null && FieldType.InnerType is not null && !string.IsNullOrWhiteSpace(value))
                 {
                     ValueObject = Enum.Parse(FieldType.InnerType, value);
                 }

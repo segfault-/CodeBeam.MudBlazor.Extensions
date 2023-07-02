@@ -88,6 +88,9 @@ namespace MudExtensions
             
         }
 
+        protected Func<Property<TItem>, string, bool> SearchFunc => (property, value) => property.ComputedTitle?.Contains(value, StringComparison.OrdinalIgnoreCase) ?? false;
+
+
         public static string? GetPropertyName(Expression<Func<TItem, object>>? expression)
         {
             Console.WriteLine("--> PropertySelectComponent<T>:GetPropertyName()");
@@ -111,5 +114,6 @@ namespace MudExtensions
             Console.WriteLine("----> throwing exception");
             throw new ArgumentException("Invalid expression", nameof(expression));
         }
+
     }
 }

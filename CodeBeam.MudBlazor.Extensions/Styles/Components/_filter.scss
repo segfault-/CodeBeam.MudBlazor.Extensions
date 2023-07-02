@@ -28,6 +28,7 @@
     }
 }
 
+
 .mud-filter, .mud-data-grid {
     background-color: var(--mud-m3-surface);
     color: var(--mud-m3-on-surface);
@@ -45,15 +46,22 @@
     .mud-compound-predicate {
         @include stack;
 
-        .mud-first-logical-operator, .mud-logical-operator {
+        .mud-first-logical-operator {
             padding-top: 21px;
         }
 
         .mud-logical-operator {
-            width: 50px;
+            width: 125px;
         }
 
         .mud-cp-stack {
+            justify-content: space-between;
+
+            .mud-filter-operator-column {
+                display: flex;
+                width: 120px;
+            }
+
             .mud-cp-add-atomic, .mud-cp-add-compound, .mud-cp-remove {
                 @include hover-effects;
             }
@@ -66,12 +74,17 @@
         .mud-ap-stack {
             justify-content: space-between;
 
+            .mud-filter-operator-column {
+                display: flex;
+                width: 120px;
+            }
+
             .mud-filter-def {
                 flex-grow: 1;
             }
 
             .mud-logical-operator {
-                width: 50px;
+                width: 125px;
             }
 
             .mud-property-select, .mud-operator-select, .mud-value-field {

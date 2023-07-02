@@ -49,7 +49,6 @@ namespace MudExtensions
             if(CompoundPredicate?.AtomicPredicates.Any() == false)
             {
                 CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(CompoundPredicate));
-                CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(CompoundPredicate));
             }
 
 

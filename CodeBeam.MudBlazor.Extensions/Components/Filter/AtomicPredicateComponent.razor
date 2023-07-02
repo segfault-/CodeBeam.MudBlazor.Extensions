@@ -14,7 +14,7 @@
             {
                 <MudTextM3 Class="mud-logical-operator">@LogicalOperator</MudTextM3>
             }
-            else
+            else if (Depth != 0 && !IsFirstElement)
             {
                 <MudTextM3 Class="mud-logical-operator" />
             }
@@ -24,7 +24,7 @@
             <PropertySelectComponent Filter="@Filter" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
             <OperatorSelectComponent @bind-AtomicPredicate="@AtomicPredicate" OperatorSelectChanged="OnOperatorSelectChangedAsync" />
             <ValueFieldComponent @bind-AtomicPredicate="AtomicPredicate" ValueFieldChanged="OnValueFieldChangedAsync" />
-            <MudIconButton Class="mud-ap-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="RemovePredicateUnitAsync" />
+            <PredicateUnitActionsComponent IsCompoundPredicate="false" RemovePredicateUnitAsync="RemovePredicateUnitAsync" IsFirstElement="IsFirstElement" />
         </MudStack>
     </MudStack>
 </div>

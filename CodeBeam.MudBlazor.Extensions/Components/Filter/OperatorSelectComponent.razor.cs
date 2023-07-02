@@ -71,5 +71,8 @@ namespace MudExtensions
             }
             await OperatorSelectChanged.InvokeAsync();
         }
+
+        protected Func<string, string, bool> SearchFunc => (op, value) => op.Contains(value, StringComparison.OrdinalIgnoreCase);
+
     }
 }

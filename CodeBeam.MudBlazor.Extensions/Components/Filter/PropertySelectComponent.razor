@@ -5,23 +5,14 @@
 @typeparam TItem
 
 <div class="@ClassName" style="@StyleString">
-    <MudSelect T="Property<TItem>" 
-                @bind-Value="Property" 
-                @bind-Value:after="OnPropertyChangedAsync" 
-                Variant="Variant.Outlined" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
-        @foreach (var property in Filter?.Properties)
-        {
-            <MudSelectItem @key="property" T="Property<TItem>" Value="@property">@property.ComputedTitle</MudSelectItem>
-        }
-    </MudSelect>
-
-@*     <MudSelectExtended MultiSelection="false"
+    <MudSelectExtended MultiSelection="false"
                        ItemCollection="Filter?.Properties"
                        @bind-Value="Property"
                        @bind-Value:after="OnPropertyChangedAsync"
                        ValuePresenter="ValuePresenter.ItemContent"
                        SearchBox="true"
-                       SearchBoxAutoFocus="false"
+                       SearchBoxAutoFocus="true"
+                       SearchFunc="SearchFunc"
                        T="Property<TItem>"
                        AnchorOrigin="Origin.BottomCenter"
                        Variant="Variant.Outlined"
@@ -31,5 +22,5 @@
         <ItemTemplate>
             <MudTextM3 TypeStyle="Enums.TypeStyle.Body" TypeSize="Enums.TypeSize.Large">@context.Value.ComputedTitle</MudTextM3>
         </ItemTemplate>
-    </MudSelectExtended> *@
+    </MudSelectExtended>
 </div>
