@@ -1,0 +1,16 @@
+﻿@namespace MudExtensions
+@inherits MudComponentBase
+
+@for (int i = 0; i <= Depth; i++)
+{
+    string textContent = TextContentCondition(i) ? $"{ParentLogicalOperator}" : string.Empty;
+
+    if (!string.IsNullOrWhiteSpace(textContent))
+    {
+        <MudTextM3 Class="mud-logical-operator">@textContent</MudTextM3>
+    }
+    else if (i != Depth)
+    {
+        <div class="mud-logical-operator" />
+    }
+}

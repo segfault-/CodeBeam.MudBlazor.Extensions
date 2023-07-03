@@ -2,34 +2,19 @@
 @inherits MudComponentBase
 @typeparam T
 
-@if (IsCompoundPredicate)
+@if (LogicalOperatorComponentTemplate is not null)
 {
-    @RenderMudTextContent((int i) => i == (Depth - 1))
+    @LogicalOperatorComponentTemplate
 }
-
-@if (IsAtomicPredicate && !IsFirstElement)
+else
 {
-    @RenderMudTextContent((int i) => Depth == 0 || i == Depth)
-}
-
-@code {
-    RenderFragment RenderMudTextContent(Func<int, bool> textContentCondition)
+    @if (IsCompoundPredicate)
     {
-        return
-    @<text>
-        @for (int i = 0; i <= Depth; i++)
-        {
-            string textContent = textContentCondition(i) ? $"{ParentLogicalOperator}" : string.Empty;
+        <LogicalOperatorTemplate Depth="Depth" ParentLogicalOperator="ParentLogicalOperator" TextContentCondition="(int i) => i == (Depth - 1)" />
+    }
 
-            if (!string.IsNullOrWhiteSpace(textContent))
-            {
-                <MudTextM3 Class="mud-logical-operator">@textContent</MudTextM3>
-            }
-            else if (i != Depth)
-            {
-                <div class="mud-logical-operator" />
-            }
-        }
-    </text>;
+    @if (IsAtomicPredicate && !IsFirstElement)
+    {
+        <LogicalOperatorTemplate Depth="Depth" ParentLogicalOperator="ParentLogicalOperator" TextContentCondition="(int i) => Depth == 0 || i == Depth" />
     }
 }
