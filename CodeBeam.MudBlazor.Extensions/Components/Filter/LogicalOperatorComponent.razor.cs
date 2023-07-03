@@ -6,8 +6,8 @@ namespace MudExtensions
     public partial class LogicalOperatorComponent<T> : MudComponentBase
     {
         [Parameter] public uint Depth { get; set; }
-        [Parameter] public string LogicalOperator { get; set; }
-        [Parameter] public string ParentLogicalOperator { get; set; }
+        [Parameter] public CompoundPredicateLogicalOperator? LogicalOperator { get; set; }
+        [Parameter] public CompoundPredicateLogicalOperator? ParentLogicalOperator { get; set; }
         [Parameter] public bool IsFirstElement { get; set; }
         [Parameter] public bool DisplayParentOperator { get; set; }
 

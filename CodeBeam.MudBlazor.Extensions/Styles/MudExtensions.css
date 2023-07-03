@@ -1027,6 +1027,7 @@
     justify-content: space-between; }
     .mud-filter .mud-compound-predicate .mud-cp-stack .mud-filter-operator-column {
       display: flex;
+      justify-content: flex-end;
       width: 120px; }
 
 .mud-filter .mud-atomic-predicate {
@@ -1035,6 +1036,7 @@
     justify-content: space-between; }
     .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-filter-operator-column {
       display: flex;
+      justify-content: flex-end;
       width: 120px; }
     .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-filter-def {
       flex-grow: 1; }

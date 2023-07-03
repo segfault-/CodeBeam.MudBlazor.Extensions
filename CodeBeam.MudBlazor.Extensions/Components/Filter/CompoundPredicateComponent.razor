@@ -4,7 +4,7 @@
 
 <div class="@ClassName" style="@StyleString">
     <MudStack Class="mud-cp-stack" Row="true">
-        <LogicalOperatorComponent T="AtomicPredicateComponent<T>" Depth="@Depth" ParentLogicalOperator="ParentLogicalOperator" />
+        <LogicalOperatorComponent T="AtomicPredicateComponent<T>" Depth="Depth" IsFirstElement="IsFirstElement" ParentLogicalOperator="ParentLogicalOperator" />
         <div class="mud-logical-operator mud-cp-radio-group flex-grow-0" style="flex-basis:unset">
             <MudSelectExtended T="CompoundPredicateLogicalOperator" @bind-Value="CompoundPredicate.LogicalOperator" @bind-Value:after="OnLogicalOperatorChangedAsync" ValuePresenter="Enums.ValuePresenter.Chip" ChipSize="Size.Small" Variant="Variant.Outlined" Dense="true" Margin="Margin.Dense">
                 <MudSelectItemExtended T="CompoundPredicateLogicalOperator" Value="CompoundPredicateLogicalOperator.And" Text="AND" />

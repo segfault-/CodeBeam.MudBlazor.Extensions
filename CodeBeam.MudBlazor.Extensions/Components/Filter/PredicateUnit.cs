@@ -102,17 +102,20 @@ namespace MudExtensions
         public CompoundPredicate()
             : base(null)
         {
+            IsFirstElement = true;
             AtomicPredicates = new List<AtomicPredicate<T>>();
             CompoundPredicates = new List<CompoundPredicate<T>>();
         }
         public CompoundPredicate(PredicateUnit<T>? parent)
             : base(parent)
         {
+            IsFirstElement = true;
             AtomicPredicates = new List<AtomicPredicate<T>>();
             CompoundPredicates = new List<CompoundPredicate<T>>();
         }
 
         public CompoundPredicateLogicalOperator LogicalOperator { get; set; }
+        public bool IsFirstElement { get; set; }
         public List<AtomicPredicate<T>> AtomicPredicates { get; set; }
         public List<CompoundPredicate<T>> CompoundPredicates { get; set; }
         [JsonIgnore] public override PredicateUnit<T>? Parent { get; set; }

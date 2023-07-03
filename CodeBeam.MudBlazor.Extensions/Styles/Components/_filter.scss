@@ -2,6 +2,12 @@
     margin-top: 2px;
 }
 
+@mixin filter-operator-column {
+    display: flex;
+    justify-content: flex-end;
+    width: 120px;
+}
+
 .mud-filter, .mud-data-grid {
     background-color: var(--mud-m3-surface);
     color: var(--mud-m3-on-surface);
@@ -15,6 +21,7 @@
 }
 
 .mud-filter {
+
     .mud-compound-predicate {
         @include stack;
 
@@ -30,11 +37,8 @@
             justify-content: space-between;
 
             .mud-filter-operator-column {
-                display: flex;
-                justify-content: flex-end;
-                width: 120px;
+                @include filter-operator-column;
             }
-
         }
     }
 
@@ -45,9 +49,7 @@
             justify-content: space-between;
 
             .mud-filter-operator-column {
-                display: flex;
-                justify-content: flex-end;
-                width: 120px;
+                @include filter-operator-column;
             }
 
             .mud-filter-def {
@@ -60,11 +62,6 @@
 
             .mud-property-select, .mud-operator-select, .mud-value-field {
                 flex: 1 1 33.33%
-            }
-
-            .align-right {
-                display: flex;
-                justify-content: flex-end;
             }
         }
     }

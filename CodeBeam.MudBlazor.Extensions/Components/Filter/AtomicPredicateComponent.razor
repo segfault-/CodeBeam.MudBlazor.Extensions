@@ -10,9 +10,12 @@
             <PropertySelectComponent Filter="@Filter" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
             <OperatorSelectComponent @bind-AtomicPredicate="@AtomicPredicate" OperatorSelectChanged="OnOperatorSelectChangedAsync" />
             <ValueFieldComponent @bind-AtomicPredicate="AtomicPredicate" ValueFieldChanged="OnValueFieldChangedAsync" />
-            <div class="flex-grow-1">
-                <PredicateUnitActionsComponent T="AtomicPredicateComponent<T>" RemovePredicateUnitAsync="RemovePredicateUnitAsync" IsFirstElement="IsFirstElement" />
-            </div>
+            @if (!IsFirstElement)
+            {
+                <div class="flex-grow-1">
+                    <PredicateUnitActionsComponent T="AtomicPredicateComponent<T>" RemovePredicateUnitAsync="RemovePredicateUnitAsync" IsFirstElement="IsFirstElement" />
+                </div>
+            }
             </MudStack>
     </MudStack>
 </div>
