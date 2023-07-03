@@ -5,9 +5,18 @@
 
 <div class="@ClassName" style="@StyleString">
     <CascadingValue Value="this" IsFixed="true">
-        @FilterTemplate  
+        @FilterTemplate
+        @LogicalOperatorTemplate
+        @PredicateUnitActionsTemplate
     </CascadingValue>
-    <CompoundPredicateComponent @key="this" T="T" IsFirstElement="true" CompoundPredicate="@FilterRoot" Filter="this" Depth="0" CompoundPredicateComponentChanged="CompileExpressionAsync" DisplayParentOperator="false"  />
+    <CompoundPredicateComponent @key="this" 
+        T="T" 
+        IsFirstElement="true" 
+        CompoundPredicate="@FilterRoot" 
+        Filter="this" 
+        Depth="0" 
+        CompoundPredicateComponentChanged="CompileExpressionAsync" 
+        DisplayParentOperator="false"/>
 </div>
 
 

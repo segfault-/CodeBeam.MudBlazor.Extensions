@@ -10,11 +10,9 @@ namespace MudExtensions
         [Parameter] public EventCallback AddCompoundPredicateAsync { get; set; }
         [Parameter] public EventCallback RemovePredicateUnitAsync { get; set; }
         [Parameter] public bool IsFirstElement { get; set; }
-        [Parameter] public RenderFragment? PredicateUnitActionsTemplate { get; set; }
+        [Parameter] public bool IsCompound { get; set; }
 
-        protected bool IsCompoundPredicate => typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(CompoundPredicateComponent<>);
-        protected bool IsAtomicPredicate => typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(AtomicPredicateComponent<>);
-
-
+        protected bool IsCompoundPredicate => IsCompound;
+        protected bool IsAtomicPredicate => !IsCompound;
     }
 }

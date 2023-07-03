@@ -5,7 +5,7 @@
 
 <div class="@ClassName" style="@StyleString">
     <MudStack Class="mud-ap-stack" Row="true">
-        <LogicalOperatorComponent T="AtomicPredicateComponent<T>" Depth="Depth" IsFirstElement="IsFirstElement" ParentLogicalOperator="LogicalOperator" />
+        @LogicalOperatorTemplate
         <MudStack Class="mud-filter-def" Row="true">
             <PropertySelectComponent Filter="@Filter" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
             <OperatorSelectComponent @bind-AtomicPredicate="@AtomicPredicate" OperatorSelectChanged="OnOperatorSelectChangedAsync" />
@@ -13,9 +13,9 @@
             @if (!IsFirstElement)
             {
                 <div class="flex-grow-1">
-                    <PredicateUnitActionsComponent T="AtomicPredicateComponent<T>" RemovePredicateUnitAsync="RemovePredicateUnitAsync" IsFirstElement="IsFirstElement" />
+                    @PredicateUnitActionsTemplate
                 </div>
             }
-            </MudStack>
+        </MudStack>
     </MudStack>
 </div>

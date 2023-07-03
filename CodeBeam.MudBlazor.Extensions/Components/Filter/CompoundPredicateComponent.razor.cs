@@ -14,6 +14,8 @@ namespace MudExtensions
         [Parameter] public bool DisplayParentOperator { get; set; }
         [Parameter] public uint Depth { get; set; }
         [Parameter] public EventCallback CompoundPredicateComponentChanged { get; set; }
+        [Parameter] public RenderFragment? PredicateUnitActionsTemplate { get; set; } 
+        [Parameter] public RenderFragment? LogicalOperatorTemplate { get; set; }
 
         protected string ClassName => new CssBuilder("mud-compound-predicate")
             .AddClass($"depth-{Depth}")
@@ -36,7 +38,7 @@ namespace MudExtensions
             await CompoundPredicateComponentChanged.InvokeAsync();
         }
 
-        protected async Task RemovePredicateUnitAsync()
+        public async Task RemovePredicateUnitAsync()
         {
             CompoundPredicate?.Remove();
             await CompoundPredicateComponentChanged.InvokeAsync();
@@ -79,6 +81,32 @@ namespace MudExtensions
             }
 
             return Task.CompletedTask;
+        }
+
+        protected override void OnParametersSet()
+        {
+            base.OnParametersSet();
+
+            PredicateUnitActionsTemplate ??= (builder =>
+            {
+                builder.OpenComponent<PredicateUnitActionsComponent<T>>(0);
+                builder.AddAttribute(1, "AddAtomicPredicateAsync", new EventCallback(this, AddAtomicPredicateAsync));
+                builder.AddAttribute(2, "AddCompoundPredicateAsync", new EventCallback(this, AddCompoundPredicateAsync));
+                builder.AddAttribute(3, "RemovePredicateUnitAsync", new EventCallback(this, RemovePredicateUnitAsync));
+                builder.AddAttribute(4, "IsCompound", true);
+                builder.CloseComponent();
+            });
+
+            LogicalOperatorTemplate ??= (builder =>
+            {
+                builder.OpenComponent<LogicalOperatorComponent<T>>(0);
+                builder.AddAttribute(1, "Depth", Depth);
+                builder.AddAttribute(2, "IsFirstElement", IsFirstElement);
+                builder.AddAttribute(3, "ParentLogicalOperator", ParentLogicalOperator);
+                builder.AddAttribute(4, "DisplayParentOperator", DisplayParentOperator);
+                builder.AddAttribute(5, "IsCompound", true);
+                builder.CloseComponent();
+            });
         }
 
     }

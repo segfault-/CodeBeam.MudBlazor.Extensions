@@ -12,8 +12,9 @@ namespace MudExtensions
         [Parameter] public bool IsFirstElement { get; set; }
         [Parameter] public bool DisplayParentOperator { get; set; }
         [Parameter] public RenderFragment? LogicalOperatorComponentTemplate { get; set; }
+        [Parameter] public bool IsCompound { get; set; }
 
-        protected bool IsCompoundPredicate => typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(CompoundPredicateComponent<>);
-        protected bool IsAtomicPredicate => typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(AtomicPredicateComponent<>);
+        protected bool IsCompoundPredicate => IsCompound;
+        protected bool IsAtomicPredicate => !IsCompound;
     }
 }

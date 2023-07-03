@@ -23,6 +23,8 @@ namespace MudExtensions
         /// Represents what members of T are eligible for filtering
         /// </summary>
         [Parameter] public RenderFragment? FilterTemplate { get; set; }
+        [Parameter] public RenderFragment? PredicateUnitActionsTemplate { get; set; }
+        [Parameter] public RenderFragment? LogicalOperatorTemplate { get; set; }
         [Parameter] public CompoundPredicate<T>? FilterRoot { get; set; } = new(null);
         [Parameter] public ICollection<Property<T>>? Properties { get; set; } = new List<Property<T>>();
         [Parameter] public Expression<Func<T, bool>>? Expression { get; set; }
