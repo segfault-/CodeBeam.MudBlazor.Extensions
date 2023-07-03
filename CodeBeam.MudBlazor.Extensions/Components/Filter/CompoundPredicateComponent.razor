@@ -4,7 +4,7 @@
 
 <div class="@ClassName" style="@StyleString">
     <MudStack Class="mud-cp-stack" Row="true">
-        <LogicalOperatorComponent T="AtomicPredicateComponent<T>" Depth="Depth" IsFirstElement="IsFirstElement" ParentLogicalOperator="ParentLogicalOperator" />
+        <LogicalOperatorComponent T="CompoundPredicateComponent<T>" Depth="Depth" IsFirstElement="IsFirstElement" ParentLogicalOperator="ParentLogicalOperator" DisplayParentOperator="DisplayParentOperator" />
         <div class="mud-logical-operator mud-cp-radio-group flex-grow-0" style="flex-basis:unset">
             <MudSelectExtended T="CompoundPredicateLogicalOperator" @bind-Value="CompoundPredicate.LogicalOperator" @bind-Value:after="OnLogicalOperatorChangedAsync" ValuePresenter="Enums.ValuePresenter.Chip" ChipSize="Size.Small" Variant="Variant.Outlined" Dense="true" Margin="Margin.Dense">
                 <MudSelectItemExtended T="CompoundPredicateLogicalOperator" Value="CompoundPredicateLogicalOperator.And" Text="AND" />
@@ -36,7 +36,7 @@
         }
         else if (predicate is CompoundPredicate<T> compoundPredicate)
         {
-            <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" Filter="@Filter" ParentLogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="@isFirstElement" Depth="(Depth + 1)" CompoundPredicateComponentChanged="OnLogicalOperatorChangedAsync"  />
+            <CompoundPredicateComponent @key="compoundPredicate" @bind-CompoundPredicate="compoundPredicate" Filter="@Filter" ParentLogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="true" Depth="(Depth + 1)" CompoundPredicateComponentChanged="OnLogicalOperatorChangedAsync" DisplayParentOperator="true"  />
         }
     }
 </div>

@@ -7,16 +7,7 @@
     <CascadingValue Value="this" IsFixed="true">
         @FilterTemplate  
     </CascadingValue>
-    <CompoundPredicateComponent @key="this" T="T" IsFirstElement="true" CompoundPredicate="@FilterRoot" Filter="this" Depth="0" CompoundPredicateComponentChanged="CompileExpressionAsync"  />
-@* 
-    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Square="true" Class="my-2 mt-16">
-        <MudTextM3 TypeSize="TypeSize.Large" TypeStyle="TypeStyle.Body">@Expression?.ToString()</MudTextM3>  
-    </MudAlert>
-
-    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Square="true" Class="my-2 mt-16">
-        <MudTextM3 TypeSize="TypeSize.Large" TypeStyle="TypeStyle.Body">@JsonString?.ToString()</MudTextM3>
-    </MudAlert>
- *@
+    <CompoundPredicateComponent @key="this" T="T" IsFirstElement="true" CompoundPredicate="@FilterRoot" Filter="this" Depth="0" CompoundPredicateComponentChanged="CompileExpressionAsync" DisplayParentOperator="false"  />
 </div>
 
 

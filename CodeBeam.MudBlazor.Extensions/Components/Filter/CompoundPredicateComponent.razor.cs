@@ -11,6 +11,7 @@ namespace MudExtensions
         [Parameter] public CompoundPredicate<T>? CompoundPredicate { get; set; }
         [Parameter] public CompoundPredicateLogicalOperator? ParentLogicalOperator { get; set; }
         [Parameter] public bool IsFirstElement { get; set; }
+        [Parameter] public bool DisplayParentOperator { get; set; }
         [Parameter] public uint Depth { get; set; }
         [Parameter] public EventCallback CompoundPredicateComponentChanged { get; set; }
 
