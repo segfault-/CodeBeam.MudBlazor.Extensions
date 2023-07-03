@@ -4,52 +4,32 @@
 
 @if (IsCompoundPredicate)
 {
-    @for (int i = 0; i <= Depth; i++)
-    {
-        int j = i;
-        string textContent = string.Empty;
-
-        if(j == (Depth -1))
-        {
-            textContent = $"{ParentLogicalOperator}";   
-        }
-        
-        if (Depth != 0 && !string.IsNullOrWhiteSpace(textContent))
-        {
-            <MudTextM3 Class="mud-logical-operator">@textContent</MudTextM3>
-        } 
-        else if(Depth != 0 && j != Depth)
-        {
-            <div class="mud-logical-operator" />
-        }
-    }
+    @RenderMudTextContent((int i) => i == (Depth - 1))
 }
 
-
-
-@if(IsAtomicPredicate && !IsFirstElement)
+@if (IsAtomicPredicate && !IsFirstElement)
 {
-    @for (int i = 0; i <= Depth; i++)
+    @RenderMudTextContent((int i) => Depth == 0 || i == Depth)
+}
+
+@code {
+    RenderFragment RenderMudTextContent(Func<int, bool> textContentCondition)
     {
-        int j = i;
-        string textContent = string.Empty;
+        return
+    @<text>
+        @for (int i = 0; i <= Depth; i++)
+        {
+            string textContent = textContentCondition(i) ? $"{ParentLogicalOperator}" : string.Empty;
 
-        if(Depth == 0)
-        {
-            textContent = $"{ParentLogicalOperator}";
+            if (!string.IsNullOrWhiteSpace(textContent))
+            {
+                <MudTextM3 Class="mud-logical-operator">@textContent</MudTextM3>
+            }
+            else if (i != Depth)
+            {
+                <div class="mud-logical-operator" />
+            }
         }
-        else if (j == Depth)
-        {
-            textContent = $"{ParentLogicalOperator}";
-        }
-
-        if (!string.IsNullOrWhiteSpace(textContent))
-        {
-            <MudTextM3 Class="mud-logical-operator">@textContent</MudTextM3>
-        }
-        else if (Depth != 0 && j != Depth)
-        {
-            <div class="mud-logical-operator"/>
-        }
-    }   
+    </text>;
+    }
 }
