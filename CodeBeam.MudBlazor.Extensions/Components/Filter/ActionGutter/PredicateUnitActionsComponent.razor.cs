@@ -3,36 +3,18 @@ using MudBlazor;
 
 namespace MudExtensions
 {
+#nullable enable
     public partial class PredicateUnitActionsComponent<T> : MudComponentBase
     {
         [Parameter] public EventCallback AddAtomicPredicateAsync { get; set; }
         [Parameter] public EventCallback AddCompoundPredicateAsync { get; set; }
         [Parameter] public EventCallback RemovePredicateUnitAsync { get; set; }
         [Parameter] public bool IsFirstElement { get; set; }
+        [Parameter] public RenderFragment? PredicateUnitActionsTemplate { get; set; }
 
-        protected bool IsCompoundPredicate { get; set; }
-        protected bool IsAtomicPredicate { get; set; }
+        protected bool IsCompoundPredicate => typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(CompoundPredicateComponent<>);
+        protected bool IsAtomicPredicate => typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(AtomicPredicateComponent<>);
 
-        protected override void OnParametersSet()
-        {
-            base.OnParametersSet();
-
-            IsAtomicPredicate = false;
-            IsCompoundPredicate = false;
-
-            if (typeof(T).IsGenericType)
-            {
-                if (typeof(T).GetGenericTypeDefinition() == typeof(AtomicPredicateComponent<>))
-                {
-                    IsAtomicPredicate = true;
-                }
-
-                if (typeof(T).GetGenericTypeDefinition() == typeof(CompoundPredicateComponent<>))
-                {
-                    IsCompoundPredicate = true;
-                }
-            }
-        }
 
     }
 }
