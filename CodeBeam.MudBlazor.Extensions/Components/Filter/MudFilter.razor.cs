@@ -23,11 +23,29 @@ namespace MudExtensions
         /// Represents what members of T are eligible for filtering
         /// </summary>
         [Parameter] public RenderFragment? FilterTemplate { get; set; }
+        /// <summary>
+        /// Render fragment to customize actions like add atomic predicate, add compound predicate, and delete
+        /// </summary>
         [Parameter] public RenderFragment? PredicateUnitActionsTemplate { get; set; }
+        /// <summary>
+        /// Render fragment to allow selection of logical operator
+        /// </summary>
         [Parameter] public RenderFragment? LogicalOperatorTemplate { get; set; }
+        /// <summary>
+        /// The compound predicate that represents the base of our expression tree
+        /// </summary>
         [Parameter] public CompoundPredicate<T>? FilterRoot { get; set; } = new(null);
+        /// <summary>
+        /// The properties that are allowed to participate in filtering
+        /// </summary>
         [Parameter] public ICollection<Property<T>>? Properties { get; set; } = new List<Property<T>>();
+        /// <summary>
+        /// An expression that can be used with IQueryable where() method
+        /// </summary>
         [Parameter] public Expression<Func<T, bool>>? Expression { get; set; }
+        /// <summary>
+        /// Callback when expression changes, can be used to reload data grid or refresh metric visuals
+        /// </summary>
         [Parameter] public EventCallback<Expression<Func<T, bool>>?> ExpressionChanged { get; set; }
 
         /// <summary>
@@ -41,7 +59,6 @@ namespace MudExtensions
 
         public async Task CompileExpressionAsync()
         {
-            Console.WriteLine("--> MudFilter<T>:CompileExpressionAsync()");
             ExpressionGenerator expressionGenerator = new ExpressionGenerator();
 
             var expression = expressionGenerator.CompilePredicateExpression(FilterRoot);
@@ -55,7 +72,11 @@ namespace MudExtensions
             await ExpressionChanged.InvokeAsync();
         }
 
-        protected async Task SerializeAsync()
+        /// <summary>
+        /// Example demonstrating how to serialize / deserialize.  this is how you transfer the expression definition over the wire, apply the results server side and presumably send the filtered dataset back
+        /// </summary>
+        /// <returns></returns>
+        protected Task SerializeAsync()
         {
             JsonSerializerOptions jsonSerializerOptions = new()
             {
@@ -78,6 +99,7 @@ namespace MudExtensions
                     }
                 }
             }
+            return Task.CompletedTask;
         }
     }
 

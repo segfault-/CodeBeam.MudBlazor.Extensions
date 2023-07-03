@@ -4,7 +4,7 @@ using MudBlazor;
 namespace MudExtensions
 {
 #nullable enable
-    public partial class PredicateUnitActionsComponent<T> : MudComponentBase
+    public partial class PredicateUnitActionsComponent : MudComponentBase
     {
         [Parameter] public EventCallback AddAtomicPredicateAsync { get; set; }
         [Parameter] public EventCallback AddCompoundPredicateAsync { get; set; }

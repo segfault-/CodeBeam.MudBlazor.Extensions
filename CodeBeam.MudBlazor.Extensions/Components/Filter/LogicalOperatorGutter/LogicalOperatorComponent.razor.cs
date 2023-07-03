@@ -4,7 +4,7 @@ using MudBlazor;
 namespace MudExtensions
 {
 #nullable enable
-    public partial class LogicalOperatorComponent<T> : MudComponentBase
+    public partial class LogicalOperatorComponent : MudComponentBase
     {
         [Parameter] public uint Depth { get; set; }
         [Parameter] public CompoundPredicateLogicalOperator? LogicalOperator { get; set; }

@@ -58,7 +58,7 @@ namespace MudExtensions
 
             PredicateUnitActionsTemplate ??= builder =>
             {
-                builder.OpenComponent<PredicateUnitActionsComponent<T>>(0);
+                builder.OpenComponent<PredicateUnitActionsComponent>(0);
                 builder.AddAttribute(1, "RemovePredicateUnitAsync", new EventCallback(this, RemovePredicateUnitAsync));
                 builder.AddAttribute(2, "IsFirstElement", IsFirstElement);
                 builder.CloseComponent();
@@ -66,7 +66,7 @@ namespace MudExtensions
 
             LogicalOperatorTemplate ??= builder =>
             {
-                builder.OpenComponent<LogicalOperatorComponent<T>>(0);
+                builder.OpenComponent<LogicalOperatorComponent>(0);
                 builder.AddAttribute(1, "Depth", Depth);
                 builder.AddAttribute(2, "IsFirstElement", IsFirstElement);
                 builder.AddAttribute(3, "ParentLogicalOperator", LogicalOperator);
