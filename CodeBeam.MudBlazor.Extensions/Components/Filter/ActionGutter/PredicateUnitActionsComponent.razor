@@ -2,11 +2,11 @@
 @inherits MudComponentBase
 
 <div class="mud-filter-operator-column">
-    <MudStack Row="true">
+    <MudStack Row="true" AlignItems="AlignItems.Center">
         <div>
             @if (IsCompoundPredicate && !IsFirstElement)
             {
-                <MudSpeedDial Origin="Origin.TopRight" Style="position:relative" OpenOnHover="false" OpenOnClick="true">
+                <MudSpeedDial Origin="Origin.TopRight" Style="position:relative" OpenOnHover="false" OpenOnClick="true" Size="Size.Small">
                     <MudFab Class="z-60" Size="Size.Small" IconSize="Size.Small" Color="Color.Primary" StartIcon="@Icons.Material.Filled.AddCircleOutline" OnClick="AddAtomicPredicateAsync" />
                     <MudFab Class="z-60" Size="Size.Small" IconSize="Size.Small" Color="Color.Primary" StartIcon="@Icons.Material.Filled.LibraryAdd" OnClick="AddCompoundPredicateAsync" />
                 </MudSpeedDial>
@@ -15,9 +15,8 @@
         <div>
             @if (IsCompoundPredicate || (IsAtomicPredicate && !IsFirstElement))
             {
-                <MudIconButton Class="mud-ap-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="RemovePredicateUnitAsync" />
+                <MudIconButton Class="mud-ap-remove" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" OnClick="RemovePredicateUnitAsync" />
             }
         </div>
     </MudStack>
-
 </div>
