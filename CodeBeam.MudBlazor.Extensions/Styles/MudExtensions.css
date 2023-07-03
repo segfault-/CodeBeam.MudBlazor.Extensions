@@ -979,20 +979,6 @@
   letter-spacing: var(--mud-typographym3-label-small-tracking);
   font-weight: var(--mud-typographym3-label-small-weight); }
 
-.mud-compound-predicate:hover .mud-cp-add-atomic, .mud-compound-predicate:hover .mud-cp-add-compound, .mud-compound-predicate:hover .mud-cp-remove, .mud-compound-predicate:hover .mud-ap-remove, .mud-atomic-predicate:hover .mud-cp-add-atomic, .mud-atomic-predicate:hover .mud-cp-add-compound, .mud-atomic-predicate:hover .mud-cp-remove, .mud-atomic-predicate:hover .mud-ap-remove {
-  align-self: center;
-  border-color: var(--mud-m3-primary);
-  color: var(--mud-m3-primary);
-  margin-left: auto;
-  margin-right: 8px;
-  border-color: var(--mud-m3-primary);
-  color: var(--mud-m3-primary);
-  transition: border-color .3s, color .3s; }
-  .mud-compound-predicate:hover .mud-cp-add-atomic:hover, .mud-compound-predicate:hover .mud-cp-add-compound:hover, .mud-compound-predicate:hover .mud-cp-remove:hover, .mud-compound-predicate:hover .mud-ap-remove:hover, .mud-atomic-predicate:hover .mud-cp-add-atomic:hover, .mud-atomic-predicate:hover .mud-cp-add-compound:hover, .mud-atomic-predicate:hover .mud-cp-remove:hover, .mud-atomic-predicate:hover .mud-ap-remove:hover {
-    border-color: var(--mud-m3-primary);
-    color: var(--mud-m3-primary);
-    transition: border-color .3s, color .3s; }
-
 .mud-filter, .mud-data-grid {
   background-color: var(--mud-m3-surface);
   color: var(--mud-m3-on-surface);
@@ -1042,16 +1028,6 @@
     .mud-filter .mud-compound-predicate .mud-cp-stack .mud-filter-operator-column {
       display: flex;
       width: 120px; }
-    .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-add-atomic, .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-add-compound, .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-remove {
-      align-self: center;
-      border-color: var(--mud-m3-primary);
-      color: var(--mud-m3-primary);
-      margin-left: auto;
-      margin-right: 8px; }
-      .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-add-atomic:hover, .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-add-compound:hover, .mud-filter .mud-compound-predicate .mud-cp-stack .mud-cp-remove:hover {
-        border-color: var(--mud-m3-primary);
-        color: var(--mud-m3-primary);
-        transition: border-color .3s, color .3s; }
 
 .mud-filter .mud-atomic-predicate {
   margin-top: 2px; }
@@ -1066,16 +1042,6 @@
       width: 125px; }
     .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-property-select, .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-operator-select, .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-value-field {
       flex: 1 1 33.33%; }
-    .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-ap-remove {
-      align-self: center;
-      border-color: var(--mud-m3-primary);
-      color: var(--mud-m3-primary);
-      margin-left: auto;
-      margin-right: 8px; }
-      .mud-filter .mud-atomic-predicate .mud-ap-stack .mud-ap-remove:hover {
-        border-color: var(--mud-m3-primary);
-        color: var(--mud-m3-primary);
-        transition: border-color .3s, color .3s; }
 
 /*@import '../abstracts/variables';*/
 .mud-list-extended {

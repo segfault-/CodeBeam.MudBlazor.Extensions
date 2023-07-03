@@ -2,40 +2,23 @@
 @inherits MudComponentBase
 @typeparam T
 
-
 <div class="@ClassName" style="@StyleString">
     <MudStack Class="mud-cp-stack" Row="true">
-
-@*         @for(int i = 0; i <= Depth; i++)
-        {
-            int j = i;
-            if(j == Depth - 1)
-            {
-                <MudTextM3 Class="mud-logical-operator">@ParentLogicalOperator</MudTextM3>
-            }
-        } *@
-        <LogicalOperatorComponent Depth="@Depth" ParentLogicalOperator="ParentLogicalOperator" />
+        <LogicalOperatorComponent T="AtomicPredicateComponent<T>" Depth="@Depth" ParentLogicalOperator="ParentLogicalOperator" />
         <div class="mud-logical-operator mud-cp-radio-group flex-grow-0" style="flex-basis:unset">
             <MudSelectExtended T="CompoundPredicateLogicalOperator" @bind-Value="CompoundPredicate.LogicalOperator" @bind-Value:after="OnLogicalOperatorChangedAsync" ValuePresenter="Enums.ValuePresenter.Chip" ChipSize="Size.Small" Variant="Variant.Outlined" Dense="true" Margin="Margin.Dense">
                 <MudSelectItemExtended T="CompoundPredicateLogicalOperator" Value="CompoundPredicateLogicalOperator.And" Text="AND" />
                 <MudSelectItemExtended T="CompoundPredicateLogicalOperator" Value="CompoundPredicateLogicalOperator.Or" Text="OR" />
             </MudSelectExtended>
         </div>
-
-
-           
         @if (CompoundPredicate.GetPredicatesInOrder().FirstOrDefault() is AtomicPredicate<T> atomicPredicate)
         {
             <div class="flex-grow-1">
                 <AtomicPredicateComponent @key="atomicPredicate" @bind-AtomicPredicate="atomicPredicate" Filter="@Filter" LogicalOperator="@CompoundPredicate.LogicalOperator" IsFirstElement="true" Parent="CompoundPredicate" Depth="Depth" AtomicPredicateComponentChanged="OnAtomicPredicateChangedAsync"  />
             </div>
         }
-
-
         <PredicateUnitActionsComponent T="CompoundPredicateComponent<T>" AddAtomicPredicateAsync="AddAtomicPredicateAsync" AddCompoundPredicateAsync="AddCompoundPredicateAsync" RemovePredicateUnitAsync="RemovePredicateUnitAsync" />
-
     </MudStack>
-
     @{
         bool isFirstElement = true;
     }

@@ -1,33 +1,6 @@
-
-@mixin hover-effects {
-    align-self: center;
-    border-color: var(--mud-m3-primary);
-    color: var(--mud-m3-primary);
-    margin-left: auto;
-    margin-right: 8px;
-
-    &:hover {
-        border-color: var(--mud-m3-primary);
-        color: var(--mud-m3-primary);
-        transition: border-color .3s, color .3s;
-    }
-}
-
 @mixin stack {
     margin-top: 2px;
 }
-
-.mud-compound-predicate, .mud-atomic-predicate {
-    &:hover {
-        .mud-cp-add-atomic, .mud-cp-add-compound, .mud-cp-remove, .mud-ap-remove {
-            @include hover-effects;
-            border-color: var(--mud-m3-primary);
-            color: var(--mud-m3-primary);
-            transition: border-color .3s, color .3s;
-        }
-    }
-}
-
 
 .mud-filter, .mud-data-grid {
     background-color: var(--mud-m3-surface);
@@ -42,7 +15,6 @@
 }
 
 .mud-filter {
-
     .mud-compound-predicate {
         @include stack;
 
@@ -59,12 +31,10 @@
 
             .mud-filter-operator-column {
                 display: flex;
+                justify-content: flex-end;
                 width: 120px;
             }
 
-            .mud-cp-add-atomic, .mud-cp-add-compound, .mud-cp-remove {
-                @include hover-effects;
-            }
         }
     }
 
@@ -76,6 +46,7 @@
 
             .mud-filter-operator-column {
                 display: flex;
+                justify-content: flex-end;
                 width: 120px;
             }
 
@@ -91,8 +62,9 @@
                 flex: 1 1 33.33%
             }
 
-            .mud-ap-remove {
-                @include hover-effects;
+            .align-right {
+                display: flex;
+                justify-content: flex-end;
             }
         }
     }

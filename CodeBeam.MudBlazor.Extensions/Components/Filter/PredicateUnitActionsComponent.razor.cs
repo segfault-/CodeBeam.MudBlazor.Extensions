@@ -12,23 +12,6 @@ namespace MudExtensions
 
         protected bool IsCompoundPredicate { get; set; }
         protected bool IsAtomicPredicate { get; set; }
-        //protected override void OnParametersSet()
-        //{
-        //    base.OnParametersSet();
-        //    Console.WriteLine($"--> PredicateUnitActionsComponent<T> --> T={typeof(T)}");
-        //    IsAtomicPredicate = false;
-        //    IsCompoundPredicate = false;
-
-        //    if (typeof(T).GetGenericTypeDefinition() == typeof(AtomicPredicateComponent<>))
-        //    {
-        //        IsAtomicPredicate = true;
-        //    }
-
-        //    if (typeof(T).GetGenericTypeDefinition() == typeof(CompoundPredicateComponent<>))
-        //    {
-        //        IsCompoundPredicate = true;
-        //    }
-        //}
 
         protected override void OnParametersSet()
         {

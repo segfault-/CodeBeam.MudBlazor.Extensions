@@ -5,25 +5,14 @@
 
 <div class="@ClassName" style="@StyleString">
     <MudStack Class="mud-ap-stack" Row="true">
-
-        @for (int i = 0; i <= Depth; i++)
-        {
-            int j = i;
-            if (j == Depth && !IsFirstElement)
-            {
-                <MudTextM3 Class="mud-logical-operator">@LogicalOperator</MudTextM3>
-            }
-            else if (Depth != 0 && !IsFirstElement)
-            {
-                <MudTextM3 Class="mud-logical-operator" />
-            }
-        }
-        <LogicalOperatorComponent Depth="Depth" IsFirstElement="IsFirstElement" ParentLogicalOperator="LogicalOperator" />
+        <LogicalOperatorComponent T="AtomicPredicateComponent<T>" Depth="Depth" IsFirstElement="IsFirstElement" ParentLogicalOperator="LogicalOperator" />
         <MudStack Class="mud-filter-def" Row="true">
             <PropertySelectComponent Filter="@Filter" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" />
             <OperatorSelectComponent @bind-AtomicPredicate="@AtomicPredicate" OperatorSelectChanged="OnOperatorSelectChangedAsync" />
             <ValueFieldComponent @bind-AtomicPredicate="AtomicPredicate" ValueFieldChanged="OnValueFieldChangedAsync" />
-            <PredicateUnitActionsComponent T="AtomicPredicateComponent<T>" RemovePredicateUnitAsync="RemovePredicateUnitAsync" IsFirstElement="IsFirstElement" />
-        </MudStack>
+            <div class="flex-grow-1">
+                <PredicateUnitActionsComponent T="AtomicPredicateComponent<T>" RemovePredicateUnitAsync="RemovePredicateUnitAsync" IsFirstElement="IsFirstElement" />
+            </div>
+            </MudStack>
     </MudStack>
 </div>
