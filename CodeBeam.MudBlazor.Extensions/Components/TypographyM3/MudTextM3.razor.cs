@@ -5,6 +5,7 @@ using MudExtensions.Enums;
 
 namespace MudExtensions
 {
+#nullable enable
     public partial class MudTextM3 : MudComponentBase
     {
         protected string Classname =>

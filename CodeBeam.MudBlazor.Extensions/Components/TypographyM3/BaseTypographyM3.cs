@@ -1,5 +1,6 @@
 ﻿namespace MudExtensions.Components.TypographyM3
 {
+#nullable enable
     public class TypographyM3
     {
         public DisplayLarge DisplayLarge { get; set; } = new();
@@ -25,7 +26,9 @@
 
     public class BaseTypographyM3
     {
-        public string[] Font { get; set; }
+        public const string DefaultFontFamily = "Roboto";
+
+        public string[] Font { get; set; } = new string[] { DefaultFontFamily };
 
         private double _lineHeight;
         public double LineHeight 
@@ -63,7 +66,7 @@
     {
         public DisplayLarge() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 64;
             Size = 57;
             Tracking = -0.25;
@@ -75,7 +78,7 @@
     {
         public DisplayMedium() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 52;
             Size = 45;
             Tracking = 0;
@@ -87,7 +90,7 @@
     {
         public DisplaySmall() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 44;
             Size = 36;
             Tracking = 0;
@@ -99,7 +102,7 @@
     {
         public HeadlineLarge() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 40;
             Size = 32;
             Tracking = 0;
@@ -111,7 +114,7 @@
     {
         public HeadlineMedium() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 36;
             Size = 28;
             Tracking = 0;
@@ -122,7 +125,7 @@
     {
         public HeadlineSmall() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 32;
             Size = 24;
             Tracking = 0;
@@ -133,7 +136,7 @@
     {
         public TitleLarge() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 28;
             Size = 22;
             Tracking = 0;
@@ -144,7 +147,7 @@
     {
         public TitleMedium() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 24;
             Size = 16;
             Tracking = 0.15;
@@ -155,7 +158,7 @@
     {
         public TitleSmall() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 20;
             Size = 14;
             Tracking = 0.1;
@@ -166,7 +169,7 @@
     {
         public BodyLarge() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 24;
             Size = 16;
             Tracking = 0.5;
@@ -177,7 +180,7 @@
     {
         public BodyMedium() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 20;
             Size = 14;
             Tracking = 0.25;
@@ -188,7 +191,7 @@
     {
         public BodySmall() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 16;
             Size = 12;
             Tracking = 0.4;
@@ -199,7 +202,7 @@
     {
         public LabelLarge() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 20;
             Size = 14;
             Tracking = 0.1;
@@ -210,7 +213,7 @@
     {
         public LabelMedium() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 16;
             Size = 12;
             Tracking = 0.5;
@@ -221,7 +224,7 @@
     {
         public LabelSmall() : base()
         {
-            Font = new string[] { "Roboto" };
+            Font = new string[] { DefaultFontFamily };
             LineHeight = 16;
             Size = 11;
             Tracking = 0.5;

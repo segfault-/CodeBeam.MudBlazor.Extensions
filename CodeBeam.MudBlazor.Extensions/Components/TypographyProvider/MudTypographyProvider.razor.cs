@@ -4,6 +4,7 @@ using MudExtensions.Components.TypographyM3;
 
 namespace MudExtensions
 {
+#nullable enable
     public partial class MudTypographyProvider : MudComponentBase
     {
         /// <summary>
