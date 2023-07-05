@@ -27,7 +27,7 @@
     public class BaseTypographyM3
     {
         public const string DefaultFontFamily = "Roboto";
-
+        public const int DefaultFontSize = 16;
         public string[] Font { get; set; } = new string[] { DefaultFontFamily };
 
         private double _lineHeight;
@@ -36,7 +36,11 @@
             get => _lineHeight;
             set
             {
-                _lineHeight = value / 16;
+                // https://m3.material.io/styles/typography/type-scale-tokens
+                // Font size unit: rem
+                // Conversion ratio: 0.0625
+                // Web browsers calculate the REM (the root em size) based on the root element size. The default for modern web browsers is 16px, so the conversion is SP_SIZE/16 = rem.
+                _lineHeight = value / DefaultFontSize;
             }
         }
 
@@ -46,7 +50,7 @@
             get => _size;
             set
             {
-                _size = value / 16;
+                _size = value / DefaultFontSize;
             }
         }
 
@@ -56,7 +60,11 @@
             get => _tracking;
             set
             {
-                _tracking = value / (Size * 16);
+                // https://m3.material.io/styles/typography/type-scale-tokens
+                // Letter spacing unit: rem
+                // Conversion ratio: (Tracking value in px / font size in sp) = letter spacing
+                // Example: (.2 tracking / 16px font size) = 0.0125 rem
+                _tracking = value / DefaultFontSize;
             }
         }
         public int Weight { get; set; }

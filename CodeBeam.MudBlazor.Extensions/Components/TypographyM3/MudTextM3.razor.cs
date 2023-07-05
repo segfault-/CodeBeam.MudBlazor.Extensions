@@ -8,11 +8,14 @@ namespace MudExtensions
 #nullable enable
     public partial class MudTextM3 : MudComponentBase
     {
-        protected string Classname =>
-            new CssBuilder("mud-typographym3")
-                .AddClass($"mud-typographym3-{TypeStyle.ToString().ToLower()}-{TypeSize.ToString().ToLower()}") // .mud-typographym3-#{$style}-#{$size}
-                .AddClass(Class)
-                .Build();
+        protected string ClassName => new CssBuilder("mud-typographym3")
+            .AddClass($"mud-typographym3-{TypeStyle.ToString().ToLower()}-{TypeSize.ToString().ToLower()}") // .mud-typographym3-#{$style}-#{$size}
+            .AddClass(Class)
+            .Build();
+
+        protected string StyleString => new StyleBuilder()
+            .AddStyle(Style)
+            .Build();
 
         /// <summary>
         /// Set the text-align on the component.
