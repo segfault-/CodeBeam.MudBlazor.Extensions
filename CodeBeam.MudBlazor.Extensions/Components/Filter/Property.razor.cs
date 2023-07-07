@@ -15,8 +15,6 @@ namespace MudExtensions
         {
             get
             {
-                Console.WriteLine("--> PropertyName");
-
                 // The default value when the expression is null or can't be cast to MemberExpression
                 var defaultName = string.Empty;
 
@@ -28,7 +26,6 @@ namespace MudExtensions
                 {
                     defaultName = ((MemberExpression)unaryExpression.Operand).Member.Name;
                 }
-                Console.WriteLine($"--> PropertyName returning {defaultName}");
                 return defaultName;
             }
         }
@@ -37,7 +34,6 @@ namespace MudExtensions
         {
             get
             {
-                Console.WriteLine("--> ComputedTitle");
                 if (Title is not null)
                 {
                     return Title;

@@ -22,7 +22,6 @@ namespace MudExtensions
 
         public override async Task SetParametersAsync(ParameterView parameters)
         {
-            Console.WriteLine("--> OperatorSelectComponent<T>:SetParametersAsync");
             await base.SetParametersAsync(parameters);
 
             if (AtomicPredicate is not null)
@@ -34,26 +33,22 @@ namespace MudExtensions
             //{
             //    AtomicPredicate = atomicPredicate;
             //    Operator = AtomicPredicate.Operator;
-            //    Console.WriteLine($"SomeParameter: {AtomicPredicate}");
             //}
 
             if (parameters.TryGetValue<EventCallback>("OperatorSelectChanged", out var operatorSelectChanged))
             {
                 OperatorSelectChanged = operatorSelectChanged;
-                Console.WriteLine($"SomeParameter: {OperatorSelectChanged}");
             }
         }
 
         protected override void OnInitialized()
         {
-            Console.WriteLine("--> OperatorSelectComponent<T>:OnInitialized");
             base.OnInitialized();
         }
 
 
         protected override async Task OnParametersSetAsync()
         {
-            Console.WriteLine("--> OperatorSelectComponent<T>:OnParametersSetAsync");
             await base.OnParametersSetAsync();
 
             if (AtomicPredicate is not null)
@@ -64,7 +59,6 @@ namespace MudExtensions
 
         protected async Task OnOperatorSelectChangedAsync()
         {
-            Console.WriteLine("--> OperatorSelectComponent<T>:OnOperatorSelectChangedAsync");
             if (AtomicPredicate is not null)
             {
                 AtomicPredicate.Operator = Operator;

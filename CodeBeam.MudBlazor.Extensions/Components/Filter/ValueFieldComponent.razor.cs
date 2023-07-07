@@ -129,13 +129,11 @@ namespace MudExtensions
 
         public override async Task SetParametersAsync(ParameterView parameters)
         {
-            Console.WriteLine("--> ValueFieldComponent<T>:SetParametersAsync()");
             await base.SetParametersAsync(parameters);
 
             if (parameters.TryGetValue<AtomicPredicate<T>>("AtomicPredicate", out var atomicPredicate))
             {
                 AtomicPredicate = atomicPredicate;
-                Console.WriteLine($"SomeParameter: {AtomicPredicate}");
 
                 FieldType = FieldType.Identify(AtomicPredicate.MemberType);
                 ValueObject = AtomicPredicate.Value;
@@ -180,7 +178,6 @@ namespace MudExtensions
             if (parameters.TryGetValue<EventCallback>("ValueFieldChanged", out var valueFieldChanged))
             {
                 ValueFieldChanged = valueFieldChanged;
-                Console.WriteLine($"SomeParameter: {ValueFieldChanged}");
             }
 
         }

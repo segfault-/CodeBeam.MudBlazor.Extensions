@@ -27,7 +27,6 @@ namespace MudExtensions
 
         protected async Task OnPropertySelectChangedAsync()
         {
-            Console.WriteLine("--> AtomicPredicateComponent<T>:OnPropertySelectChangedAsync()");
             AtomicPredicate?.ClearOperatorAndValues();
             await AtomicPredicateComponentChanged.InvokeAsync();
 
@@ -35,19 +34,16 @@ namespace MudExtensions
 
         protected async Task OnValueFieldChangedAsync()
         {
-            Console.WriteLine("--> AtomicPredicateComponent<T>:OnValueFieldChangedAsync()");
             await AtomicPredicateComponentChanged.InvokeAsync();
         }
 
         protected async Task OnOperatorSelectChangedAsync()
         {
-            Console.WriteLine("--> AtomicPredicateComponent<T>:OnOperatorSelectChangedAsync()");
             await AtomicPredicateComponentChanged.InvokeAsync();
         }
 
         protected async Task RemovePredicateUnitAsync()
         {
-            Console.WriteLine("--> AtomicPredicateComponent<T>:RemovePredicateUnitAsync()");
             AtomicPredicate?.Remove();
             await AtomicPredicateComponentChanged.InvokeAsync();
         }
