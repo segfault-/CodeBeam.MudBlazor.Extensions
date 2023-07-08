@@ -50,7 +50,7 @@ namespace MudExtensions
             // Perform updates based on changes
             // Check e.PropertyName for specific property changes if needed
 
-            if(e.PropertyName?.Equals("Member") ?? false)
+            if(e.PropertyName?.Equals(nameof(AtomicPredicate<T>.Member)) ?? false)
             {
 
                     Console.WriteLine($"Dependent property changed: {e.PropertyName} setting operator to null");

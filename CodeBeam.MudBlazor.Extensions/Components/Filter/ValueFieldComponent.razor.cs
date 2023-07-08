@@ -155,12 +155,6 @@ namespace MudExtensions
             {
                 AssignValuesFromAtomicPredicate();
             }
-            if (e.PropertyName?.Equals("Value") ?? false)
-            {
-                Console.WriteLine($"{e.PropertyName} has changed");
-                //AssignValuesFromAtomicPredicate();
-            }
-
         }
 
         private void AssignValuesFromAtomicPredicate()
