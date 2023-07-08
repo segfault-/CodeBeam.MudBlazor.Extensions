@@ -130,119 +130,69 @@ namespace MudExtensions
         public override async Task SetParametersAsync(ParameterView parameters)
         {
             await base.SetParametersAsync(parameters);
-
-            if (parameters.TryGetValue<AtomicPredicate<T>>("AtomicPredicate", out var atomicPredicate))
-            {
-                AtomicPredicate = atomicPredicate;
-
-                FieldType = FieldType.Identify(AtomicPredicate.MemberType);
-                ValueObject = AtomicPredicate.Value;
-                if (ValueObject is not null && FieldType is not null && AtomicPredicate.Operator is not null)
-                {
-
-                    if (AtomicPredicate.Operator.Equals(FilterOperator.String.IsOneOf) || AtomicPredicate.Operator.Equals(FilterOperator.String.IsNotOneOf))
-                    {
-                        ValueString = (string)ValueObject.ToString();
-                    }
-                    else
-                    {
-                        if (FieldType.IsString)
-                        {
-                            ValueString = (string)ValueObject;
-                        }
-
-                        if (FieldType.IsNumber)
-                        {
-                            ValueNumber = Convert.ToDouble(ValueObject);
-                        }
-
-                        if (FieldType.IsEnum)
-                        {
-                            ValueEnum = ValueObject.ToString();
-                        }
-
-                        if (FieldType.IsBoolean)
-                        {
-                            ValueBool = (bool)ValueObject;
-                        }
-
-                        if (FieldType.IsDateTime)
-                        {
-                            if (ValueObject is DateTime dateTime)
-                            {
-                                ValueDate = dateTime;
-                                ValueTime = dateTime.TimeOfDay;
-                            }
-                        }
-
-                        if (FieldType.IsGuid)
-                        {
-                            ValueGuid = (Guid)ValueObject;
-                        }
-                    }
-                }
-            }
-
-            if (parameters.TryGetValue<EventCallback>("ValueFieldChanged", out var valueFieldChanged))
-            {
-                ValueFieldChanged = valueFieldChanged;
-            }
+            AssignValuesFromAtomicPredicate();      
         }
 
         protected override void OnParametersSet()
         {
-            if (AtomicPredicate is not null)
+            AssignValuesFromAtomicPredicate();
+            base.OnParametersSet();
+        }
+
+        private void AssignValuesFromAtomicPredicate()
+        {
+            if(AtomicPredicate is null)
             {
+                return;
+            }
 
-                FieldType = FieldType.Identify(AtomicPredicate.MemberType);
-                ValueObject = AtomicPredicate.Value;
-                if (ValueObject is not null && FieldType is not null && AtomicPredicate.Operator is not null)
+            FieldType = FieldType.Identify(AtomicPredicate.MemberType);
+            ValueObject = AtomicPredicate.Value;
+            if (ValueObject is not null && FieldType is not null && AtomicPredicate.Operator is not null)
+            {
+                if (AtomicPredicate.Operator.Equals(FilterOperator.String.IsOneOf) || AtomicPredicate.Operator.Equals(FilterOperator.String.IsNotOneOf))
                 {
-                    if (AtomicPredicate.Operator.Equals(FilterOperator.String.IsOneOf) || AtomicPredicate.Operator.Equals(FilterOperator.String.IsNotOneOf))
+                    ValueString = (string)ValueObject.ToString();
+                }
+                else
+                {
+                    if (FieldType.IsString)
                     {
-                        ValueString = (string)ValueObject.ToString();
+                        ValueString = (string)ValueObject;
                     }
-                    else
+
+                    if (FieldType.IsNumber)
                     {
-                        if (FieldType.IsString)
-                        {
-                            ValueString = (string)ValueObject;
-                        }
+                        ValueNumber = Convert.ToDouble(ValueObject);
+                    }
 
-                        if (FieldType.IsNumber)
-                        {
-                            ValueNumber = Convert.ToDouble(ValueObject);
-                        }
+                    if (FieldType.IsEnum)
+                    {
+                        ValueEnum = ValueObject.ToString();
+                    }
 
-                        if (FieldType.IsEnum)
-                        {
-                            ValueEnum = ValueObject.ToString();
-                        }
+                    if (FieldType.IsBoolean)
+                    {
+                        ValueBool = (bool)ValueObject;
+                    }
 
-                        if (FieldType.IsBoolean)
+                    if (FieldType.IsDateTime)
+                    {
+                        if (ValueObject is DateTime dateTime)
                         {
-                            ValueBool = (bool)ValueObject;
-                        }
-
-                        if (FieldType.IsDateTime)
-                        {
-                            if (ValueObject is DateTime dateTime)
-                            {
-                                ValueDate = dateTime;
-                                ValueTime = dateTime.TimeOfDay;
-                            }
-                        }
-
-                        if (FieldType.IsGuid)
-                        {
-                            ValueGuid = (Guid)ValueObject;
+                            ValueDate = dateTime;
+                            ValueTime = dateTime.TimeOfDay;
                         }
                     }
 
-                    base.OnParametersSet();
+                    if (FieldType.IsGuid)
+                    {
+                        ValueGuid = (Guid)ValueObject;
+                    }
                 }
             }
         }
+
 
         public static object? ConvertToEnum(Type enumType, object value)
         {
