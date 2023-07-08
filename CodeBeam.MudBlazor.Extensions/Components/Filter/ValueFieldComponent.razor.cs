@@ -137,40 +137,48 @@ namespace MudExtensions
 
                 FieldType = FieldType.Identify(AtomicPredicate.MemberType);
                 ValueObject = AtomicPredicate.Value;
-                if (ValueObject is not null && FieldType is not null)
+                if (ValueObject is not null && FieldType is not null && AtomicPredicate.Operator is not null)
                 {
-                    if (FieldType.IsString)
-                    {
-                        ValueString = (string)ValueObject;
-                    }
 
-                    if (FieldType.IsNumber)
+                    if (AtomicPredicate.Operator.Equals(FilterOperator.String.IsOneOf) || AtomicPredicate.Operator.Equals(FilterOperator.String.IsNotOneOf))
                     {
-                        ValueNumber = Convert.ToDouble(ValueObject);
+                        ValueString = (string)ValueObject.ToString();
                     }
-
-                    if (FieldType.IsEnum)
+                    else
                     {
-                        ValueEnum = ValueObject.ToString();
-                    }
-
-                    if (FieldType.IsBoolean)
-                    {
-                        ValueBool = (bool)ValueObject;
-                    }
-
-                    if (FieldType.IsDateTime)
-                    {
-                        if (ValueObject is DateTime dateTime)
+                        if (FieldType.IsString)
                         {
-                            ValueDate = dateTime;
-                            ValueTime = dateTime.TimeOfDay;
+                            ValueString = (string)ValueObject;
                         }
-                    }
 
-                    if (FieldType.IsGuid)
-                    {
-                        ValueGuid = (Guid)ValueObject;
+                        if (FieldType.IsNumber)
+                        {
+                            ValueNumber = Convert.ToDouble(ValueObject);
+                        }
+
+                        if (FieldType.IsEnum)
+                        {
+                            ValueEnum = ValueObject.ToString();
+                        }
+
+                        if (FieldType.IsBoolean)
+                        {
+                            ValueBool = (bool)ValueObject;
+                        }
+
+                        if (FieldType.IsDateTime)
+                        {
+                            if (ValueObject is DateTime dateTime)
+                            {
+                                ValueDate = dateTime;
+                                ValueTime = dateTime.TimeOfDay;
+                            }
+                        }
+
+                        if (FieldType.IsGuid)
+                        {
+                            ValueGuid = (Guid)ValueObject;
+                        }
                     }
                 }
             }
@@ -179,7 +187,6 @@ namespace MudExtensions
             {
                 ValueFieldChanged = valueFieldChanged;
             }
-
         }
 
         protected override void OnParametersSet()
@@ -189,46 +196,53 @@ namespace MudExtensions
 
                 FieldType = FieldType.Identify(AtomicPredicate.MemberType);
                 ValueObject = AtomicPredicate.Value;
-                if (ValueObject is not null && FieldType is not null)
+                if (ValueObject is not null && FieldType is not null && AtomicPredicate.Operator is not null)
                 {
-                    if (FieldType.IsString)
+                    if (AtomicPredicate.Operator.Equals(FilterOperator.String.IsOneOf) || AtomicPredicate.Operator.Equals(FilterOperator.String.IsNotOneOf))
                     {
-                        ValueString = (string)ValueObject;
+                        ValueString = (string)ValueObject.ToString();
                     }
-
-                    if (FieldType.IsNumber)
+                    else
                     {
-                        ValueNumber = Convert.ToDouble(ValueObject);
-                    }
-
-                    if (FieldType.IsEnum)
-                    {
-                        ValueEnum = ValueObject.ToString();
-                    }
-
-                    if (FieldType.IsBoolean)
-                    {
-                        ValueBool = (bool)ValueObject;
-                    }
-
-                    if (FieldType.IsDateTime)
-                    {
-                        if (ValueObject is DateTime dateTime)
+                        if (FieldType.IsString)
                         {
-                            ValueDate = dateTime;
-                            ValueTime = dateTime.TimeOfDay;
+                            ValueString = (string)ValueObject;
+                        }
+
+                        if (FieldType.IsNumber)
+                        {
+                            ValueNumber = Convert.ToDouble(ValueObject);
+                        }
+
+                        if (FieldType.IsEnum)
+                        {
+                            ValueEnum = ValueObject.ToString();
+                        }
+
+                        if (FieldType.IsBoolean)
+                        {
+                            ValueBool = (bool)ValueObject;
+                        }
+
+                        if (FieldType.IsDateTime)
+                        {
+                            if (ValueObject is DateTime dateTime)
+                            {
+                                ValueDate = dateTime;
+                                ValueTime = dateTime.TimeOfDay;
+                            }
+                        }
+
+                        if (FieldType.IsGuid)
+                        {
+                            ValueGuid = (Guid)ValueObject;
                         }
                     }
 
-                    if (FieldType.IsGuid)
-                    {
-                        ValueGuid = (Guid)ValueObject;
-                    }
+                    base.OnParametersSet();
                 }
             }
-            base.OnParametersSet();
         }
-
 
         public static object? ConvertToEnum(Type enumType, object value)
         {

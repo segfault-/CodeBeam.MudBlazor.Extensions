@@ -41,12 +41,6 @@ namespace MudExtensions
             }
         }
 
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-        }
-
-
         protected override async Task OnParametersSetAsync()
         {
             await base.OnParametersSetAsync();
