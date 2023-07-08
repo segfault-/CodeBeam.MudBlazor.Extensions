@@ -6,7 +6,7 @@
 <div class="@ClassName" style="@StyleString">
     <MudSelectExtended MultiSelection="false"
                        ItemCollection="FilterOperator.GetOperatorByDataType(AtomicPredicate.MemberType)"
-                       @bind-Value="Operator"
+                       @bind-Value="AtomicPredicate.Operator"
                        @bind-Value:after="OnOperatorSelectChangedAsync"
                        ValuePresenter="ValuePresenter.ItemContent"
                        SearchBox="true"

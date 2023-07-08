@@ -1,19 +1,22 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Utilities;
+using System.ComponentModel;
 using System.Linq.Expressions;
 
 namespace MudExtensions
 {
 #nullable enable
-    public partial class PropertySelectComponent<TItem> : MudComponentBase
+    public partial class PropertySelectComponent<T> : MudComponentBase
     {
-        [Parameter] public MudFilter<TItem>? Filter { get; set; }
-        [Parameter] public AtomicPredicate<TItem>? AtomicPredicate { get; set; }
+        private AtomicPredicate<T>? _internalAtomicPredicate;
+
+        [Parameter] public MudFilter<T>? Filter { get; set; }
+        [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
         [Parameter] public EventCallback PropertySelectChanged { get; set; }
 
 
-        protected Property<TItem>? Property { get; set; }
+        protected Property<T>? Property { get; set; }
         protected string ClassName => new CssBuilder("mud-property-select")
             .AddClass(Class)
             .Build();
@@ -22,40 +25,44 @@ namespace MudExtensions
             .Build();
 
 
+        /// <summary>
+        /// Take control of the parameter setting process.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public override async Task SetParametersAsync(ParameterView parameters)
         {
+            parameters.SetParameterProperties(this);
+
+            if (_internalAtomicPredicate != AtomicPredicate)
+            {
+                if (_internalAtomicPredicate != null)
+                {
+                    _internalAtomicPredicate.PropertyChanged -= HandlePropertyChanged;
+                }
+
+                _internalAtomicPredicate = AtomicPredicate;
+
+                if (_internalAtomicPredicate != null)
+                {
+                    _internalAtomicPredicate.PropertyChanged += HandlePropertyChanged;
+                    // Handle initial state here if needed
+                }
+            }
+
             await base.SetParametersAsync(parameters);
 
-            if (parameters.TryGetValue<MudFilter<TItem>>("Filter", out var filter))
-            {
-                Filter = filter;
-            }
-
-            if (parameters.TryGetValue<AtomicPredicate<TItem>>("AtomicPredicate", out var atomicPredicate))
-            {
-                AtomicPredicate = atomicPredicate;
-            }
-
-            if (parameters.TryGetValue<EventCallback>("PropertySelectChanged", out var propertySelectChanged))
-            {
-                PropertySelectChanged = propertySelectChanged;
-            }
-        }
-
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-        }
-
-        protected override void OnParametersSet()
-        {
-
-            if(AtomicPredicate is not null)
+            if (AtomicPredicate is not null)
             {
                 Property = Filter?.Properties?.SingleOrDefault(p => GetPropertyName(p.PropertyExpression) == AtomicPredicate.Member);
-               
             }
-            base.OnParametersSet();
+        }
+
+        private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            // Perform updates based on changes
+            // Check e.PropertyName for specific property changes if needed
+            Console.WriteLine($"PropertySelectComponent - {e.PropertyName} has changed");
         }
 
         protected async Task OnPropertyChangedAsync()
@@ -75,10 +82,10 @@ namespace MudExtensions
             }        
         }
 
-        protected Func<Property<TItem>, string, bool> SearchFunc => (property, value) => property.ComputedTitle?.Contains(value, StringComparison.OrdinalIgnoreCase) ?? false;
+        protected Func<Property<T>, string, bool> SearchFunc => (property, value) => property.ComputedTitle?.Contains(value, StringComparison.OrdinalIgnoreCase) ?? false;
 
 
-        public static string? GetPropertyName(Expression<Func<TItem, object>>? expression)
+        public static string? GetPropertyName(Expression<Func<T, object>>? expression)
         {
             if(expression is null)
             {

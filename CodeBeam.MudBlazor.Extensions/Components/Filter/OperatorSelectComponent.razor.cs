@@ -1,16 +1,18 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Utilities;
+using System.ComponentModel;
 
 namespace MudExtensions
 {
 #nullable enable
-    public partial class OperatorSelectComponent<T> : MudComponentBase
+    public partial class OperatorSelectComponent<T> : MudComponentBase, IDisposable
     {
-        [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
-        [Parameter] public EventCallback OperatorSelectChanged { get; set; }
+        private AtomicPredicate<T>? _internalAtomicPredicate;
 
-        protected string? Operator { get; set; }
+        [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
+        [Parameter] public EventCallback OperatorChanged { get; set; }
+        [Parameter] public EventCallback OperatorTypeChanged { get; set; }
 
         protected string ClassName => new CssBuilder("mud-operator-select")
             .AddClass(Class)
@@ -22,45 +24,64 @@ namespace MudExtensions
 
         public override async Task SetParametersAsync(ParameterView parameters)
         {
+            parameters.SetParameterProperties(this);
+
+            if (_internalAtomicPredicate != AtomicPredicate)
+            {
+                if (_internalAtomicPredicate != null)
+                {
+                    _internalAtomicPredicate.PropertyChanged -= HandlePropertyChanged;
+                }
+
+                _internalAtomicPredicate = AtomicPredicate;
+
+                if (_internalAtomicPredicate != null)
+                {
+                    _internalAtomicPredicate.PropertyChanged += HandlePropertyChanged;
+                    // Handle initial state here if needed
+                }
+            }
+
             await base.SetParametersAsync(parameters);
-
-            if (AtomicPredicate is not null)
-            {
-                Operator = AtomicPredicate.Operator;
-            }
-
-            //if (parameters.TryGetValue<AtomicPredicate<T>>("AtomicPredicate", out var atomicPredicate))
-            //{
-            //    AtomicPredicate = atomicPredicate;
-            //    Operator = AtomicPredicate.Operator;
-            //}
-
-            if (parameters.TryGetValue<EventCallback>("OperatorSelectChanged", out var operatorSelectChanged))
-            {
-                OperatorSelectChanged = operatorSelectChanged;
-            }
         }
 
-        protected override async Task OnParametersSetAsync()
+        private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            await base.OnParametersSetAsync();
+            // Perform updates based on changes
+            // Check e.PropertyName for specific property changes if needed
+            Console.WriteLine($"OperatorSelectComponent {e.PropertyName} has changed");
 
-            if (AtomicPredicate is not null)
+            if(e.PropertyName?.Equals("Member") ?? false)
             {
-                Operator = AtomicPredicate.Operator;
+                if (AtomicPredicate is not null)
+                {
+                    //if(AtomicPredicate.Operator != Operator)
+                    //{
+                        AtomicPredicate.Operator = null;
+                    //}                    
+                }
             }
         }
 
         protected async Task OnOperatorSelectChangedAsync()
         {
-            if (AtomicPredicate is not null)
-            {
-                AtomicPredicate.Operator = Operator;
-            }
-            await OperatorSelectChanged.InvokeAsync();
+            //if (AtomicPredicate is not null)
+            //{
+            //    AtomicPredicate.Operator = Operator;
+            //}
+            await OperatorChanged.InvokeAsync();
         }
 
         protected Func<string, string, bool> SearchFunc => (op, value) => op.Contains(value, StringComparison.OrdinalIgnoreCase);
+
+
+        public void Dispose()
+        {
+            if (_internalAtomicPredicate != null)
+            {
+                _internalAtomicPredicate.PropertyChanged -= HandlePropertyChanged;
+            }
+        }
 
     }
 }

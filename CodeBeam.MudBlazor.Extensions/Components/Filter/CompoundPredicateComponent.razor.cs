@@ -48,13 +48,10 @@ namespace MudExtensions
         {
             base.OnInitialized();
 
-
             if(CompoundPredicate?.AtomicPredicates.Any() == false)
             {
                 CompoundPredicate?.AddPredicate(new AtomicPredicate<T>(CompoundPredicate));
             }
-
-
         }
 
         protected override async Task OnInitializedAsync()

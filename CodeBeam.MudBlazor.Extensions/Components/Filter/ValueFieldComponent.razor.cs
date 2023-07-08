@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Utilities;
-using System;
+using System.ComponentModel;
 
 namespace MudExtensions
 {
 #nullable enable
-    public partial class ValueFieldComponent<T> : MudComponentBase
+    public partial class ValueFieldComponent<T> : MudComponentBase, IDisposable
     {
+        private AtomicPredicate<T>? _internalAtomicPredicate;
+
         [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
         [Parameter] public EventCallback ValueFieldChanged { get; set; }
 
@@ -108,16 +110,6 @@ namespace MudExtensions
             }
         }
 
-        private bool _isMultiSelect;
-        protected bool IsMultiSelect
-        {
-            get => _isMultiSelect;
-            set
-            {
-                _isMultiSelect = value;
-            }
-        }
-
         protected string ClassName => new CssBuilder("mud-value-field")
             .AddClass(Class)
             .Build();
@@ -126,17 +118,40 @@ namespace MudExtensions
             .AddStyle(Style)
             .Build();
 
-
+        /// <summary>
+        /// Take control of the parameter setting process.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public override async Task SetParametersAsync(ParameterView parameters)
         {
+            parameters.SetParameterProperties(this);
+
+            if (_internalAtomicPredicate != AtomicPredicate)
+            {
+                if (_internalAtomicPredicate != null)
+                {
+                    _internalAtomicPredicate.PropertyChanged -= HandlePropertyChanged;
+                }
+
+                _internalAtomicPredicate = AtomicPredicate;
+
+                if (_internalAtomicPredicate != null)
+                {
+                    _internalAtomicPredicate.PropertyChanged += HandlePropertyChanged;
+                    // Handle initial state here if needed
+                }
+            }
+
             await base.SetParametersAsync(parameters);
             AssignValuesFromAtomicPredicate();      
         }
 
-        protected override void OnParametersSet()
+        private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            AssignValuesFromAtomicPredicate();
-            base.OnParametersSet();
+            // Perform updates based on changes
+            // Check e.PropertyName for specific property changes if needed
+            Console.WriteLine($"{e.PropertyName} has changed");
         }
 
         private void AssignValuesFromAtomicPredicate()
@@ -212,6 +227,14 @@ namespace MudExtensions
         protected async Task OnValueFieldChangedAsync()
         {
             await ValueFieldChanged.InvokeAsync();
+        }
+
+        public void Dispose()
+        {
+            if (_internalAtomicPredicate != null)
+            {
+                _internalAtomicPredicate.PropertyChanged -= HandlePropertyChanged;
+            }
         }
     }
 }
