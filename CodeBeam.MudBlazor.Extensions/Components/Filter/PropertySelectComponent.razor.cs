@@ -62,7 +62,10 @@ namespace MudExtensions
         {
             // Perform updates based on changes
             // Check e.PropertyName for specific property changes if needed
-            Console.WriteLine($"PropertySelectComponent - {e.PropertyName} has changed");
+            if(e.PropertyName?.Equals("Member") ?? false)
+            {
+                Console.WriteLine($"PropertySelectComponent - {e.PropertyName} has changed");
+            }
         }
 
         protected async Task OnPropertyChangedAsync()

@@ -49,17 +49,29 @@ namespace MudExtensions
         {
             // Perform updates based on changes
             // Check e.PropertyName for specific property changes if needed
-            Console.WriteLine($"OperatorSelectComponent {e.PropertyName} has changed");
 
             if(e.PropertyName?.Equals("Member") ?? false)
             {
+
+                    Console.WriteLine($"Dependent property changed: {e.PropertyName} setting operator to null");
+                //if(AtomicPredicate.Operator != Operator)
+                //{
                 if (AtomicPredicate is not null)
                 {
-                    //if(AtomicPredicate.Operator != Operator)
-                    //{
-                        AtomicPredicate.Operator = null;
-                    //}                    
+                    AtomicPredicate.Operator = null;
                 }
+                    //}                    
+
+            }
+            else if(e.PropertyName?.Equals("Operator") ?? false)
+            {
+                Console.WriteLine($"{e.PropertyName} has changed setting value to null");
+                if(AtomicPredicate is not null)
+                {
+                    AtomicPredicate.Value = null;
+                }
+                
+
             }
         }
 

@@ -151,61 +151,82 @@ namespace MudExtensions
         {
             // Perform updates based on changes
             // Check e.PropertyName for specific property changes if needed
-            Console.WriteLine($"{e.PropertyName} has changed");
+            if(e.PropertyName?.Equals(nameof(AtomicPredicate<T>.Operator)) ?? false)
+            {
+                AssignValuesFromAtomicPredicate();
+            }
+            if (e.PropertyName?.Equals("Value") ?? false)
+            {
+                Console.WriteLine($"{e.PropertyName} has changed");
+                //AssignValuesFromAtomicPredicate();
+            }
+
         }
 
         private void AssignValuesFromAtomicPredicate()
         {
-            if(AtomicPredicate is null)
+            if (AtomicPredicate is null)
             {
                 return;
             }
 
+            if (AtomicPredicate.Operator is null)
+            {
+                ValueBool = null;
+                ValueDate = null;
+                ValueEnum = null;
+                ValueGuid = null;
+                ValueNumber = null;
+                ValueObject = null;
+                ValueString = null;
+            }
+
             FieldType = FieldType.Identify(AtomicPredicate.MemberType);
             ValueObject = AtomicPredicate.Value;
-            if (ValueObject is not null && FieldType is not null && AtomicPredicate.Operator is not null)
+
+
+
+            if ((AtomicPredicate.Operator?.Equals(FilterOperator.String.IsOneOf) ?? false) || (AtomicPredicate.Operator?.Equals(FilterOperator.String.IsNotOneOf) ?? false))
             {
-                if (AtomicPredicate.Operator.Equals(FilterOperator.String.IsOneOf) || AtomicPredicate.Operator.Equals(FilterOperator.String.IsNotOneOf))
+                ValueString = Convert.ToString(ValueObject);
+            }
+            else
+            {
+                if (FieldType.IsString)
                 {
-                    ValueString = (string)ValueObject.ToString();
+                    ValueString = Convert.ToString(ValueObject);
                 }
-                else
+
+                if (FieldType.IsNumber)
                 {
-                    if (FieldType.IsString)
-                    {
-                        ValueString = (string)ValueObject;
-                    }
+                    ValueNumber = Convert.ToDouble(ValueObject);
+                }
 
-                    if (FieldType.IsNumber)
-                    {
-                        ValueNumber = Convert.ToDouble(ValueObject);
-                    }
+                if (FieldType.IsEnum)
+                {
+                    ValueEnum = Convert.ToString(ValueObject);
+                }
 
-                    if (FieldType.IsEnum)
-                    {
-                        ValueEnum = ValueObject.ToString();
-                    }
+                if (FieldType.IsBoolean)
+                {
+                    ValueBool = Convert.ToBoolean(ValueObject);
+                }
 
-                    if (FieldType.IsBoolean)
+                if (FieldType.IsDateTime)
+                {
+                    if (ValueObject is DateTime dateTime)
                     {
-                        ValueBool = (bool)ValueObject;
+                        ValueDate = dateTime;
+                        ValueTime = dateTime.TimeOfDay;
                     }
+                }
 
-                    if (FieldType.IsDateTime)
-                    {
-                        if (ValueObject is DateTime dateTime)
-                        {
-                            ValueDate = dateTime;
-                            ValueTime = dateTime.TimeOfDay;
-                        }
-                    }
-
-                    if (FieldType.IsGuid)
-                    {
-                        ValueGuid = (Guid)ValueObject;
-                    }
+                if (FieldType.IsGuid)
+                {
+                    ValueGuid = new Guid(Convert.ToString(ValueObject) ?? Guid.Empty.ToString());
                 }
             }
+
         }
 
 
