@@ -10,11 +10,12 @@ namespace MudExtensions
     public partial class PropertySelectComponent<T> : MudComponentBase, IDisposable
     {
         private AtomicPredicate<T>? _internalAtomicPredicate;
+        private Type? _oldPropertyType;
 
         [Parameter] public MudFilter<T>? Filter { get; set; }
         [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
         [Parameter] public EventCallback PropertySelectChanged { get; set; }
-
+        [Parameter] public EventCallback PropertySelectTypeChanged { get; set; }
 
         protected Property<T>? Property { get; set; }
         protected string ClassName => new CssBuilder("mud-property-select")
@@ -25,11 +26,6 @@ namespace MudExtensions
             .Build();
 
 
-        /// <summary>
-        /// Take control of the parameter setting process.
-        /// </summary>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
         public override async Task SetParametersAsync(ParameterView parameters)
         {
             parameters.SetParameterProperties(this);
@@ -46,7 +42,6 @@ namespace MudExtensions
                 if (_internalAtomicPredicate != null)
                 {
                     _internalAtomicPredicate.PropertyChanged += HandlePropertyChanged;
-                    // Handle initial state here if needed
                 }
             }
 
@@ -55,13 +50,12 @@ namespace MudExtensions
             if (AtomicPredicate is not null)
             {
                 Property = Filter?.Properties?.SingleOrDefault(p => GetPropertyName(p.PropertyExpression) == AtomicPredicate.Member);
+                _oldPropertyType = TypeIdentifier.GetPropertyTypeFromExpression(Property?.PropertyExpression);
             }
         }
 
         private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // Perform updates based on changes
-            // Check e.PropertyName for specific property changes if needed
             if (e.PropertyName?.Equals("Member") ?? false)
             {
             }
@@ -69,21 +63,22 @@ namespace MudExtensions
 
         protected async Task OnPropertyChangedAsync()
         {
-            Type? oldType = TypeIdentifier.GetPropertyTypeFromExpression(AtomicPredicate?.PropertyExpression);
             Type? newType = TypeIdentifier.GetPropertyTypeFromExpression(Property?.PropertyExpression);
 
             if (AtomicPredicate is not null)
             {
-                var foo = GetPropertyName(Property?.PropertyExpression);
-                Console.WriteLine($"PropertySelectComponent::OnPropertyChangedAsync : foo is {foo}");
-                AtomicPredicate.Member = foo;
+                AtomicPredicate.Member = GetPropertyName(Property?.PropertyExpression);
             }
 
-            if (oldType != newType)
+            // Trigger the PropertySelectChanged event
+            await PropertySelectChanged.InvokeAsync();
+
+            if (_oldPropertyType != newType)
             {
-                Console.WriteLine($"PropertySelectComponent::OnPropertyChangedAsync : {oldType} {newType}");
-                await PropertySelectChanged.InvokeAsync();
-            }        
+                Console.WriteLine($"PropertySelectComponent::OnPropertyChangedAsync : {_oldPropertyType} {newType}");
+                await PropertySelectTypeChanged.InvokeAsync();
+                _oldPropertyType = newType; // update old type to the new type
+            }
         }
 
         protected Func<Property<T>, string, bool> SearchFunc => (property, value) => property.ComputedTitle?.Contains(value, StringComparison.OrdinalIgnoreCase) ?? false;
@@ -91,7 +86,7 @@ namespace MudExtensions
 
         public static string? GetPropertyName(Expression<Func<T, object>>? expression)
         {
-            if(expression is null)
+            if (expression is null)
             {
                 return null;
             }
