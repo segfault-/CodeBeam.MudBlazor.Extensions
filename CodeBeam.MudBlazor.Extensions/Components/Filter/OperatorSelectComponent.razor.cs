@@ -12,7 +12,6 @@ namespace MudExtensions
 
         [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
         [Parameter] public EventCallback OperatorChanged { get; set; }
-        [Parameter] public EventCallback OperatorTypeChanged { get; set; }
 
         private string? _operator;
         protected string? Operator
