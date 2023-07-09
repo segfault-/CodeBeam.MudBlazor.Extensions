@@ -68,8 +68,8 @@ namespace MudExtensions
         {
             if (e.PropertyName?.Equals(nameof(AtomicPredicate<T>.Member)) ?? false)
             {
-                Operator = null;
-                InvokeAsync(StateHasChanged);
+                //Operator = null;
+                //InvokeAsync(StateHasChanged);
             }
             else if (e.PropertyName?.Equals("Operator") ?? false)
             {

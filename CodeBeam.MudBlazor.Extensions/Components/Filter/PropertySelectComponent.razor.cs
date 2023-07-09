@@ -67,7 +67,7 @@ namespace MudExtensions
         }
 
         // This method is called when the selected property changes
-        protected async Task HandleSelectedPropertyChangedAsync()
+        protected async Task HandleSelectedPropertyChangeAsync()
         {
             Type? newPropertyType = TypeIdentifier.GetPropertyTypeFromExpression(SelectedProperty?.PropertyExpression);
 
@@ -76,14 +76,15 @@ namespace MudExtensions
                 AtomicPredicate.Member = GetPropertyName(SelectedProperty?.PropertyExpression);
             }
 
-            // Trigger the PropertySelectChanged event
-            await PropertySelectChanged.InvokeAsync();
-
             // If the type has changed, trigger the PropertySelectTypeChanged event
             if (_previousPropertyType != newPropertyType)
             {
                 await PropertySelectTypeChanged.InvokeAsync();
                 _previousPropertyType = newPropertyType;
+            }
+            else
+            {
+                await PropertySelectChanged.InvokeAsync();
             }
         }
 
