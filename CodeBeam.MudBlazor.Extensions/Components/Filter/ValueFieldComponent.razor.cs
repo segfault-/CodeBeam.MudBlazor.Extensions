@@ -22,10 +22,11 @@ namespace MudExtensions
             set
             {
                 _valueObject = value;
-                if (AtomicPredicate is not null)
+                if(AtomicPredicate is not null)
                 {
                     AtomicPredicate.Value = value;
                 }
+
             }
         }
 
@@ -144,7 +145,7 @@ namespace MudExtensions
             }
 
             await base.SetParametersAsync(parameters);
-            AssignValuesFromAtomicPredicate();      
+            AssignValuesFromAtomicPredicate();
         }
 
         private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -246,7 +247,7 @@ namespace MudExtensions
 
         public void Dispose()
         {
-            if (_internalAtomicPredicate != null)
+            if (_internalAtomicPredicate is not null)
             {
                 _internalAtomicPredicate.PropertyChanged -= HandlePropertyChanged;
             }

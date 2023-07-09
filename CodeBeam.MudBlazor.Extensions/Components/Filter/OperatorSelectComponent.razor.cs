@@ -5,7 +5,6 @@ using System.ComponentModel;
 
 namespace MudExtensions
 {
-#nullable enable
     public partial class OperatorSelectComponent<T> : MudComponentBase, IDisposable
     {
         private AtomicPredicate<T>? _internalAtomicPredicate;
@@ -13,6 +12,19 @@ namespace MudExtensions
         [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
         [Parameter] public EventCallback OperatorChanged { get; set; }
         [Parameter] public EventCallback OperatorTypeChanged { get; set; }
+
+        protected string? Operator
+        {
+            get => _internalAtomicPredicate?.Operator;
+            set
+            {
+                if (_internalAtomicPredicate?.Operator != value)
+                {
+                    _internalAtomicPredicate.Operator = value;
+                    InvokeAsync(StateHasChanged);
+                }
+            }
+        }
 
         protected string ClassName => new CssBuilder("mud-operator-select")
             .AddClass(Class)
@@ -38,54 +50,39 @@ namespace MudExtensions
                 if (_internalAtomicPredicate != null)
                 {
                     _internalAtomicPredicate.PropertyChanged += HandlePropertyChanged;
-                    // Handle initial state here if needed
                 }
             }
 
             await base.SetParametersAsync(parameters);
+            Operator = _internalAtomicPredicate?.Operator;
         }
 
         private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // Perform updates based on changes
-            // Check e.PropertyName for specific property changes if needed
-
-            if(e.PropertyName?.Equals(nameof(AtomicPredicate<T>.Member)) ?? false)
+            if (e.PropertyName?.Equals(nameof(AtomicPredicate<T>.Member)) ?? false)
             {
-
-                    Console.WriteLine($"Dependent property changed: {e.PropertyName} setting operator to null");
-                //if(AtomicPredicate.Operator != Operator)
-                //{
-                if (AtomicPredicate is not null)
-                {
-                    AtomicPredicate.Operator = null;
-                }
-                    //}                    
-
+                Operator = null;
+                InvokeAsync(StateHasChanged);
             }
-            else if(e.PropertyName?.Equals("Operator") ?? false)
+            else if (e.PropertyName?.Equals("Operator") ?? false)
             {
-                Console.WriteLine($"{e.PropertyName} has changed setting value to null");
-                if(AtomicPredicate is not null)
+                if (AtomicPredicate is not null)
                 {
                     AtomicPredicate.Value = null;
                 }
-                
-
             }
         }
 
+
         protected async Task OnOperatorSelectChangedAsync()
         {
-            //if (AtomicPredicate is not null)
-            //{
-            //    AtomicPredicate.Operator = Operator;
-            //}
-            await OperatorChanged.InvokeAsync();
+            if (AtomicPredicate?.Operator != Operator)
+            {
+                await OperatorChanged.InvokeAsync();
+            }
         }
 
         protected Func<string, string, bool> SearchFunc => (op, value) => op.Contains(value, StringComparison.OrdinalIgnoreCase);
-
 
         public void Dispose()
         {
@@ -94,6 +91,5 @@ namespace MudExtensions
                 _internalAtomicPredicate.PropertyChanged -= HandlePropertyChanged;
             }
         }
-
     }
 }

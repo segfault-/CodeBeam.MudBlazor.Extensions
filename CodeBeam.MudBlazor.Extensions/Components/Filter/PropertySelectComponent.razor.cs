@@ -62,9 +62,18 @@ namespace MudExtensions
         {
             // Perform updates based on changes
             // Check e.PropertyName for specific property changes if needed
-            if(e.PropertyName?.Equals("Member") ?? false)
+            if (e.PropertyName?.Equals("Member") ?? false)
             {
-                Console.WriteLine($"PropertySelectComponent - {e.PropertyName} has changed");
+
+
+
+                Console.WriteLine($"PropertySelectComponent - {e.PropertyName} has changed setting PropertyExpression to null");
+
+                //if (AtomicPredicate is not null)
+                //{
+                //    // need to null out "property" which is expre
+                //    AtomicPredicate.PropertyExpression = null;
+                //}
             }
         }
 
@@ -76,11 +85,13 @@ namespace MudExtensions
             if (AtomicPredicate is not null)
             {
                 var foo = GetPropertyName(Property?.PropertyExpression);
+                Console.WriteLine($"foo is {foo}");
                 AtomicPredicate.Member = foo;
             }
 
             if (oldType != newType)
             {
+                Console.WriteLine($"{oldType} {newType}");
                 await PropertySelectChanged.InvokeAsync();
             }        
         }
