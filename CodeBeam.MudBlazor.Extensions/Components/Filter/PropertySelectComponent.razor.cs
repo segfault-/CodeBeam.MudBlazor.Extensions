@@ -9,15 +9,19 @@ namespace MudExtensions
 #nullable enable
     public partial class PropertySelectComponent<T> : MudComponentBase, IDisposable
     {
-        private AtomicPredicate<T>? _internalAtomicPredicate;
-        private Type? _oldPropertyType; // to track if the property's type has changed
+        // The property type from the last update
+        private Type? _previousPropertyType;
+
+        // The currently active AtomicPredicate
+        private AtomicPredicate<T>? _currentAtomicPredicate;
+
+        // The currently selected property
+        protected Property<T>? SelectedProperty { get; set; }
 
         [Parameter] public MudFilter<T>? Filter { get; set; }
         [Parameter] public AtomicPredicate<T>? AtomicPredicate { get; set; }
         [Parameter] public EventCallback PropertySelectChanged { get; set; }
         [Parameter] public EventCallback PropertySelectTypeChanged { get; set; }
-
-        protected Property<T>? Property { get; set; }
 
         protected string ClassName => new CssBuilder("mud-property-select")
             .AddClass(Class)
@@ -27,76 +31,64 @@ namespace MudExtensions
             .AddStyle(Style)
             .Build();
 
-
-        /// <summary>
-        /// Take control of the parameter setting process.
-        /// </summary>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
         public override async Task SetParametersAsync(ParameterView parameters)
         {
             parameters.SetParameterProperties(this);
 
-            if (_internalAtomicPredicate != AtomicPredicate)
+            // Unsubscribe from old predicate if necessary
+            if (_currentAtomicPredicate != AtomicPredicate && _currentAtomicPredicate != null)
             {
-                if (_internalAtomicPredicate != null)
-                {
-                    _internalAtomicPredicate.PropertyChanged -= HandlePropertyChanged;
-                }
+                _currentAtomicPredicate.PropertyChanged -= HandleAtomicPredicatePropertyChanged;
+            }
 
-                _internalAtomicPredicate = AtomicPredicate;
+            // Update the current predicate and subscribe to it
+            _currentAtomicPredicate = AtomicPredicate;
 
-                if (_internalAtomicPredicate != null)
-                {
-                    _internalAtomicPredicate.PropertyChanged += HandlePropertyChanged;
-                    // Handle initial state here if needed
-                }
+            if (_currentAtomicPredicate != null)
+            {
+                _currentAtomicPredicate.PropertyChanged += HandleAtomicPredicatePropertyChanged;
             }
 
             await base.SetParametersAsync(parameters);
 
-            if (AtomicPredicate is not null)
+            // Update the selected property and remember its type
+            if (AtomicPredicate != null)
             {
-                Property = Filter?.Properties?.SingleOrDefault(p => GetPropertyName(p.PropertyExpression) == AtomicPredicate.Member);
-                _oldPropertyType = TypeIdentifier.GetPropertyTypeFromExpression(Property?.PropertyExpression);
+                SelectedProperty = Filter?.Properties?.SingleOrDefault(p => GetPropertyName(p.PropertyExpression) == AtomicPredicate.Member);
+                _previousPropertyType = TypeIdentifier.GetPropertyTypeFromExpression(SelectedProperty?.PropertyExpression);
             }
         }
 
-        private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
+        // This method is called when any property of the AtomicPredicate changes
+        private void HandleAtomicPredicatePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // Perform updates based on changes
-            // Check e.PropertyName for specific property changes if needed
-            if (e.PropertyName?.Equals("Member") ?? false)
-            {
-            }
+            // Add specific handlers for property changes if necessary
+            // e.g., update the UI when the Member property changes
         }
 
-        protected async Task OnPropertyChangedAsync()
+        // This method is called when the selected property changes
+        protected async Task HandleSelectedPropertyChangedAsync()
         {
-            Type? newType = TypeIdentifier.GetPropertyTypeFromExpression(Property?.PropertyExpression);
+            Type? newPropertyType = TypeIdentifier.GetPropertyTypeFromExpression(SelectedProperty?.PropertyExpression);
 
-            if (AtomicPredicate is not null)
+            if (AtomicPredicate != null)
             {
-                var foo = GetPropertyName(Property?.PropertyExpression);
-                Console.WriteLine($"PropertySelectComponent::OnPropertyChangedAsync : foo is {foo}");
-                AtomicPredicate.Member = foo;
+                AtomicPredicate.Member = GetPropertyName(SelectedProperty?.PropertyExpression);
             }
 
             // Trigger the PropertySelectChanged event
             await PropertySelectChanged.InvokeAsync();
 
-            // Check if the type of property has changed
-            if (_oldPropertyType != newType)
+            // If the type has changed, trigger the PropertySelectTypeChanged event
+            if (_previousPropertyType != newPropertyType)
             {
-                Console.WriteLine($"PropertySelectComponent::OnPropertyChangedAsync : {_oldPropertyType} {newType}");
-                // Trigger the PropertySelectTypeChanged event
                 await PropertySelectTypeChanged.InvokeAsync();
-                _oldPropertyType = newType; // update old type to the new type
+                _previousPropertyType = newPropertyType;
             }
         }
 
-        protected Func<Property<T>, string, bool> SearchFunc => (property, value) => property.ComputedTitle?.Contains(value, StringComparison.OrdinalIgnoreCase) ?? false;
-
+        protected Func<Property<T>, string, bool> SearchFunc =>
+            (property, value) => property.ComputedTitle?.Contains(value, StringComparison.OrdinalIgnoreCase) ?? false;
 
         public static string? GetPropertyName(Expression<Func<T, object>>? expression)
         {
@@ -108,10 +100,9 @@ namespace MudExtensions
             {
                 return memberExpression.Member.Name;
             }
-            else if (expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression)
+            else if (expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression memberExpression2)
             {
-                // If the property is nullable, expression.Body will be an UnaryExpression
-                return ((MemberExpression)unaryExpression.Operand).Member.Name;
+                return memberExpression2.Member.Name;
             }
 
             throw new ArgumentException("Invalid expression", nameof(expression));
@@ -119,9 +110,9 @@ namespace MudExtensions
 
         public void Dispose()
         {
-            if (_internalAtomicPredicate != null)
+            if (_currentAtomicPredicate != null)
             {
-                _internalAtomicPredicate.PropertyChanged -= HandlePropertyChanged;
+                _currentAtomicPredicate.PropertyChanged -= HandleAtomicPredicatePropertyChanged;
             }
         }
     }

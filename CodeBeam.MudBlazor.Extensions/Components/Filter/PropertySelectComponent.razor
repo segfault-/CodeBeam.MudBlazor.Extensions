@@ -7,8 +7,8 @@
 <div class="@ClassName" style="@StyleString">
     <MudSelectExtended MultiSelection="false"
                        ItemCollection="Filter?.Properties"
-                       @bind-Value="Property"
-                       @bind-Value:after="OnPropertyChangedAsync"
+                       @bind-Value="SelectedProperty"
+                       @bind-Value:after="HandleSelectedPropertyChangedAsync"
                        ValuePresenter="ValuePresenter.ItemContent"
                        SearchBox="true"
                        SearchBoxAutoFocus="true"

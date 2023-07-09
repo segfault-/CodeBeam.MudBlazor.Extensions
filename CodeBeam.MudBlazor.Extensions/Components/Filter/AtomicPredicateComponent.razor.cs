@@ -25,7 +25,7 @@ namespace MudExtensions
             .AddStyle(Style)
             .Build();
 
-        protected async Task OnPropertySelectChangedAsync()
+        protected async Task OnPropertySelectTypeChangedAsync()
         {
             //AtomicPredicate?.ClearOperatorAndValues();
             
