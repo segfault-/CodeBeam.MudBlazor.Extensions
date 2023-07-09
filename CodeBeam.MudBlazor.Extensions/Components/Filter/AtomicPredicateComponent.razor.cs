@@ -32,12 +32,6 @@ namespace MudExtensions
                 AtomicPredicate.Operator = null;
             }
 
-
-            //AtomicPredicate?.ClearOperatorAndValues();
-            
-            // Trigger a re-render which would call SetParametersAsync in children
-            //await InvokeAsync(StateHasChanged);
-            
             await AtomicPredicateComponentChanged.InvokeAsync();
         }
 

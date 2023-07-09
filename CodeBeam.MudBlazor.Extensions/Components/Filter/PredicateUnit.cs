@@ -60,15 +60,6 @@ namespace MudExtensions
         [JsonIgnore] public Type? MemberType { get; set; }
         [JsonIgnore] public override PredicateUnit<T>? Parent { get; set; }
 
-        /// <summary>
-        /// Clears operator and values
-        /// </summary>
-        public void ClearOperatorAndValues()
-        {
-            Value = null;
-            Operator = null;
-        }
-
         private string? _member;
         public string? Member
         {

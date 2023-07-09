@@ -96,7 +96,11 @@ namespace MudExtensions
             set
             {
                 _valueTime = value;
-                ValueObject = value;
+                if(ValueDate is not null && ValueTime is not null)
+                {
+                    ValueDate = ValueDate.Value.Date + ValueTime.Value;
+                   
+                }
             }
         }
 
