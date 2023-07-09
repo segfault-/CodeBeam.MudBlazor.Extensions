@@ -67,7 +67,7 @@ namespace MudExtensions
 
 
 
-                Console.WriteLine($"PropertySelectComponent - {e.PropertyName} has changed setting PropertyExpression to null");
+                Console.WriteLine($"PropertySelectComponent::HandlePropertyChanged : {e.PropertyName} has changed setting PropertyExpression to null");
 
                 //if (AtomicPredicate is not null)
                 //{
@@ -85,13 +85,13 @@ namespace MudExtensions
             if (AtomicPredicate is not null)
             {
                 var foo = GetPropertyName(Property?.PropertyExpression);
-                Console.WriteLine($"foo is {foo}");
+                Console.WriteLine($"PropertySelectComponent::OnPropertyChangedAsync : foo is {foo}");
                 AtomicPredicate.Member = foo;
             }
 
             if (oldType != newType)
             {
-                Console.WriteLine($"{oldType} {newType}");
+                Console.WriteLine($"PropertySelectComponent::OnPropertyChangedAsync : {oldType} {newType}");
                 await PropertySelectChanged.InvokeAsync();
             }        
         }

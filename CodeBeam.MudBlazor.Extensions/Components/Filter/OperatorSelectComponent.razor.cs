@@ -5,6 +5,7 @@ using System.ComponentModel;
 
 namespace MudExtensions
 {
+#nullable enable
     public partial class OperatorSelectComponent<T> : MudComponentBase, IDisposable
     {
         private AtomicPredicate<T>? _internalAtomicPredicate;
@@ -13,15 +14,16 @@ namespace MudExtensions
         [Parameter] public EventCallback OperatorChanged { get; set; }
         [Parameter] public EventCallback OperatorTypeChanged { get; set; }
 
+        private string? _operator;
         protected string? Operator
         {
-            get => _internalAtomicPredicate?.Operator;
+            get => _operator;
             set
             {
-                if (_internalAtomicPredicate?.Operator != value)
+                _operator = value;
+                if(AtomicPredicate is not null)
                 {
-                    _internalAtomicPredicate.Operator = value;
-                    InvokeAsync(StateHasChanged);
+                    AtomicPredicate.Operator = value;
                 }
             }
         }
@@ -54,6 +56,8 @@ namespace MudExtensions
             }
 
             await base.SetParametersAsync(parameters);
+
+            Console.WriteLine($"OperatorSelectComponent::SetParametersAsync : {Operator} --> {_internalAtomicPredicate?.Operator}");
             Operator = _internalAtomicPredicate?.Operator;
         }
 

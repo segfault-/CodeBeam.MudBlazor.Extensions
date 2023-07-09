@@ -12,7 +12,7 @@ namespace MudExtensions.Components.Filter
         {
             if (EqualityComparer<T>.Default.Equals(storage, value)) return false;
 
-            Console.WriteLine($"{storage} --> {value}");
+            Console.WriteLine($"ObservableObject::SetProperty : {storage} --> {value}");
             storage = value;
             OnPropertyChanged(propertyName);
             return true;
