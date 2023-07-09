@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 namespace MudExtensions
 {
 #nullable enable
-    public partial class PropertySelectComponent<T> : MudComponentBase
+    public partial class PropertySelectComponent<T> : MudComponentBase, IDisposable
     {
         private AtomicPredicate<T>? _internalAtomicPredicate;
 
@@ -64,16 +64,6 @@ namespace MudExtensions
             // Check e.PropertyName for specific property changes if needed
             if (e.PropertyName?.Equals("Member") ?? false)
             {
-
-
-
-                Console.WriteLine($"PropertySelectComponent::HandlePropertyChanged : {e.PropertyName} has changed setting PropertyExpression to null");
-
-                //if (AtomicPredicate is not null)
-                //{
-                //    // need to null out "property" which is expre
-                //    AtomicPredicate.PropertyExpression = null;
-                //}
             }
         }
 
@@ -118,5 +108,12 @@ namespace MudExtensions
             throw new ArgumentException("Invalid expression", nameof(expression));
         }
 
+        public void Dispose()
+        {
+            if (_internalAtomicPredicate != null)
+            {
+                _internalAtomicPredicate.PropertyChanged -= HandlePropertyChanged;
+            }
+        }
     }
 }

@@ -4,7 +4,15 @@
 @typeparam T
 
 <div class="@ClassName" style="@StyleString">
-    <MudSelectExtended MultiSelection="false"
+    <MudSelect T="string" @bind-Value="Operator" @bind-Value:after="OnOperatorSelectChangedAsync" Variant="Variant.Outlined" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
+        @foreach (var filterOperator in FilterOperator.GetOperatorByDataType(AtomicPredicate.MemberType))
+        {
+            <MudSelectItem @key="filterOperator" Value="@filterOperator">@filterOperator</MudSelectItem>
+        }
+    </MudSelect>
+
+
+@*     <MudSelectExtended MultiSelection="false"
                        ItemCollection="FilterOperator.GetOperatorByDataType(AtomicPredicate.MemberType)"
                        @bind-Value="Operator"
                        @bind-Value:after="OnOperatorSelectChangedAsync"
@@ -21,5 +29,5 @@
         <ItemTemplate>
             <MudTextM3 TypeStyle="Enums.TypeStyle.Body" TypeSize="Enums.TypeSize.Large">@context.Value</MudTextM3>
         </ItemTemplate>
-    </MudSelectExtended>
+    </MudSelectExtended> *@
 </div>

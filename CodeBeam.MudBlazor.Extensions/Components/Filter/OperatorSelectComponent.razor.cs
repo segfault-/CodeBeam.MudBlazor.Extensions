@@ -57,8 +57,11 @@ namespace MudExtensions
 
             await base.SetParametersAsync(parameters);
 
-            Console.WriteLine($"OperatorSelectComponent::SetParametersAsync : {Operator} --> {_internalAtomicPredicate?.Operator}");
-            Operator = _internalAtomicPredicate?.Operator;
+            Console.WriteLine($"OperatorSelectComponent::SetParametersAsync : {Operator} --> {AtomicPredicate.Operator}");
+            if(AtomicPredicate is not null)
+            {
+                Operator = AtomicPredicate.Operator;
+            }
         }
 
         private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -70,20 +73,18 @@ namespace MudExtensions
             }
             else if (e.PropertyName?.Equals("Operator") ?? false)
             {
-                if (AtomicPredicate is not null)
-                {
-                    AtomicPredicate.Value = null;
-                }
+                //await OperatorChanged.InvokeAsync();
+                //if (AtomicPredicate is not null)
+                //{
+                //    AtomicPredicate.Value = null;
+                //}
             }
         }
 
 
         protected async Task OnOperatorSelectChangedAsync()
         {
-            if (AtomicPredicate?.Operator != Operator)
-            {
-                await OperatorChanged.InvokeAsync();
-            }
+            await OperatorChanged.InvokeAsync();
         }
 
         protected Func<string, string, bool> SearchFunc => (op, value) => op.Contains(value, StringComparison.OrdinalIgnoreCase);
