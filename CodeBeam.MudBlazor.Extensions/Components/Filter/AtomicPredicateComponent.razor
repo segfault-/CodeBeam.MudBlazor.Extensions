@@ -8,7 +8,7 @@
         @LogicalOperatorTemplate
         <MudStack Class="mud-filter-def" Row="true">
             <PropertySelectComponent Filter="@Filter" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectTypeChangedAsync" PropertySelectTypeChanged="OnPropertySelectTypeChangedAsync" />
-            <OperatorSelectComponent @bind-AtomicPredicate="@AtomicPredicate" OperatorTypeChanged="OnOperatorSelectChangedAsync" OperatorChanged="OnOperatorSelectChangedAsync" />
+            <OperatorSelectComponent @bind-AtomicPredicate="@AtomicPredicate" OperatorChanged="OnOperatorSelectChangedAsync" />
             <ValueFieldComponent @bind-AtomicPredicate="AtomicPredicate" ValueFieldChanged="OnValueFieldChangedAsync" />
             @if (!IsFirstElement)
             {
