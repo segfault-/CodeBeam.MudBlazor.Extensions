@@ -27,11 +27,21 @@ namespace MudExtensions
 
         protected async Task OnPropertySelectTypeChangedAsync()
         {
-            //AtomicPredicate?.ClearOperatorAndValues();
+            AtomicPredicate?.ClearOperatorAndValues();
             
             // Trigger a re-render which would call SetParametersAsync in children
             StateHasChanged();
             
+            await AtomicPredicateComponentChanged.InvokeAsync();
+        }
+
+        protected async Task OnPropertySelectChangedAsync()
+        {
+            //AtomicPredicate?.ClearOperatorAndValues();
+
+            // Trigger a re-render which would call SetParametersAsync in children
+            StateHasChanged();
+
             await AtomicPredicateComponentChanged.InvokeAsync();
         }
 
