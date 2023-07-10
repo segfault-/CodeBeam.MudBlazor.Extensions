@@ -141,65 +141,52 @@ namespace MudExtensions
             }
         }
 
-
-
-
-
-
-
-
-
-
         internal static Expression GenerateNumericFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
             // Parse the numeric value from the rule's Value property
             var numericValue = ParseToNullableDouble(rule.Value);
 
-            // Create expressions to handle null and not null cases
-            var nullExpression = Expression.Constant(null, typeof(double?));
-
-            // Create a constant expression with the parsed numeric value
-            var numericConstantExpression = Expression.Constant(numericValue, typeof(double?));
-
             // Filter operations for numeric type
             return rule.Operator switch
             {
                 // If operator is 'Equal' and numeric value is not null
-                FilterOperator.Number.Equal when rule.Value != null =>
-                    Expression.Equal(parameterExpression, numericConstantExpression),
+                FilterOperator.Number.Equal when numericValue is not null =>
+                    Expression.Equal(parameterExpression, Expression.Constant(numericValue.Value, typeof(double))),
 
                 // If operator is 'NotEqual' and numeric value is not null
-                FilterOperator.Number.NotEqual when rule.Value != null =>
-                    Expression.NotEqual(parameterExpression, numericConstantExpression),
+                FilterOperator.Number.NotEqual when numericValue is not null =>
+                    Expression.NotEqual(parameterExpression, Expression.Constant(numericValue.Value, typeof(double))),
 
                 // If operator is 'GreaterThan' and numeric value is not null
-                FilterOperator.Number.GreaterThan when rule.Value != null =>
-                    Expression.GreaterThan(parameterExpression, numericConstantExpression),
+                FilterOperator.Number.GreaterThan when numericValue is not null =>
+                    Expression.GreaterThan(parameterExpression, Expression.Constant(numericValue.Value, typeof(double))),
 
                 // If operator is 'GreaterThanOrEqual' and numeric value is not null
-                FilterOperator.Number.GreaterThanOrEqual when rule.Value != null =>
-                    Expression.GreaterThanOrEqual(parameterExpression, numericConstantExpression),
+                FilterOperator.Number.GreaterThanOrEqual when numericValue is not null =>
+                    Expression.GreaterThanOrEqual(parameterExpression, Expression.Constant(numericValue.Value, typeof(double))),
 
                 // If operator is 'LessThan' and numeric value is not null
-                FilterOperator.Number.LessThan when rule.Value != null =>
-                    Expression.LessThan(parameterExpression, numericConstantExpression),
+                FilterOperator.Number.LessThan when numericValue is not null =>
+                    Expression.LessThan(parameterExpression, Expression.Constant(numericValue.Value, typeof(double))),
 
                 // If operator is 'LessThanOrEqual' and numeric value is not null
-                FilterOperator.Number.LessThanOrEqual when rule.Value != null =>
-                    Expression.LessThanOrEqual(parameterExpression, numericConstantExpression),
+                FilterOperator.Number.LessThanOrEqual when numericValue is not null =>
+                    Expression.LessThanOrEqual(parameterExpression, Expression.Constant(numericValue.Value, typeof(double))),
 
                 // If operator is 'Empty'
                 FilterOperator.Number.Empty =>
-                    Expression.Equal(parameterExpression, nullExpression),
+                    Expression.Equal(parameterExpression, Expression.Constant(null, typeof(double))),
 
                 // If operator is 'NotEmpty'
                 FilterOperator.Number.NotEmpty =>
-                    Expression.NotEqual(parameterExpression, nullExpression),
+                    Expression.NotEqual(parameterExpression, Expression.Constant(null, typeof(double))),
 
-                // For any other operator, return true, no filtering is performed
+                // For any other operator, or if numericValue is null, return true, no filtering is performed
                 _ => Expression.Constant(true, typeof(bool))
             };
         }
+
+
         internal static Expression GenerateDateTimeFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
             var propertyType = rule.MemberType;
@@ -485,9 +472,9 @@ namespace MudExtensions
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static DateTime? ParseToNullableDateTime(object input)
+        public static DateTime? ParseToNullableDateTime(object? input)
         {
-            if (input == null)
+            if (input is null)
             {
                 return null;
             }
@@ -501,9 +488,9 @@ namespace MudExtensions
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static bool? ParseToNullableBool(object input)
+        public static bool? ParseToNullableBool(object? input)
         {
-            if (input == null)
+            if (input is null)
             {
                 return null;
             }
@@ -518,10 +505,10 @@ namespace MudExtensions
         /// <param name="enumStringValue"></param>
         /// <param name="enumType"></param>
         /// <returns></returns>
-        public static object? ParseToEnum(object enumStringValue, Type enumType)
+        public static object? ParseToEnum(object? enumStringValue, Type enumType)
         {
             // If null, return null
-            if (enumStringValue == null)
+            if (enumStringValue is null)
             {
                 return null;
             }
@@ -535,9 +522,9 @@ namespace MudExtensions
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static double? ParseToNullableDouble(object input)
+        public static double? ParseToNullableDouble(object? input)
         {
-            if (input == null)
+            if (input is null)
             {
                 return null;
             }

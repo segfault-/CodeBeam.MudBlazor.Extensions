@@ -130,8 +130,6 @@ namespace MudExtensions
         /// <returns></returns>
         public override async Task SetParametersAsync(ParameterView parameters)
         {
-            parameters.SetParameterProperties(this);
-
             if (_internalAtomicPredicate != AtomicPredicate)
             {
                 if (_internalAtomicPredicate != null)
@@ -148,6 +146,9 @@ namespace MudExtensions
                 }
             }
 
+            Console.WriteLine($"ValueFieldComponent::SetParametersAsync : AtomicPredicate.Value = {AtomicPredicate?.Value}");
+
+
             await base.SetParametersAsync(parameters);
             AssignValuesFromAtomicPredicate();
         }
@@ -160,7 +161,88 @@ namespace MudExtensions
             {
                 AssignValuesFromAtomicPredicate();
             }
+
+            Console.WriteLine($"ValueFieldComponent::HandlePropertyChanged : AtomicPredicate.Value = {AtomicPredicate?.Value}");
+
         }
+
+        //private void AssignValuesFromAtomicPredicate()
+        //{
+        //    if (AtomicPredicate is null)
+        //    {
+        //        return;
+        //    }
+
+        //    if (AtomicPredicate.Operator is null)
+        //    {
+        //        ValueBool = null;
+        //        ValueDate = null;
+        //        ValueEnum = null;
+        //        ValueGuid = null;
+        //        ValueNumber = null;
+        //        ValueObject = null;
+        //        ValueString = null;
+        //    }
+
+        //    FieldType = FieldType.Identify(AtomicPredicate.MemberType);
+        //    ValueObject = AtomicPredicate.Value;
+
+
+
+        //    if ((AtomicPredicate.Operator?.Equals(FilterOperator.String.IsOneOf) ?? false) || (AtomicPredicate.Operator?.Equals(FilterOperator.String.IsNotOneOf) ?? false))
+        //    {
+        //        ValueString = Convert.ToString(ValueObject);
+        //    }
+        //    else
+        //    {
+        //        if (FieldType.IsString)
+        //        {
+        //            ValueString = Convert.ToString(ValueObject);
+        //        }
+
+        //        if (FieldType.IsNumber)
+        //        {
+        //            ValueNumber = Convert.ToDouble(ValueObject);
+        //        }
+
+        //        if (FieldType.IsEnum)
+        //        {
+        //            ValueEnum = Convert.ToString(ValueObject);
+        //        }
+
+        //        if (FieldType.IsBoolean)
+        //        {
+        //            if (ValueObject is null)
+        //            {
+        //                ValueBool = null;
+        //            }
+        //            else if (ValueObject is bool b)
+        //            {
+        //                ValueBool = b;
+        //            }
+        //            else
+        //            {
+        //                throw new InvalidCastException("ValueObject is not a boolean");
+        //            }
+        //        }
+
+
+        //        if (FieldType.IsDateTime)
+        //        {
+        //            if (ValueObject is DateTime dateTime)
+        //            {
+        //                ValueDate = dateTime;
+        //                ValueTime = dateTime.TimeOfDay;
+        //            }
+        //        }
+
+        //        if (FieldType.IsGuid)
+        //        {
+        //            ValueGuid = new Guid(Convert.ToString(ValueObject) ?? Guid.Empty.ToString());
+        //        }
+        //    }
+
+        //}
 
         private void AssignValuesFromAtomicPredicate()
         {
@@ -178,56 +260,59 @@ namespace MudExtensions
                 ValueNumber = null;
                 ValueObject = null;
                 ValueString = null;
-            }
-
-            FieldType = FieldType.Identify(AtomicPredicate.MemberType);
-            ValueObject = AtomicPredicate.Value;
-
-
-
-            if ((AtomicPredicate.Operator?.Equals(FilterOperator.String.IsOneOf) ?? false) || (AtomicPredicate.Operator?.Equals(FilterOperator.String.IsNotOneOf) ?? false))
-            {
-                ValueString = Convert.ToString(ValueObject);
+                ValueTime = null;
             }
             else
             {
-                if (FieldType.IsString)
+                FieldType = FieldType.Identify(AtomicPredicate.MemberType);
+                ValueObject = AtomicPredicate.Value;
+
+                if (AtomicPredicate.Operator.Equals(FilterOperator.String.IsOneOf) || AtomicPredicate.Operator.Equals(FilterOperator.String.IsNotOneOf))
                 {
                     ValueString = Convert.ToString(ValueObject);
                 }
-
-                if (FieldType.IsNumber)
+                else
                 {
-                    ValueNumber = Convert.ToDouble(ValueObject);
-                }
-
-                if (FieldType.IsEnum)
-                {
-                    ValueEnum = Convert.ToString(ValueObject);
-                }
-
-                if (FieldType.IsBoolean)
-                {
-                    ValueBool = Convert.ToBoolean(ValueObject);
-                }
-
-                if (FieldType.IsDateTime)
-                {
-                    if (ValueObject is DateTime dateTime)
+                    if (FieldType.IsString)
                     {
-                        ValueDate = dateTime;
-                        ValueTime = dateTime.TimeOfDay;
+                        ValueString = FieldType.ConvertToString(ValueObject);
+                    }
+
+                    if (FieldType.IsNumber)
+                    {
+                        ValueNumber = FieldType.ConvertToDouble(ValueObject);
+                    }
+
+                    if (FieldType.IsEnum)
+                    {
+                        ValueEnum = FieldType.ConvertToString(ValueObject);
+                    }
+
+                    if (FieldType.IsBoolean)
+                    {
+                        ValueBool = FieldType.ConvertToBoolean(ValueObject);
+                    }
+
+                    if (FieldType.IsDateTime)
+                    {
+                        ValueDate = FieldType.ConvertToDateTime(ValueObject);
+                        if (ValueDate is not null)
+                        {
+                            ValueTime = ValueDate.Value.TimeOfDay;
+                        }
+                        else
+                        {
+                            ValueTime = null;
+                        }
+                    }
+
+                    if (FieldType.IsGuid)
+                    {
+                        ValueGuid = FieldType.ConvertToGuid(ValueObject);
                     }
                 }
-
-                if (FieldType.IsGuid)
-                {
-                    ValueGuid = new Guid(Convert.ToString(ValueObject) ?? Guid.Empty.ToString());
-                }
             }
-
         }
-
 
         public static object? ConvertToEnum(Type enumType, object value)
         {

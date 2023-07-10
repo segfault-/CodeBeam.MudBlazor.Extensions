@@ -30,6 +30,7 @@ namespace MudExtensions
             if(AtomicPredicate is not null)
             {
                 AtomicPredicate.Operator = null;
+                AtomicPredicate.Value = null;
             }
 
             await AtomicPredicateComponentChanged.InvokeAsync();

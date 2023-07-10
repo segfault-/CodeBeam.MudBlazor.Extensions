@@ -93,15 +93,24 @@
                 MicroId = Guid.NewGuid(),
             }).ToList();
 
-        var defaultAtomicPredicate = new AtomicPredicate<CatsDto>()
-       {
-           Parent = Filter,
-           Value = "Male",
-           Operator = "equals",
-           Member = nameof(CatsDto.Gender)
-       };
+        var catGenderAtomicPredicate = new AtomicPredicate<CatsDto>()
+        {
+            Parent = Filter,
+            Value = "Male",
+            Operator = MudExtensions.FilterOperator.String.Equal,
+            Member = nameof(CatsDto.Gender)
+        };
 
-        Filter.AtomicPredicates.Add(defaultAtomicPredicate);
+        var birthdateAtomicPredicate = new AtomicPredicate<CatsDto>()
+        {
+            Parent = Filter,
+            Value = new DateTime(2014, 1, 1, 14, 30, 45),
+            Operator = MudExtensions.FilterOperator.DateTime.OnOrAfter,
+            Member = nameof(CatsDto.BirthDate)
+        };
+
+        Filter.AtomicPredicates.Add(catGenderAtomicPredicate);
+        Filter.AtomicPredicates.Add(birthdateAtomicPredicate);
 
         base.OnInitialized();
     }

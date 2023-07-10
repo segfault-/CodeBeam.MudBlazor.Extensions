@@ -56,9 +56,10 @@ namespace MudExtensions
 
             await base.SetParametersAsync(parameters);
 
-            Console.WriteLine($"OperatorSelectComponent::SetParametersAsync : {Operator} --> {AtomicPredicate.Operator}");
-            if(AtomicPredicate is not null)
+
+            if(AtomicPredicate is not null && !(Operator?.Equals(AtomicPredicate.Operator) ?? false))
             {
+                Console.WriteLine($"OperatorSelectComponent::SetParametersAsync : {Operator} --> {AtomicPredicate.Operator}");
                 Operator = AtomicPredicate.Operator;
             }
         }
