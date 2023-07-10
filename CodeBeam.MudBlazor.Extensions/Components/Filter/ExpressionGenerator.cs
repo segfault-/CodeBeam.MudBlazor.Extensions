@@ -313,9 +313,9 @@ namespace MudExtensions
         /// <param name="compoundPredicate"></param>
         /// <param name="parameterExpression"></param>
         /// <returns></returns>
-        private Expression GenerateExpressionTree<T>(CompoundPredicate<T> compoundPredicate, ParameterExpression parameterExpression)
+        private Expression? GenerateExpressionTree<T>(CompoundPredicate<T> compoundPredicate, ParameterExpression parameterExpression)
         {
-            Expression combinedExpression = null;
+            Expression? combinedExpression = null;
 
             // Flag to determine if the operator is AND or OR
             bool isAndOperator = compoundPredicate.LogicalOperator == CompoundPredicateLogicalOperator.And;
@@ -323,8 +323,39 @@ namespace MudExtensions
             // Helper function to bind two expressions with a binary operator
             //Expression CombineExpressions(Expression left, Expression right) =>
             //    left == null ? right : (isAndOperator ? Expression.AndAlso(left, right) : Expression.OrElse(left, right));
-            Expression CombineExpressions(Expression left, Expression right) =>
-                right == null ? left : (left == null ? right : (isAndOperator ? Expression.AndAlso(left, right) : Expression.OrElse(left, right)));
+            //Expression CombineExpressions(Expression left, Expression right) =>
+            //    right == null ? left : (left == null ? right : (isAndOperator ? Expression.AndAlso(left, right) : Expression.OrElse(left, right)));
+            Expression? CombineExpressions(Expression? left, Expression? right)
+            {
+                // If both are null, return null
+                if (left is null && right is null)
+                {
+                    return null;
+                }
+
+                // If only left is null, return right
+                if (left is null)
+                {
+                    return right;
+                }
+
+                // If only right is null, return left
+                if (right is null)
+                {
+                    return left;
+                }
+
+                // Otherwise, combine them with the logical operator
+                if (isAndOperator)
+                {
+                    return Expression.AndAlso(left, right);
+                }
+                else
+                {
+                    return Expression.OrElse(left, right);
+                }
+            }
+
 
 
             foreach (var predicate in compoundPredicate.GetPredicatesInOrder())
@@ -338,7 +369,13 @@ namespace MudExtensions
 
                 if (predicate is AtomicPredicate<T> atomicPredicate)
                 {
-                    if (atomicPredicate.Operator == null || atomicPredicate.Value == null || atomicPredicate.MemberType == null)
+                    if (atomicPredicate.Operator is null || atomicPredicate.MemberType is null)
+                    {
+                        continue;
+                    }
+
+                    // Operators "is empty" and "is not empty" should work with Value == null
+                    if (atomicPredicate.Value is null && atomicPredicate.Operator != "is empty" && atomicPredicate.Operator != "is not empty")
                     {
                         continue;
                     }
