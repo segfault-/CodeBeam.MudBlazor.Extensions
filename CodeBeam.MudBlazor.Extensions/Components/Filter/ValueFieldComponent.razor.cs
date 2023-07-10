@@ -83,6 +83,7 @@ namespace MudExtensions
                     }
                     else
                     {
+                        MultiSelectValues = new List<string> { value };
                         ValueObject = Enum.Parse(FieldType.InnerType, value);
                     }
                 }
@@ -186,14 +187,7 @@ namespace MudExtensions
                 if ((AtomicPredicate?.Operator ?? "").Equals("is one of") || (AtomicPredicate?.Operator ?? "").Equals("is not one of"))
                 {
                     // for "is one of / is not one of" operator, ValueString should be a comma-separated string
-                    if(MultiSelectValues is not null)
-                    {
-                        ValueString = string.Join(",", MultiSelectValues);
-                    }
-                    else
-                    {
-                        ValueString = null;
-                    }                  
+                    ValueString = string.Join(",", MultiSelectValues ?? Enumerable.Empty<string>());
                 }
                 else
                 {
