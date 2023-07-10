@@ -34,7 +34,7 @@ namespace MudExtensions
         }
 
         public bool IsMultiSelect { get; set; } = false;
-        public IEnumerable<string> MultiSelectValues { get; set; } = new HashSet<string>();
+        public IEnumerable<string>? MultiSelectValues { get; set; } = new HashSet<string>();
 
         [JsonIgnore] public Expression<Func<T, object>>? PropertyExpression { get; set; }
         [JsonIgnore] public Type? MemberType { get; set; }

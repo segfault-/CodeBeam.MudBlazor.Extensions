@@ -15,6 +15,21 @@ namespace MudExtensions
 
         protected FieldType? FieldType;
 
+
+        private IEnumerable<string>? _multiSelectValues;
+        protected IEnumerable<string>? MultiSelectValues 
+        {
+            get => _multiSelectValues;
+            set
+            {
+                _multiSelectValues = value;
+                if (AtomicPredicate is not null)
+                {
+                    AtomicPredicate.MultiSelectValues = value;
+                }
+            }
+        }
+
         private object? _valueObject;
         protected object? ValueObject
         {
@@ -59,11 +74,18 @@ namespace MudExtensions
             set
             {
                 _valueEnum = value;
-                if(FieldType is not null && FieldType.InnerType is not null && !string.IsNullOrWhiteSpace(value))
+                if (FieldType is not null && FieldType.InnerType is not null && !string.IsNullOrWhiteSpace(value))
                 {
-                    ValueObject = Enum.Parse(FieldType.InnerType, value);
+                    if ((AtomicPredicate?.Operator ?? "").Equals("is one of") || (AtomicPredicate?.Operator ?? "").Equals("is not one of"))
+                    {
+                        // for "is one of / is not one of" operator, value should be a comma-separated string
+                        MultiSelectValues = value.Split(',', StringSplitOptions.TrimEntries);
+                    }
+                    else
+                    {
+                        ValueObject = Enum.Parse(FieldType.InnerType, value);
+                    }
                 }
-                
             }
         }
 
@@ -161,90 +183,29 @@ namespace MudExtensions
             // Check e.PropertyName for specific property changes if needed
             if(e.PropertyName?.Equals(nameof(AtomicPredicate<T>.Operator)) ?? false)
             {
+                if ((AtomicPredicate?.Operator ?? "").Equals("is one of") || (AtomicPredicate?.Operator ?? "").Equals("is not one of"))
+                {
+                    // for "is one of / is not one of" operator, ValueString should be a comma-separated string
+                    if(MultiSelectValues is not null)
+                    {
+                        ValueString = string.Join(",", MultiSelectValues);
+                    }
+                    else
+                    {
+                        ValueString = null;
+                    }                  
+                }
+                else
+                {
+                    // for "is / is not" operator, ValueString should be updated to MultiSelectValues.FirstOrDefault
+                    ValueString = MultiSelectValues?.FirstOrDefault();
+                }
                 AssignValuesFromAtomicPredicate();
             }
 
             Console.WriteLine($"ValueFieldComponent::HandlePropertyChanged : AtomicPredicate.Value = {AtomicPredicate?.Value}");
 
         }
-
-        //private void AssignValuesFromAtomicPredicate()
-        //{
-        //    if (AtomicPredicate is null)
-        //    {
-        //        return;
-        //    }
-
-        //    if (AtomicPredicate.Operator is null)
-        //    {
-        //        ValueBool = null;
-        //        ValueDate = null;
-        //        ValueEnum = null;
-        //        ValueGuid = null;
-        //        ValueNumber = null;
-        //        ValueObject = null;
-        //        ValueString = null;
-        //    }
-
-        //    FieldType = FieldType.Identify(AtomicPredicate.MemberType);
-        //    ValueObject = AtomicPredicate.Value;
-
-
-
-        //    if ((AtomicPredicate.Operator?.Equals(FilterOperator.String.IsOneOf) ?? false) || (AtomicPredicate.Operator?.Equals(FilterOperator.String.IsNotOneOf) ?? false))
-        //    {
-        //        ValueString = Convert.ToString(ValueObject);
-        //    }
-        //    else
-        //    {
-        //        if (FieldType.IsString)
-        //        {
-        //            ValueString = Convert.ToString(ValueObject);
-        //        }
-
-        //        if (FieldType.IsNumber)
-        //        {
-        //            ValueNumber = Convert.ToDouble(ValueObject);
-        //        }
-
-        //        if (FieldType.IsEnum)
-        //        {
-        //            ValueEnum = Convert.ToString(ValueObject);
-        //        }
-
-        //        if (FieldType.IsBoolean)
-        //        {
-        //            if (ValueObject is null)
-        //            {
-        //                ValueBool = null;
-        //            }
-        //            else if (ValueObject is bool b)
-        //            {
-        //                ValueBool = b;
-        //            }
-        //            else
-        //            {
-        //                throw new InvalidCastException("ValueObject is not a boolean");
-        //            }
-        //        }
-
-
-        //        if (FieldType.IsDateTime)
-        //        {
-        //            if (ValueObject is DateTime dateTime)
-        //            {
-        //                ValueDate = dateTime;
-        //                ValueTime = dateTime.TimeOfDay;
-        //            }
-        //        }
-
-        //        if (FieldType.IsGuid)
-        //        {
-        //            ValueGuid = new Guid(Convert.ToString(ValueObject) ?? Guid.Empty.ToString());
-        //        }
-        //    }
-
-        //}
 
         private void AssignValuesFromAtomicPredicate()
         {
