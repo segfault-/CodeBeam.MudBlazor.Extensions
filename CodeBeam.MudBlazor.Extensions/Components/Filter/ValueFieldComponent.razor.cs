@@ -130,6 +130,8 @@ namespace MudExtensions
         /// <returns></returns>
         public override async Task SetParametersAsync(ParameterView parameters)
         {
+            parameters.SetParameterProperties(this);
+
             if (_internalAtomicPredicate != AtomicPredicate)
             {
                 if (_internalAtomicPredicate != null)
