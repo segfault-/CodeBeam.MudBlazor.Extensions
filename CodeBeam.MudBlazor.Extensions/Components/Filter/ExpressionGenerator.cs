@@ -294,9 +294,6 @@ namespace MudExtensions
             };
         }
 
-
-
-
         /// <summary>
         /// Generates an expression tree for a given compound predicate
         /// </summary>
