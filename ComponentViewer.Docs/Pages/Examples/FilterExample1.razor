@@ -94,23 +94,33 @@
             }).ToList();
 
         var catGenderAtomicPredicate = new AtomicPredicate<CatsDto>()
-        {
-            Parent = Filter,
-            Value = "Male",
-            Operator = MudExtensions.FilterOperator.String.Equal,
-            Member = nameof(CatsDto.Gender)
-        };
+            {
+                Parent = Filter,
+                Value = "Male",
+                Operator = MudExtensions.FilterOperator.String.Equal,
+                Member = nameof(CatsDto.Gender)
+            };
 
-        var birthdateAtomicPredicate = new AtomicPredicate<CatsDto>()
-        {
-            Parent = Filter,
-            Value = new DateTime(2014, 1, 1, 14, 30, 45),
-            Operator = MudExtensions.FilterOperator.DateTime.OnOrAfter,
-            Member = nameof(CatsDto.BirthDate)
-        };
+        var catBirthdateAtomicPredicate = new AtomicPredicate<CatsDto>()
+            {
+                Parent = Filter,
+                Value = new DateTime(2014, 1, 1, 14, 30, 45),
+                Operator = MudExtensions.FilterOperator.DateTime.OnOrAfter,
+                Member = nameof(CatsDto.BirthDate)
+            };
+
+        var catTypeAtomicPredicate = new AtomicPredicate<CatsDto>()
+            {
+                Parent = Filter,
+                Value = "BlackTabby,OrangeTabby",
+                Operator = MudExtensions.FilterOperator.Enum.IsOneOf,
+                Member = nameof(CatsDto.CatType)
+            };
+
 
         Filter.AtomicPredicates.Add(catGenderAtomicPredicate);
-        Filter.AtomicPredicates.Add(birthdateAtomicPredicate);
+        Filter.AtomicPredicates.Add(catBirthdateAtomicPredicate);
+        Filter.AtomicPredicates.Add(catTypeAtomicPredicate);
 
         base.OnInitialized();
     }

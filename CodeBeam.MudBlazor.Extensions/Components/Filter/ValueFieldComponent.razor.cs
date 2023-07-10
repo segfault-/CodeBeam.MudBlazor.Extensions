@@ -227,6 +227,7 @@ namespace MudExtensions
                 if (AtomicPredicate.Operator.Equals(FilterOperator.String.IsOneOf) || AtomicPredicate.Operator.Equals(FilterOperator.String.IsNotOneOf))
                 {
                     ValueString = Convert.ToString(ValueObject);
+                    MultiSelectValues = ValueString?.Split(',', StringSplitOptions.TrimEntries);
                 }
                 else
                 {
