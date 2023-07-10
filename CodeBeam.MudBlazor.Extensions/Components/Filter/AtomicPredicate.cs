@@ -33,7 +33,7 @@ namespace MudExtensions
             set => SetProperty(ref _operator, value);
         }
 
-        public bool IsMultiSelect { get; set; } = false;
+        public bool IsMultiSelect => MultiSelectValues?.Any() ?? false;
         public IEnumerable<string>? MultiSelectValues { get; set; }
 
         [JsonIgnore] public Expression<Func<T, object>>? PropertyExpression { get; set; }

@@ -35,9 +35,6 @@ namespace MudExtensions
                         case nameof(AtomicPredicate<T>.Operator):
                             atomicPredicate.Operator = reader.GetString();
                             break;
-                        case nameof(AtomicPredicate<T>.IsMultiSelect):
-                            atomicPredicate.IsMultiSelect = reader.GetBoolean();
-                            break;
                         case nameof(AtomicPredicate<T>.MultiSelectValues):
                             atomicPredicate.MultiSelectValues = JsonSerializer.Deserialize<IEnumerable<string>>(ref reader);
                             break;
