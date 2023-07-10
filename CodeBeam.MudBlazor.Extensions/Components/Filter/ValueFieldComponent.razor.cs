@@ -187,7 +187,10 @@ namespace MudExtensions
                 if ((AtomicPredicate?.Operator ?? "").Equals("is one of") || (AtomicPredicate?.Operator ?? "").Equals("is not one of"))
                 {
                     // for "is one of / is not one of" operator, ValueString should be a comma-separated string
-                    ValueString = string.Join(",", MultiSelectValues ?? Enumerable.Empty<string>());
+                    if(MultiSelectValues is not null)
+                    {
+                        ValueString = string.Join(",", MultiSelectValues);
+                    }                   
                 }
                 else
                 {
@@ -218,6 +221,7 @@ namespace MudExtensions
                 ValueObject = null;
                 ValueString = null;
                 ValueTime = null;
+                MultiSelectValues = null;
             }
             else
             {
@@ -226,8 +230,15 @@ namespace MudExtensions
 
                 if (AtomicPredicate.Operator.Equals(FilterOperator.String.IsOneOf) || AtomicPredicate.Operator.Equals(FilterOperator.String.IsNotOneOf))
                 {
-                    ValueString = Convert.ToString(ValueObject);
-                    MultiSelectValues = ValueString?.Split(',', StringSplitOptions.TrimEntries);
+                    ValueString = FieldType.ConvertToString(ValueObject);
+                    if(string.IsNullOrWhiteSpace(ValueString))
+                    {
+                        MultiSelectValues = null;
+                    }
+                    else
+                    {
+                        MultiSelectValues = ValueString?.Split(',', StringSplitOptions.TrimEntries);
+                    }
                 }
                 else
                 {

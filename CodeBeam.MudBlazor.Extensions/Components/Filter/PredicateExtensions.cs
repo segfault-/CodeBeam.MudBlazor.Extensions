@@ -2,6 +2,7 @@
 
 namespace MudExtensions
 {
+#nullable enable
     public static class PredicateExtensions
     {
         public static Expression<Func<T, bool>> ToExpression<T>(this CompoundPredicate<T> compoundPredicate)

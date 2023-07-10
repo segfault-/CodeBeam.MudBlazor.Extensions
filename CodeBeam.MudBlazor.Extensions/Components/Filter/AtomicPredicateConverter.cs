@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace MudExtensions
 {
+#nullable enable
     public class AtomicPredicateConverter<T> : JsonConverter<AtomicPredicate<T>>
     {
         public override AtomicPredicate<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

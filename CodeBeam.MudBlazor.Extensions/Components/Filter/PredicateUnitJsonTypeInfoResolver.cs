@@ -4,6 +4,7 @@ using System.Text.Json.Serialization.Metadata;
 
 namespace MudExtensions
 {
+#nullable enable
     public class PredicateUnitJsonTypeInfoResolver<T> : DefaultJsonTypeInfoResolver
     {
         public override JsonTypeInfo GetTypeInfo(Type type, JsonSerializerOptions options)

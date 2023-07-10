@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 namespace MudExtensions;
+#nullable enable
 public enum FilterCaseSensitivity
 {
     Default,
