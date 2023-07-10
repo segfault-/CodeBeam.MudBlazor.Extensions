@@ -26,8 +26,7 @@ namespace MudExtensions
         }
         internal static Expression GenerateStringFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
-            // As the data type is known to be string, no need to convert
-            var valueAsString = rule.Value?.ToString();
+            var valueString = FieldType.ConvertToString(rule.Value);
 
             // Invoking 'Trim' method on 'parameterExpression' and storing in 'trimmedParameter'
             var trimmedParameter = Expression.Call(parameterExpression, TrimMethod!);
@@ -36,32 +35,32 @@ namespace MudExtensions
             var isNullExpression = Expression.Equal(parameterExpression, Expression.Constant(null));
             var isNotNullExpression = Expression.NotEqual(parameterExpression, Expression.Constant(null));
 
-            // The switch-case now directly refers to 'valueAsString', skipping the null check
+            // The switch-case now directly refers to 'valueString', skipping the null check
             return rule.Operator switch
             {
                 FilterOperator.String.Contains =>
                     Expression.AndAlso(isNotNullExpression,
-                        Expression.Call(parameterExpression, ContainsMethod!, Expression.Constant(valueAsString))),
+                        Expression.Call(parameterExpression, ContainsMethod!, Expression.Constant(valueString))),
 
                 FilterOperator.String.NotContains =>
                     Expression.AndAlso(isNotNullExpression,
-                        Expression.Not(Expression.Call(parameterExpression, ContainsMethod!, Expression.Constant(valueAsString)))),
+                        Expression.Not(Expression.Call(parameterExpression, ContainsMethod!, Expression.Constant(valueString)))),
 
                 FilterOperator.String.Equal =>
                     Expression.AndAlso(isNotNullExpression,
-                        Expression.Equal(parameterExpression, Expression.Constant(valueAsString))),
+                        Expression.Equal(parameterExpression, Expression.Constant(valueString))),
 
                 FilterOperator.String.NotEqual =>
                     Expression.AndAlso(isNotNullExpression,
-                        Expression.Not(Expression.Equal(parameterExpression, Expression.Constant(valueAsString)))),
+                        Expression.Not(Expression.Equal(parameterExpression, Expression.Constant(valueString)))),
 
                 FilterOperator.String.StartsWith =>
                     Expression.AndAlso(isNotNullExpression,
-                        Expression.Call(parameterExpression, StartsWithMethod!, Expression.Constant(valueAsString))),
+                        Expression.Call(parameterExpression, StartsWithMethod!, Expression.Constant(valueString))),
 
                 FilterOperator.String.EndsWith =>
                     Expression.AndAlso(isNotNullExpression,
-                        Expression.Call(parameterExpression, EndsWithMethod!, Expression.Constant(valueAsString))),
+                        Expression.Call(parameterExpression, EndsWithMethod!, Expression.Constant(valueString))),
 
                 FilterOperator.String.Empty =>
                     Expression.OrElse(isNullExpression,
@@ -143,7 +142,7 @@ namespace MudExtensions
         internal static Expression GenerateNumericFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
             // Parse the numeric value from the rule's Value property
-            var numericValue = ParseToNullableDouble(rule.Value);
+            var numericValue = FieldType.ConvertToDouble(rule.Value);
 
             // Filter operations for numeric type
             return rule.Operator switch
@@ -189,7 +188,7 @@ namespace MudExtensions
             var propertyType = rule.MemberType;
 
             // Extract DateTime value from the rule's Value property
-            var dateTimeValue = ParseToNullableDateTime(rule.Value);
+            var dateTimeValue = FieldType.ConvertToDateTime(rule.Value);
 
             // Prepare a constant expression with the parsed DateTime value
             var dateTimeConstantExpression = Expression.Constant(dateTimeValue, propertyType);
@@ -248,7 +247,7 @@ namespace MudExtensions
             var propertyType = rule.MemberType;
 
             // Extract boolean value from the rule's Value property
-            var booleanValue = ParseToNullableBool(rule.Value);
+            var booleanValue = FieldType.ConvertToBoolean(rule.Value);
 
             // If the data type is boolean or nullable boolean
             if (propertyType == typeof(bool) || propertyType == typeof(bool?))
@@ -271,39 +270,31 @@ namespace MudExtensions
             // If the property type is neither bool nor bool?
             throw new NotSupportedException($"Unsupported property type: {propertyType}");
         }
-        internal static Expression GenerateGuidFilterExpression<T>(AtomicPredicate<T> rule, Expression propertyExpression)
+        internal static Expression GenerateGuidFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
-            var guidValue = Guid.Parse(rule.Value.ToString());
-
-            // Create expressions to handle null and not null cases
-            var nullExpression = Expression.Constant(null, typeof(Guid?));
-
-            // Create a constant expression with the parsed Guid value
-            var guidConstantExpression = Expression.Constant(guidValue, typeof(Guid));
+            var valueGuid = FieldType.ConvertToGuid(rule.Value);
 
             // Filter operations for Guid type
             return rule.Operator switch
             {
-                // If operator is 'Equal' and Guid value is not null
-                FilterOperator.Guid.Equal when rule.Value != null =>
-                    Expression.Equal(propertyExpression, guidConstantExpression),
 
-                // If operator is 'NotEqual' and Guid value is not null
-                FilterOperator.Guid.NotEqual when rule.Value != null =>
-                    Expression.NotEqual(propertyExpression, guidConstantExpression),
+                FilterOperator.Guid.Equal when valueGuid is not null =>
+                    Expression.Equal(parameterExpression, Expression.Constant(valueGuid, typeof(Guid))),
+                
+                FilterOperator.Guid.NotEqual when valueGuid is not null =>
+                    Expression.Not(Expression.Equal(parameterExpression, Expression.Constant(valueGuid, typeof(Guid)))),
 
-                // If operator is 'Empty'
                 FilterOperator.Guid.Empty =>
-                    Expression.Equal(propertyExpression, nullExpression),
+                    Expression.Equal(parameterExpression, Expression.Constant(Guid.Empty, parameterExpression.Type)),
 
-                // If operator is 'NotEmpty'
                 FilterOperator.Guid.NotEmpty =>
-                    Expression.NotEqual(propertyExpression, nullExpression),
+                    Expression.NotEqual(parameterExpression, Expression.Constant(Guid.Empty, parameterExpression.Type)),
 
-                // For any other operator, return true, no filtering is performed
                 _ => Expression.Constant(true, typeof(bool))
             };
         }
+
+
 
 
         /// <summary>
@@ -321,10 +312,6 @@ namespace MudExtensions
             bool isAndOperator = compoundPredicate.LogicalOperator == CompoundPredicateLogicalOperator.And;
 
             // Helper function to bind two expressions with a binary operator
-            //Expression CombineExpressions(Expression left, Expression right) =>
-            //    left == null ? right : (isAndOperator ? Expression.AndAlso(left, right) : Expression.OrElse(left, right));
-            //Expression CombineExpressions(Expression left, Expression right) =>
-            //    right == null ? left : (left == null ? right : (isAndOperator ? Expression.AndAlso(left, right) : Expression.OrElse(left, right)));
             Expression? CombineExpressions(Expression? left, Expression? right)
             {
                 // If both are null, return null
@@ -540,38 +527,6 @@ namespace MudExtensions
         }
 
         /// <summary>
-        /// Attempts to parse the input object into a nullable DateTime.
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public static DateTime? ParseToNullableDateTime(object? input)
-        {
-            if (input is null)
-            {
-                return null;
-            }
-
-            // Convert the input to a DateTime and normalize it to UTC.
-            return Convert.ToDateTime(input).ToUniversalTime();
-        }
-
-        /// <summary>
-        /// Attempts to parse the input object into a nullable bool.
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public static bool? ParseToNullableBool(object? input)
-        {
-            if (input is null)
-            {
-                return null;
-            }
-
-            // Convert the input to a boolean.
-            return Convert.ToBoolean(input);
-        }
-
-        /// <summary>
         /// Parses the input object into an enum of the specified type.
         /// </summary>
         /// <param name="enumStringValue"></param>
@@ -587,22 +542,6 @@ namespace MudExtensions
 
             // Parse the input string to the specified enum type.
             return Enum.Parse(enumType, enumStringValue.ToString());
-        }
-
-        /// <summary>
-        /// Attempts to parse the input object into a nullable double.
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public static double? ParseToNullableDouble(object? input)
-        {
-            if (input is null)
-            {
-                return null;
-            }
-
-            // Convert the input to a double.
-            return Convert.ToDouble(input);
         }
     }
     public enum Condition
