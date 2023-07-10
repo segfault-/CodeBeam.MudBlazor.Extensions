@@ -10,7 +10,7 @@
         {
             <MudTextField Class="flex-shrink-1" T="string" @bind-Value="ValueString" @bind-Value:after="@OnValueFieldChangedAsync" Required="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
         }
-        else if (FieldType.IsGuid)
+        else if (FieldType.IsGuid && !(AtomicPredicate.Operator ?? "").EndsWith("empty"))
         {
             <MudTextField Class="flex-shrink-1" T="Guid?" @bind-Value="ValueGuid" @bind-Value:after="@OnValueFieldChangedAsync" Required="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
         }

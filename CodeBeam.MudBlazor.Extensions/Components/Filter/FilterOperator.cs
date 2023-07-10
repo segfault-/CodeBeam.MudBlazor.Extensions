@@ -64,6 +64,8 @@ namespace MudExtensions
         {
             public const string Equal = "equals";
             public const string NotEqual = "not equals";
+            public const string Empty = "is empty";
+            public const string NotEmpty = "is not empty";
         }
 
         internal static string[] GetOperatorByDataType(Type type)
@@ -140,6 +142,8 @@ namespace MudExtensions
                 {
                     Guid.Equal,
                     Guid.NotEqual,
+                    Guid.Empty,
+                    Guid.NotEmpty
                 };
             }
 

@@ -140,7 +140,6 @@ namespace MudExtensions
                 };
             }
         }
-
         internal static Expression GenerateNumericFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
             // Parse the numeric value from the rule's Value property
@@ -185,8 +184,6 @@ namespace MudExtensions
                 _ => Expression.Constant(true, typeof(bool))
             };
         }
-
-
         internal static Expression GenerateDateTimeFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
             var propertyType = rule.MemberType;
@@ -274,6 +271,40 @@ namespace MudExtensions
             // If the property type is neither bool nor bool?
             throw new NotSupportedException($"Unsupported property type: {propertyType}");
         }
+        internal static Expression GenerateGuidFilterExpression<T>(AtomicPredicate<T> rule, Expression propertyExpression)
+        {
+            var guidValue = Guid.Parse(rule.Value.ToString());
+
+            // Create expressions to handle null and not null cases
+            var nullExpression = Expression.Constant(null, typeof(Guid?));
+
+            // Create a constant expression with the parsed Guid value
+            var guidConstantExpression = Expression.Constant(guidValue, typeof(Guid));
+
+            // Filter operations for Guid type
+            return rule.Operator switch
+            {
+                // If operator is 'Equal' and Guid value is not null
+                FilterOperator.Guid.Equal when rule.Value != null =>
+                    Expression.Equal(propertyExpression, guidConstantExpression),
+
+                // If operator is 'NotEqual' and Guid value is not null
+                FilterOperator.Guid.NotEqual when rule.Value != null =>
+                    Expression.NotEqual(propertyExpression, guidConstantExpression),
+
+                // If operator is 'Empty'
+                FilterOperator.Guid.Empty =>
+                    Expression.Equal(propertyExpression, nullExpression),
+
+                // If operator is 'NotEmpty'
+                FilterOperator.Guid.NotEmpty =>
+                    Expression.NotEqual(propertyExpression, nullExpression),
+
+                // For any other operator, return true, no filtering is performed
+                _ => Expression.Constant(true, typeof(bool))
+            };
+        }
+
 
         /// <summary>
         /// Generates an expression tree for a given compound predicate
@@ -366,7 +397,7 @@ namespace MudExtensions
             return combineExpressions(combinedExpression, rightExpression);
         }
 
-        private Expression ProcessTypeBasedPredicate<T>(Expression combinedExpression, AtomicPredicate<T> atomicPredicate, MemberExpression propertyExpression, Func<Expression, Expression, Expression> combineExpressions)
+        private static Expression ProcessTypeBasedPredicate<T>(Expression combinedExpression, AtomicPredicate<T> atomicPredicate, MemberExpression propertyExpression, Func<Expression, Expression, Expression> combineExpressions)
         {
             Expression predicateExpression;
             var propertyType = propertyExpression.Type;
@@ -390,6 +421,10 @@ namespace MudExtensions
             else if (TypeIdentifier.IsDateTime(propertyType))
             {
                 predicateExpression = GenerateDateTimeFilterExpression<T>(atomicPredicate, propertyExpression);
+            }
+            else if (TypeIdentifier.IsGuid(propertyType))
+            {
+                predicateExpression = GenerateGuidFilterExpression<T>(atomicPredicate, propertyExpression);
             }
             else
             {

@@ -130,19 +130,21 @@ namespace MudExtensions
 
         public static Guid? ConvertToGuid(object? value)
         {
-            if (value is not null)
+            if (value is Guid g)
             {
-                if (value is string str && Guid.TryParse(str, out var guid))
-                {
-                    return guid;
-                }
+                return g;
             }
-            else
+            else if (value is string str && Guid.TryParse(str, out var guid))
+            {
+                return guid;
+            }
+            else if (value is null)
             {
                 return null;
             }
 
             throw new InvalidCastException("Value is not a Guid");
         }
+
     }
 }
