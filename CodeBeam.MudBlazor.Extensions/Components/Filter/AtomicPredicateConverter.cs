@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace MudExtensions;
+namespace MudExtensions
 {
 #nullable enable
     public class AtomicPredicateConverter<T> : JsonConverter<AtomicPredicate<T>>
@@ -56,8 +56,7 @@ namespace MudExtensions;
             writer.WriteString(nameof(AtomicPredicate<T>.Value), value.Value?.ToString());
             writer.WriteString(nameof(AtomicPredicate<T>.Operator), value.Operator);
             writer.WriteString(nameof(AtomicPredicate<T>.Member), value.Member);
-            writer.WriteString(nameof(AtomicPredicate<T>.MemberType), value.MemberType?.FullName);
-
+            writer.WriteString(nameof(AtomicPredicate<T>.MemberType), value.MemberType?.AssemblyQualifiedName);
             writer.WriteEndObject();
         }
     }
