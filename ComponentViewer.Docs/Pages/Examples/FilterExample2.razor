@@ -2,40 +2,66 @@
 @using MudBlazor
 @using MudBlazor.Extensions
 @using System.Linq.Expressions;
+@using System.Text.Json;
 
 
+<MudToolBar>
+    <MudIconButton Icon="@Icons.Material.Outlined.Print" Color="Color.Inherit" Class="mr-5" OnClick="PrintFilter" />
+</MudToolBar>
 <MudFilter T="FamilyDto" Class="py-2 my-4" FilterRoot="@Filter" @bind-Expression="_expression" @bind-Expression:after="ExpressionChangedAsync">
     <FilterTemplate>
         <Property T="FamilyDto" Title="Mothers Name" PropertyExpression="@(x => x.Mom.Name)" />
         <Property T="FamilyDto" Title="Fathers Name" PropertyExpression="@(x => x.Dad.Name)" />
     </FilterTemplate>
-    <LogicalOperatorTemplate>
-        <MudTextM3 Class="mud-logical-operator">foo</MudTextM3>
-    </LogicalOperatorTemplate>
 </MudFilter>
 <MudDataGrid T="FamilyDto" Class="py-2" Items="@__family" Filterable="false" Hover="true" Dense="true">
     <Columns>
         <PropertyColumn Property="@(x => x.Mom)">
             <CellTemplate Context="item">
-                <MudStack>
-                    <MudTextM3>@item.Item.Mom.Name</MudTextM3>
-                    <MudTextM3>@item.Item.Mom.BirthDate</MudTextM3>
+                <MudStack Row="true">
+                    <MudAvatar Color="Color.Secondary" Variant="Variant.Outlined">
+                        <MudIcon Icon="@Icons.Material.Filled.CatchingPokemon" />
+                    </MudAvatar>
+                    <MudStack>
+                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                            <MudTextM3 TypeSize="TypeSize.Medium" TypeStyle="TypeStyle.Label">DOB</MudTextM3>
+                            <MudTextM3 TypeSize="TypeSize.Small" TypeStyle="TypeStyle.Label">@item.Item.Mom.BirthDate</MudTextM3>
+                        </MudStack>
+                        <MudStack Row="true">
+                            <MudTextM3>@item.Item.Mom.Name</MudTextM3>
+                        </MudStack>
+                    </MudStack>
                 </MudStack>
             </CellTemplate>
         </PropertyColumn>
         <PropertyColumn Property="@(x => x.Dad)">
             <CellTemplate Context="item">
-                <MudStack>
-                    <MudTextM3>@item.Item.Dad.Name</MudTextM3>
-                    <MudTextM3>@item.Item.Dad.BirthDate</MudTextM3>
+                <MudStack Row="true">
+                    <MudAvatar Color="Color.Secondary" Variant="Variant.Outlined">
+                        <MudIcon Icon="@Icons.Material.Filled.CatchingPokemon" />
+                    </MudAvatar>
+                    <MudStack>
+                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                            <MudTextM3 TypeSize="TypeSize.Medium" TypeStyle="TypeStyle.Label">DOB</MudTextM3>
+                            <MudTextM3 TypeSize="TypeSize.Small" TypeStyle="TypeStyle.Label">@item.Item.Dad.BirthDate</MudTextM3>
+                        </MudStack>
+                        <MudStack Row="true">
+                            <MudTextM3>@item.Item.Dad.Name</MudTextM3>
+                        </MudStack>
+                    </MudStack>
                 </MudStack>
             </CellTemplate>
         </PropertyColumn>
     </Columns>
     <PagerContent>
-        <MudDataGridPager T="CatsDto" />
+        <MudDataGridPager T="FamilyDto" />
     </PagerContent>
 </MudDataGrid>
+<MudPaper>
+    <pre>
+        @JsonString
+    </pre>
+</MudPaper>
 
 @code {
     #nullable enable
@@ -88,13 +114,34 @@
     IEnumerable<FamilyDto> __family;
     IEnumerable<FamilyDto> _family;
     Expression<Func<FamilyDto, bool>>? _expression;
-
+    protected string JsonString;
 
     public CompoundPredicate<FamilyDto> Filter { get; set; } = new CompoundPredicate<FamilyDto>()
         {
             LogicalOperator = CompoundPredicateLogicalOperator.And
         };
+     
+    protected void PrintFilter()
+    {
+        JsonSerializerOptions jsonSerializerOptions = new()
+            {
+                TypeInfoResolver = new PredicateUnitJsonTypeInfoResolver<FamilyDto>(),
+                WriteIndented = true
+            };
 
+        jsonSerializerOptions.Converters.Add(new AtomicPredicateConverter<FamilyDto>());
+
+        if (Filter is not null)
+        {
+            JsonString = JsonSerializer.Serialize<PredicateUnit<FamilyDto>>(Filter, jsonSerializerOptions);
+
+            if (JsonString is not null)
+            {
+                PredicateUnit<FamilyDto>? pUnit = JsonSerializer.Deserialize<PredicateUnit<FamilyDto>>(JsonString, jsonSerializerOptions);
+            }
+        }
+
+    }
 
 
     protected Task ExpressionChangedAsync()
