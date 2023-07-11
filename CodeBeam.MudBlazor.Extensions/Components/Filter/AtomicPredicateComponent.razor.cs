@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Utilities;
+using System.Linq.Expressions;
 
 namespace MudExtensions
 {
@@ -16,6 +17,7 @@ namespace MudExtensions
         [Parameter] public EventCallback AtomicPredicateComponentChanged { get; set; }
         [Parameter] public RenderFragment? PredicateUnitActionsTemplate { get; set; }
         [Parameter] public RenderFragment? LogicalOperatorTemplate { get; set; }
+        [Parameter] public Expression<Func<T, object>>? SelectedPropertyExpression { get; set; }
 
         protected string ClassName => new CssBuilder("mud-atomic-predicate")
             .AddClass(Class)
@@ -38,11 +40,13 @@ namespace MudExtensions
 
         protected async Task OnPropertySelectChangedAsync()
         {
-            //AtomicPredicate?.ClearOperatorAndValues();
+            if (AtomicPredicate is not null && SelectedPropertyExpression is not null)
+            {
+                AtomicPredicate.Member = ExpressionGenerator.GetFullPropertyName(SelectedPropertyExpression);
+                AtomicPredicate.Operator = FilterOperator.String.Contains;
+            }
 
-            // Trigger a re-render which would call SetParametersAsync in children
             StateHasChanged();
-
             await AtomicPredicateComponentChanged.InvokeAsync();
         }
 

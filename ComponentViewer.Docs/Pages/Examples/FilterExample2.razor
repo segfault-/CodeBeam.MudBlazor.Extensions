@@ -4,28 +4,33 @@
 @using System.Linq.Expressions;
 
 
-<MudFilter T="CatsDto" Class="py-2 my-4" FilterRoot="@Filter" @bind-Expression="_expression" @bind-Expression:after="ExpressionChangedAsync">
+<MudFilter T="FamilyDto" Class="py-2 my-4" FilterRoot="@Filter" @bind-Expression="_expression" @bind-Expression:after="ExpressionChangedAsync">
     <FilterTemplate>
-        <Property T="CatsDto" PropertyExpression="@(x => x.Name)" />
-        <Property T="CatsDto" PropertyExpression="@(x => x.Gender)" />
-        <Property T="CatsDto" PropertyExpression="@(x => x.BirthDate)" Title="Birthday" />
-        <Property T="CatsDto" PropertyExpression="@(x => x.CatType)" Title="Type" />
-        <Property T="CatsDto" PropertyExpression="@(x => x.IsSpade)" Title="Spade" />
-        <Property T="CatsDto" PropertyExpression="@(x => x.Temperature)" />
-        <Property T="CatsDto" PropertyExpression="@(x => x.MicroId)" Title="Air Tag" />
+        <Property T="FamilyDto" Title="Mothers Name" PropertyExpression="@(x => x.Mom.Name)" />
+        <Property T="FamilyDto" Title="Fathers Name" PropertyExpression="@(x => x.Dad.Name)" />
     </FilterTemplate>
     <LogicalOperatorTemplate>
         <MudTextM3 Class="mud-logical-operator">foo</MudTextM3>
     </LogicalOperatorTemplate>
 </MudFilter>
-<MudDataGrid T="CatsDto" Class="py-2" Items="@__cats" Filterable="false" Hover="true" Dense="true">
+<MudDataGrid T="FamilyDto" Class="py-2" Items="@__family" Filterable="false" Hover="true" Dense="true">
     <Columns>
-        <PropertyColumn Property="@(x => x.Name)" />
-        <PropertyColumn Property="@(x => x.Gender)" />
-        <PropertyColumn Property="@(x => x.BirthDate)" Title="Birthday" />
-        <PropertyColumn Property="@(x => x.CatType)" Title="Type" />
-        <PropertyColumn Property="@(x => x.IsSpade)" Title="Spade" />
-        <PropertyColumn Property="@(x => x.MicroId)" Title="Air Tag" />
+        <PropertyColumn Property="@(x => x.Mom)">
+            <CellTemplate Context="item">
+                <MudStack>
+                    <MudTextM3>@item.Item.Mom.Name</MudTextM3>
+                    <MudTextM3>@item.Item.Mom.BirthDate</MudTextM3>
+                </MudStack>
+            </CellTemplate>
+        </PropertyColumn>
+        <PropertyColumn Property="@(x => x.Dad)">
+            <CellTemplate Context="item">
+                <MudStack>
+                    <MudTextM3>@item.Item.Dad.Name</MudTextM3>
+                    <MudTextM3>@item.Item.Dad.BirthDate</MudTextM3>
+                </MudStack>
+            </CellTemplate>
+        </PropertyColumn>
     </Columns>
     <PagerContent>
         <MudDataGridPager T="CatsDto" />
@@ -33,11 +38,34 @@
 </MudDataGrid>
 
 @code {
+    #nullable enable
+    public class FamilyDto
+    {
+        public FamilyDto()
+        :base()
+        {
+            Mom = new CatsDto();
+            Dad = new CatsDto();
+            Children = new List<CatsDto>();    
+        }
+
+        public CatsDto Mom { get; set; }
+        public CatsDto Dad { get; set; }
+        public IEnumerable<CatsDto> Children { get; set; }
+    }
+
+
     public class CatsDto
     {
         public CatsDto()
         {
-
+            Name = string.Empty;
+            Gender = string.Empty;
+            BirthDate = DateTime.MinValue;
+            CatType = TabbyType.OrangeTabby;
+            IsSpade = false;
+            Temperature = 100.7;
+            MicroId = Guid.Empty;
         }
 
         public string Name { get; set; }
@@ -57,12 +85,12 @@
         }
     }
 
-    IEnumerable<CatsDto> __cats;
-    IEnumerable<CatsDto> _cats;
-    Expression<Func<CatsDto, bool>>? _expression;
+    IEnumerable<FamilyDto> __family;
+    IEnumerable<FamilyDto> _family;
+    Expression<Func<FamilyDto, bool>>? _expression;
 
 
-    public CompoundPredicate<CatsDto> Filter { get; set; } = new CompoundPredicate<CatsDto>()
+    public CompoundPredicate<FamilyDto> Filter { get; set; } = new CompoundPredicate<FamilyDto>()
         {
             LogicalOperator = CompoundPredicateLogicalOperator.And
         };
@@ -73,7 +101,7 @@
     {
         if (_expression is not null)
         {
-            __cats = _cats.AsQueryable<CatsDto>().Where(_expression);
+            __family = _family.AsQueryable<FamilyDto>().Where(_expression);
         }
         return Task.CompletedTask;
     }
@@ -85,27 +113,41 @@
         var genders = new[] { "Male", "Female" };
         var types = Enum.GetValues(typeof(CatsDto.TabbyType)).Cast<CatsDto.TabbyType>().ToArray();
 
-        __cats = _cats = Enumerable.Range(1, 100).Select(i => new CatsDto
+        __family = _family = Enumerable.Range(1, 100).Select(i => new FamilyDto
             {
-                Name = names[random.Next(names.Length)],
-                Gender = genders[random.Next(genders.Length)],
-                BirthDate = DateTime.Now.AddYears(-random.Next(1, 15)).AddMonths(-random.Next(0, 12)).AddDays(-random.Next(0, 30)),
-                CatType = types[random.Next(types.Length)],
-                IsSpade = random.NextDouble() > 0.5,
-                Temperature = 36 + random.NextDouble() * 2, // Temperature between 36.0 and 38.0
-                MicroId = Guid.NewGuid(),
+                Mom = new CatsDto
+                {
+                    Name = names[random.Next(names.Length)],
+                    Gender = "Female",
+                    BirthDate = DateTime.Now.AddYears(-random.Next(20, 50)).AddMonths(-random.Next(0, 12)).AddDays(-random.Next(0, 30)),
+                    CatType = types[random.Next(types.Length)],
+                    IsSpade = random.NextDouble() > 0.5,
+                    Temperature = 36 + random.NextDouble() * 2, // Temperature between 36.0 and 38.0
+                    MicroId = Guid.NewGuid(),
+                },
+                Dad = new CatsDto
+                {
+                    Name = names[random.Next(names.Length)],
+                    Gender = "Male",
+                    BirthDate = DateTime.Now.AddYears(-random.Next(20, 50)).AddMonths(-random.Next(0, 12)).AddDays(-random.Next(0, 30)),
+                    CatType = types[random.Next(types.Length)],
+                    IsSpade = random.NextDouble() > 0.5,
+                    Temperature = 36 + random.NextDouble() * 2, // Temperature between 36.0 and 38.0
+                    MicroId = Guid.NewGuid(),
+                },
+                Children = Enumerable.Range(1, random.Next(1, 5)).Select(j => new CatsDto
+                {
+                    Name = names[random.Next(names.Length)],
+                    Gender = genders[random.Next(genders.Length)],
+                    BirthDate = DateTime.Now.AddYears(-random.Next(1, 15)).AddMonths(-random.Next(0, 12)).AddDays(-random.Next(0, 30)),
+                    CatType = types[random.Next(types.Length)],
+                    IsSpade = random.NextDouble() > 0.5,
+                    Temperature = 36 + random.NextDouble() * 2, // Temperature between 36.0 and 38.0
+                    MicroId = Guid.NewGuid(),
+                }).ToList()
             }).ToList();
-
-        var defaultAtomicPredicate = new AtomicPredicate<CatsDto>()
-            {
-                Parent = Filter,
-                Value = "Male",
-                Operator = "equals",
-                Member = nameof(CatsDto.Gender)
-            };
-
-        Filter.AtomicPredicates.Add(defaultAtomicPredicate);
 
         base.OnInitialized();
     }
+
 }

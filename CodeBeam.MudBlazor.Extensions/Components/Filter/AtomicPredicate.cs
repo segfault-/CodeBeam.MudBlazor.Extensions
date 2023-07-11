@@ -51,7 +51,11 @@ namespace MudExtensions
                     if (_member != null)
                     {
                         var parameter = Expression.Parameter(typeof(T), "x");
-                        var memberExpression = Expression.PropertyOrField(parameter, _member);
+                        Expression memberExpression = parameter;
+                        foreach (var memberName in _member.Split('.'))
+                        {
+                            memberExpression = Expression.PropertyOrField(memberExpression, memberName);
+                        }
 
                         // Convert the expression to object
                         var convertedExpression = Expression.Convert(memberExpression, typeof(object));
@@ -67,6 +71,7 @@ namespace MudExtensions
                 }
             }
         }
+
 
         /// <summary>
         /// Request "this" be removed from parent

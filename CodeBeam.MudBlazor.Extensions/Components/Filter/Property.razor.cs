@@ -11,58 +11,14 @@ namespace MudExtensions
         [Parameter, EditorRequired] public Expression<Func<T, object>>? PropertyExpression { get; set; } = Expression.Lambda<Func<T, object>>(Expression.Default(typeof(object)), Expression.Parameter(typeof(T)));
         [Parameter] public string? Title { get; set; }
 
-        public string? PropertyName
-        {
-            get
-            {
-                // The default value when the expression is null or can't be cast to MemberExpression
-                var defaultName = string.Empty;
+        public string? PropertyName => ExpressionGenerator.GetMemberExpression(PropertyExpression)?.Member.Name;
 
-                if (PropertyExpression?.Body is MemberExpression memberExpression)
-                {
-                    defaultName =  memberExpression.Member.Name;
-                }
-                else if (PropertyExpression?.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression)
-                {
-                    defaultName = ((MemberExpression)unaryExpression.Operand).Member.Name;
-                }
-                return defaultName;
-            }
-        }
-
-        public string? ComputedTitle
-        {
-            get
-            {
-                if (Title is not null)
-                {
-                    return Title;
-                }
-                else
-                {
-                    // The default value when the expression is null or can't be cast to MemberExpression
-                    var defaultName = string.Empty;
-
-                    if (PropertyExpression?.Body is MemberExpression memberExpression)
-                    {
-                        return memberExpression.Member.Name;
-                    }
-                    else if (PropertyExpression?.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression)
-                    {
-                        return ((MemberExpression)unaryExpression.Operand).Member.Name;
-                    }
-
-                    return defaultName;
-                }
-            }
-        }
-
+        public string? ComputedTitle => Title ?? PropertyName;
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
             Filter?.AddProperty(this);
         }
-
     }
 }

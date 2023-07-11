@@ -294,6 +294,9 @@ namespace MudExtensions
             };
         }
 
+
+
+
         /// <summary>
         /// Generates an expression tree for a given compound predicate
         /// </summary>
@@ -365,7 +368,7 @@ namespace MudExtensions
                     }
 
                     var currentOperator = atomicPredicate.Operator;
-                    var propertyExpression = Expression.Property(parameterExpression, atomicPredicate.Member);
+                    var propertyExpression = GenerateNestedPropertyExpression(parameterExpression, atomicPredicate.Member);
 
                     if (currentOperator.Equals("is one of") || currentOperator.Equals("is not one of"))
                     {
@@ -379,6 +382,23 @@ namespace MudExtensions
             }
 
             return combinedExpression;
+        }
+
+        private MemberExpression? GenerateNestedPropertyExpression(ParameterExpression param, string? property)
+        {
+            if (string.IsNullOrWhiteSpace(property))
+            {
+                return null;
+            }
+
+            string[] parts = property.Split('.');
+            Expression body = param;
+            foreach (string part in parts)
+            {
+                body = Expression.Property(body, part);
+            }
+
+            return body as MemberExpression;
         }
 
 
@@ -540,6 +560,51 @@ namespace MudExtensions
             // Parse the input string to the specified enum type.
             return Enum.Parse(enumType, enumStringValue.ToString());
         }
+
+        public static MemberExpression? GetMemberExpression<T>(Expression<Func<T, object>>? expression)
+        {
+            return expression?.Body switch
+            {
+                MemberExpression memberExpression => memberExpression,
+                UnaryExpression unaryExpression when unaryExpression.Operand is MemberExpression => unaryExpression.Operand as MemberExpression,
+                _ => null
+            };
+        }
+
+        public static string GetFullPropertyName<T>(Expression<Func<T, object>>? propertyExpression)
+        {
+            if (propertyExpression.Body is UnaryExpression unaryExpression)
+            {
+                return GetFullPropertyPath(unaryExpression.Operand);
+            }
+            else
+            {
+                return GetFullPropertyPath(propertyExpression.Body);
+            }
+        }
+
+        public static string GetFullPropertyPath(Expression? expression)
+        {
+            if (expression is MemberExpression memberExpression)
+            {
+                var previousPath = GetFullPropertyPath(memberExpression.Expression);
+
+                if (string.IsNullOrWhiteSpace(previousPath))
+                {
+                    return memberExpression.Member.Name;
+                }
+                else
+                {
+                    return previousPath + "." + memberExpression.Member.Name;
+                }
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+
     }
     public enum Condition
     {

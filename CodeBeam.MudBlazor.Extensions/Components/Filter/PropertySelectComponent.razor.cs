@@ -97,16 +97,8 @@ namespace MudExtensions
             {
                 return null;
             }
-            else if (expression.Body is MemberExpression memberExpression)
-            {
-                return memberExpression.Member.Name;
-            }
-            else if (expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression memberExpression2)
-            {
-                return memberExpression2.Member.Name;
-            }
 
-            throw new ArgumentException("Invalid expression", nameof(expression));
+            return ExpressionGenerator.GetFullPropertyName(expression);
         }
 
         public void Dispose()

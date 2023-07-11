@@ -7,9 +7,18 @@
     <MudStack Class="mud-ap-stack" Row="true">
         @LogicalOperatorTemplate
         <MudStack Class="mud-filter-def" Row="true">
-            <PropertySelectComponent Filter="@Filter" @bind-AtomicPredicate="@AtomicPredicate" PropertySelectChanged="OnPropertySelectChangedAsync" PropertySelectTypeChanged="OnPropertySelectTypeChangedAsync" />
-            <OperatorSelectComponent @bind-AtomicPredicate="@AtomicPredicate" OperatorChanged="OnOperatorSelectChangedAsync" />
-            <ValueFieldComponent @bind-AtomicPredicate="AtomicPredicate" ValueFieldChanged="OnValueFieldChangedAsync" />
+            <PropertySelectComponent 
+                Filter="@Filter" 
+                @bind-AtomicPredicate="@AtomicPredicate" 
+                PropertySelectChanged="OnPropertySelectChangedAsync" 
+                PropertySelectTypeChanged="OnPropertySelectTypeChangedAsync"
+                @bind-SelectedPropertyExpression="SelectedPropertyExpression" />
+            <OperatorSelectComponent 
+                @bind-AtomicPredicate="@AtomicPredicate" 
+                OperatorChanged="OnOperatorSelectChangedAsync" />
+            <ValueFieldComponent 
+                @bind-AtomicPredicate="AtomicPredicate" 
+                ValueFieldChanged="OnValueFieldChangedAsync" />
             @if (!IsFirstElement)
             {
                 <div class="flex-grow-1">
