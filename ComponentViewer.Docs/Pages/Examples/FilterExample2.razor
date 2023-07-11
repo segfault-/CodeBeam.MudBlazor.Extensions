@@ -16,6 +16,7 @@
 </MudFilter>
 <MudDataGrid T="FamilyDto" Class="py-2" Items="@__family" Filterable="false" Hover="true" Dense="true">
     <Columns>
+        <HierarchyColumn T="FamilyDto" />
         <PropertyColumn Property="@(x => x.Mom)">
             <CellTemplate Context="item">
                 <MudStack Row="true">
@@ -53,6 +54,25 @@
             </CellTemplate>
         </PropertyColumn>
     </Columns>
+    <ChildRowContent>
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudTextM3>Mom: @context.Item.Mom.Name</MudTextM3>
+                    <MudTextM3>Dad: @context.Item.Dad.Name</MudTextM3>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudTextM3>Children</MudTextM3>
+                @foreach(var child in@context.Item.Children)
+                {
+                    <MudTextM3>@child.Name</MudTextM3>
+                }
+            </MudCardContent>
+        </MudCard>
+    </ChildRowContent>
+    
+    
     <PagerContent>
         <MudDataGridPager T="FamilyDto" />
     </PagerContent>

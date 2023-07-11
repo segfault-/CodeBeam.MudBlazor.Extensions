@@ -195,7 +195,11 @@ namespace MudExtensions
                 else
                 {
                     // for "is / is not" operator, ValueString should be updated to MultiSelectValues.FirstOrDefault
-                    ValueString = MultiSelectValues?.FirstOrDefault();
+                    if(MultiSelectValues is not null)
+                    {
+                        ValueString = MultiSelectValues.FirstOrDefault();
+                    }
+                   
                 }
                 AssignValuesFromAtomicPredicate();
             }
