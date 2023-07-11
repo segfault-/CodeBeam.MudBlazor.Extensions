@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace MudExtensions
+namespace MudExtensions;
 {
 #nullable enable
     public class AtomicPredicateConverter<T> : JsonConverter<AtomicPredicate<T>>
@@ -36,11 +36,11 @@ namespace MudExtensions
                         case nameof(AtomicPredicate<T>.Operator):
                             atomicPredicate.Operator = reader.GetString();
                             break;
-                        case nameof(AtomicPredicate<T>.MultiSelectValues):
-                            atomicPredicate.MultiSelectValues = JsonSerializer.Deserialize<IEnumerable<string>>(ref reader);
-                            break;
                         case nameof(AtomicPredicate<T>.Member):
-                            atomicPredicate.Member = reader.GetString(); // Set the Member property instead
+                            atomicPredicate.Member = reader.GetString();
+                            break;
+                        case nameof(AtomicPredicate<T>.MemberType):
+                            atomicPredicate.MemberType = Type.GetType(reader.GetString());
                             break;
                     }
                 }
@@ -49,46 +49,14 @@ namespace MudExtensions
             throw new JsonException();
         }
 
-        private Expression<Func<T, object>>? CreateExpression(string memberName)
-        {
-            var parts = memberName.Split('.');
-            var param = Expression.Parameter(typeof(T), "x");
-            Expression? body = param;
-
-            foreach (var part in parts)
-            {
-                if (body is null)
-                {
-                    return null;
-                }
-
-                var propertyInfo = body.Type.GetProperty(part);
-                if (propertyInfo != null)
-                {
-                    body = Expression.Property(body, propertyInfo);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-
-            // Wrap the final property access in a Convert, as the Expression must be of type object
-            body = Expression.Convert(body, typeof(object));
-
-            return Expression.Lambda<Func<T, object>>(body, param);
-        }
-
         public override void Write(Utf8JsonWriter writer, AtomicPredicate<T> value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
 
             writer.WriteString(nameof(AtomicPredicate<T>.Value), value.Value?.ToString());
             writer.WriteString(nameof(AtomicPredicate<T>.Operator), value.Operator);
-            writer.WriteBoolean(nameof(AtomicPredicate<T>.IsMultiSelect), value.IsMultiSelect);
-            writer.WritePropertyName(nameof(AtomicPredicate<T>.MultiSelectValues));
-            JsonSerializer.Serialize(writer, value.MultiSelectValues, options);
-            writer.WriteString(nameof(AtomicPredicate<T>.Member), value.Member); // Serialize Member, not PropertyExpression
+            writer.WriteString(nameof(AtomicPredicate<T>.Member), value.Member);
+            writer.WriteString(nameof(AtomicPredicate<T>.MemberType), value.MemberType?.FullName);
 
             writer.WriteEndObject();
         }
