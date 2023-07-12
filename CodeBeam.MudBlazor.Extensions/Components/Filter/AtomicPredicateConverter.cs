@@ -40,7 +40,11 @@ namespace MudExtensions
                             atomicPredicate.Member = reader.GetString();
                             break;
                         case nameof(AtomicPredicate<T>.MemberType):
-                            atomicPredicate.MemberType = Type.GetType(reader.GetString());
+                            var memberTypeString = reader.GetString();
+                            if(memberTypeString is not null)
+                            {
+                                atomicPredicate.MemberType = Type.GetType(memberTypeString);
+                            }
                             break;
                     }
                 }
