@@ -258,7 +258,7 @@ namespace MudExtensions
 
                     if (FieldType.IsEnum)
                     {
-                        ValueEnum = FieldType.ConvertToString(ValueObject);
+                        ValueString = FieldType.ConvertToString(ValueObject);
                     }
 
                     if (FieldType.IsBoolean)
