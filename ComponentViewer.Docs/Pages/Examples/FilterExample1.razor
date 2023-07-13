@@ -155,25 +155,25 @@
         var catGenderAtomicPredicate = new AtomicPredicate<CatsDto>()
             {
                 Parent = Filter,
-                Value = "Male",
+                Member = nameof(CatsDto.Gender),
                 Operator = MudExtensions.FilterOperator.String.Equal,
-                Member = nameof(CatsDto.Gender)
+                Value = "Male"
             };
 
         var catBirthdateAtomicPredicate = new AtomicPredicate<CatsDto>()
             {
-                Parent = Filter,
-                Value = new DateTime(2014, 1, 1, 14, 30, 45),
+                Parent = Filter,              
+                Member = nameof(CatsDto.BirthDate),
                 Operator = MudExtensions.FilterOperator.DateTime.OnOrAfter,
-                Member = nameof(CatsDto.BirthDate)
+                Value = new DateTime(2014, 1, 1, 14, 30, 45),            
             };
 
         var catTypeAtomicPredicate = new AtomicPredicate<CatsDto>()
             {
                 Parent = Filter,
-                Value = "BlackTabby,OrangeTabby",
-                Operator = MudExtensions.FilterOperator.Enum.IsOneOf,
-                Member = nameof(CatsDto.CatType)
+                Member = nameof(CatsDto.CatType),
+                Operator = MudExtensions.FilterOperator.Enum.Is,
+                Value = "BlackTabby"
             };
 
 

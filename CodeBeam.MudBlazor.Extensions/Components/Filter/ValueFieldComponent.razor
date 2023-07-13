@@ -31,7 +31,7 @@
             }
             else
             {
-                <MudSelect T="string" @bind-Value="ValueString" @bind-Value:after="@OnValueFieldChangedAsync" Variant="Variant.Outlined" MultiSelection="false" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
+                <MudSelect T="string" @bind-Value="ValueEnum" @bind-Value:after="@OnValueFieldChangedAsync" Variant="Variant.Outlined" MultiSelection="false" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
                     @foreach (var item in Enum.GetValues(FieldType.InnerType))
                     {
                         <MudSelectItem @key="item" T="string" Value="@item.ToString()">@item</MudSelectItem>
