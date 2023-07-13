@@ -6,9 +6,10 @@
 
 <MudToolBar>
     <MudIconButton Icon="@Icons.Material.Outlined.Print" Color="Color.Inherit" Class="mr-5" OnClick="PrintFilter" />
+    <MudIconButton Icon="@Icons.Material.Outlined.SwapCalls" Color="Color.Inherit" Class="mr-5" OnClick="SwapFilterRoot" />
 </MudToolBar>
 
-<MudFilter T="CatsDto" Class="py-2 my-4" FilterRoot="@Filter" @bind-Expression="_expression" @bind-Expression:after="ExpressionChangedAsync" >
+<MudFilter T="CatsDto" Class="py-2 my-4" FilterRoot="@CurrentFilter" @bind-Expression="_expression" @bind-Expression:after="ExpressionChangedAsync" >
     <FilterTemplate>
         <Property T="CatsDto" PropertyExpression="@(x => x.Name)" />
         <Property T="CatsDto" PropertyExpression="@(x => x.Gender)" />
@@ -71,10 +72,21 @@
     Expression<Func<CatsDto, bool>>? _expression;
     protected string JsonString;
 
+    public CompoundPredicate<CatsDto> CurrentFilter { get; set; } = new CompoundPredicate<CatsDto>()
+        {
+            LogicalOperator = CompoundPredicateLogicalOperator.And
+        };
+
     public CompoundPredicate<CatsDto> Filter { get; set; } = new CompoundPredicate<CatsDto>()
     {
         LogicalOperator = CompoundPredicateLogicalOperator.And
     };
+
+    public CompoundPredicate<CatsDto> AltFilter { get; set; } = new CompoundPredicate<CatsDto>()
+    {
+        LogicalOperator = CompoundPredicateLogicalOperator.Or
+    };
+
 
 
     protected void PrintFilter()
@@ -96,7 +108,20 @@
                 PredicateUnit<CatsDto>? pUnit = JsonSerializer.Deserialize<PredicateUnit<CatsDto>>(JsonString, jsonSerializerOptions);
             }
         }
-        
+
+    }
+
+    protected void SwapFilterRoot()
+    {
+        if(CurrentFilter == Filter)
+        {
+            CurrentFilter = AltFilter;
+        }
+        else
+        {
+            CurrentFilter = Filter;
+        }
+
     }
 
     protected Task ExpressionChangedAsync()
@@ -126,6 +151,7 @@
                 MicroId = Guid.NewGuid(),
             }).ToList();
 
+
         var catGenderAtomicPredicate = new AtomicPredicate<CatsDto>()
             {
                 Parent = Filter,
@@ -154,6 +180,30 @@
         Filter.AtomicPredicates.Add(catGenderAtomicPredicate);
         Filter.AtomicPredicates.Add(catBirthdateAtomicPredicate);
         Filter.AtomicPredicates.Add(catTypeAtomicPredicate);
+
+
+
+        var altCatGenderAtomicPredicate = new AtomicPredicate<CatsDto>()
+            {
+                Parent = Filter,
+                Value = "Female",
+                Operator = MudExtensions.FilterOperator.String.Equal,
+                Member = nameof(CatsDto.Gender)
+            };
+
+        var altCatBirthdateAtomicPredicate = new AtomicPredicate<CatsDto>()
+            {
+                Parent = Filter,
+                Value = new DateTime(2014, 1, 1, 14, 30, 45),
+                Operator = MudExtensions.FilterOperator.DateTime.OnOrBefore,
+                Member = nameof(CatsDto.BirthDate)
+            };
+
+        AltFilter.AtomicPredicates.Add(altCatBirthdateAtomicPredicate);
+        AltFilter.AtomicPredicates.Add(altCatGenderAtomicPredicate);
+
+
+        CurrentFilter = Filter;
 
         base.OnInitialized();
     }

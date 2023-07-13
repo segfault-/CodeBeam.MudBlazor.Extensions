@@ -6,10 +6,16 @@
     <MudStack Class="mud-cp-stack" Row="true">
         @LogicalOperatorTemplate
         <div class="mud-logical-operator mud-cp-radio-group flex-grow-0" style="flex-basis:unset">
-            <MudSelectExtended T="CompoundPredicateLogicalOperator" @bind-Value="CompoundPredicate.LogicalOperator" @bind-Value:after="OnLogicalOperatorChangedAsync" ValuePresenter="Enums.ValuePresenter.Chip" ChipSize="Size.Small" Variant="Variant.Outlined" Dense="true" Margin="Margin.Dense">
+
+            <MudSelect T="CompoundPredicateLogicalOperator" @bind-Value="CompoundPredicate.LogicalOperator" @bind-Value:after="OnLogicalOperatorChangedAsync" Variant="Variant.Outlined" Dense="true" Margin="Margin.Dense">
+                <MudSelectItem T="CompoundPredicateLogicalOperator" Value="CompoundPredicateLogicalOperator.And" Text="AND" />
+                <MudSelectItem T="CompoundPredicateLogicalOperator" Value="CompoundPredicateLogicalOperator.Or" Text="OR" />
+            </MudSelect>
+
+@*             <MudSelectExtended T="CompoundPredicateLogicalOperator" @bind-Value="CompoundPredicate.LogicalOperator" @bind-Value:after="OnLogicalOperatorChangedAsync" ValuePresenter="Enums.ValuePresenter.Chip" ChipSize="Size.Small" Variant="Variant.Outlined" Dense="true" Margin="Margin.Dense">
                 <MudSelectItemExtended T="CompoundPredicateLogicalOperator" Value="CompoundPredicateLogicalOperator.And" Text="AND" />
                 <MudSelectItemExtended T="CompoundPredicateLogicalOperator" Value="CompoundPredicateLogicalOperator.Or" Text="OR" />
-            </MudSelectExtended>
+            </MudSelectExtended> *@
         </div>
         @if (CompoundPredicate.GetPredicatesInOrder().FirstOrDefault() is AtomicPredicate<T> atomicPredicate)
         {
