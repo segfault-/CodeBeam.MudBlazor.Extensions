@@ -154,6 +154,20 @@ namespace MudExtensions
         public bool SearchBox { get; set; }
 
         /// <summary>
+        /// Search box text field variant.
+        /// </summary>
+        [Parameter]
+        [Category(CategoryTypes.List.Behavior)]
+        public Variant SearchBoxVariant { get; set; } = Variant.Outlined;
+
+        /// <summary>
+        /// Search box icon position.
+        /// </summary>
+        [Parameter]
+        [Category(CategoryTypes.List.Behavior)]
+        public Adornment SearchBoxAdornment { get; set; } = Adornment.End;
+
+        /// <summary>
         /// If true, the search-box will be focused when the dropdown is opened.
         /// </summary>
         [Parameter]
@@ -400,7 +414,6 @@ namespace MudExtensions
             else if (changedValueType == "MultiSelectionOff")
             {
                 SelectedValue = SelectedValues == null ? default(T) : SelectedValues.FirstOrDefault();
-                var items = CollectAllMudListItems(true);
                 SelectedValues = SelectedValue == null ? null : new HashSet<T>(_comparer) { SelectedValue };
                 UpdateSelectedItem();
             }
@@ -762,6 +775,11 @@ namespace MudExtensions
                 //SelectedItem = item;
                 //SelectedItemChanged.InvokeAsync(item);
             }
+
+            if (MultiSelection && SelectedValues != null && SelectedValues.Contains(item.Value))
+            {
+                item.SetSelected(true);
+            }
         }
 
         protected internal void Unregister(MudListItemExtended<T> item)
@@ -1068,7 +1086,11 @@ namespace MudExtensions
                 {
                     _allSelected = false;
                 }
-                else if (CollectAllMudListItems(true).Count() == _selectedValues.Count)
+                else if (ItemCollection != null && ItemCollection.Count == _selectedValues.Count)
+                {
+                    _allSelected = true;
+                }
+                else if (ItemCollection == null && CollectAllMudListItems(true).Count() == _selectedValues.Count)
                 {
                     _allSelected = true;
                 }
@@ -1134,7 +1156,15 @@ namespace MudExtensions
                 _allSelected = true;
             }
 
-            SelectedValues = items.Where(x => x.IsSelected).Select(y => y.Value).ToHashSet(_comparer);
+            if (ItemCollection != null)
+            {
+                SelectedValues = deselect == true ? Enumerable.Empty<T>() : ItemCollection.ToHashSet(_comparer);
+            }
+            else
+            {
+                SelectedValues = items.Where(x => x.IsSelected).Select(y => y.Value).ToHashSet(_comparer);
+            }
+
             if (MudSelectExtended != null)
             {
                 MudSelectExtended.BeginValidatePublic();
