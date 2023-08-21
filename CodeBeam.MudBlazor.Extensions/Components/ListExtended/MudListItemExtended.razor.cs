@@ -404,16 +404,16 @@ namespace MudExtensions
             OnClick.InvokeAsync(ev).AndForget();
         }
 
-        private TypeSize _textTypeSize;
+        private Size _textTypeSize;
         protected void OnListParametersChanged()
         {
             if ((Dense ?? MudListExtended?.Dense) ?? false)
             {
-                _textTypeSize = TypeSize.Medium;
+                _textTypeSize = Size.Medium;
             }
             else
             {
-                _textTypeSize = TypeSize.Small;
+                _textTypeSize = Size.Small;
             }
             StateHasChanged();
         }

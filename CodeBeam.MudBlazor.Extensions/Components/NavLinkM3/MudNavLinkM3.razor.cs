@@ -59,13 +59,13 @@ namespace MudExtensions
         /// </summary>
         [Parameter]
         [Category(CategoryTypes.Text.Appearance)]
-        public TypeStyle TypeStyle { get; set; } = TypeStyle.Label;
+        public TypoM3 TypeStyle { get; set; } = TypoM3.Label;
         /// <summary>
         /// Set the text-align on the component.
         /// </summary>
         [Parameter]
         [Category(CategoryTypes.Text.Appearance)]
-        public TypeSize TypeSize { get; set; } = TypeSize.Medium;
+        public Size TypeSize { get; set; } = Size.Medium;
 
         [Parameter] public EventCallback<MudNavLinkM3> NavLinkClicked { get; set; }
 

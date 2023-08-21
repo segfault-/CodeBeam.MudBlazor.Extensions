@@ -1,17 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<TargetFrameworks>net7.0</TargetFrameworks>
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Version>6.5.8</Version>
+		<Version>6.5.8-dev.1</Version>
 		<Title>CodeBeam.MudBlazor.Extensions</Title>
 		<Authors>CodeBeam</Authors>
 		<Company>CodeBeam</Company>
 		<Description>MudBlazor extension components from contributors. Includes 30+ components and utilities.</Description>
 		<Copyright>CodeBeam OpenSource MIT</Copyright>
-		<PackageIcon>Mud_Secondary.png</PackageIcon>
 		<PackageProjectUrl>https://codebeam-mudextensions.pages.dev/</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/CodeBeamOrg/CodeBeam.MudBlazor.Extensions</RepositoryUrl>
 		<PackageTags>Blazor; MudBlazor; Component; Extension; Material3; Animate; Stepper; ComboBox; Select; List; Loading; Gallery; ChipField; Transfer; Barcode; QR; SpeedDial; RangeSlider; Teleport</PackageTags>
@@ -41,9 +40,9 @@
 
 	<!--Uncomment it on development and debug to compile scss and generate min.css on rebuild-->
 	<!--This sections causes to fail auto deployment to CloudFlare-->
-	<!--<Target Name="ToolRestore" BeforeTargets="PreBuildEvent">
+	<Target Name="ToolRestore" BeforeTargets="PreBuildEvent">
 		<Exec Command="dotnet tool restore" StandardOutputImportance="high" />
-	</Target>-->
+	</Target>
 
 	<Target Name="PreBuild" AfterTargets="ToolRestore">
 		<Exec Command="dotnet tool run webcompiler -r Styles/MudExtensions.scss -c excubowebcompiler.json" StandardOutputImportance="high" />
@@ -67,10 +66,10 @@
 	
 	<ItemGroup>
 		<None Include="bundleconfig.json" />
-		<None Include="..\..\..\..\Desktop\MudBuilder\Mud_Secondary.png">
+		<!--<None Include="..\..\..\..\Desktop\MudBuilder\Mud_Secondary.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
-		</None>
+		</None>-->
 		<!--<None Include="wwwroot\MudExtensions.js" />-->
 		<!--<None Include="Components\ListExtended\MudListExtended.razor" />
 		<None Include="Components\ListExtended\MudListItemExtended.razor" />
@@ -85,11 +84,11 @@
 		</Content>
 	</ItemGroup>
 
-	<ItemGroup>
+	<!--<ItemGroup>
 	  <None Update="Mud_Secondary.png">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
-	</ItemGroup>
+	</ItemGroup>-->
 
 </Project>

@@ -81,11 +81,11 @@ namespace MudExtensions
         /// </summary>
         [Parameter]
         [Category(CategoryTypes.TreeView.Appearance)]
-        public TypeStyle TextTypeStyle { get; set; } = Enums.TypeStyle.Label;
+        public TypoM3 TextTypeStyle { get; set; } = Enums.TypoM3.Label;
 
         [Parameter]
         [Category(CategoryTypes.TreeView.Appearance)]
-        public TypeSize TextTypeSize { get; set; } = Enums.TypeSize.Medium;
+        public Size TextTypeSize { get; set; } = Size.Medium;
 
         /// <summary>
         /// User class names for the text, separated by space.
@@ -99,11 +99,11 @@ namespace MudExtensions
         /// </summary>
         [Parameter]
         [Category(CategoryTypes.TreeView.Appearance)]
-        public TypeStyle EndTextTypeStyle { get; set; } = Enums.TypeStyle.Label;
+        public TypoM3 EndTextTypeStyle { get; set; } = Enums.TypoM3.Label;
 
         [Parameter]
         [Category(CategoryTypes.TreeView.Appearance)]
-        public TypeSize EndTextTypeSize { get; set; } = Enums.TypeSize.Medium;
+        public Size EndTextTypeSize { get; set; } = Size.Medium;
 
         /// <summary>
         /// The text at the end of the item.
