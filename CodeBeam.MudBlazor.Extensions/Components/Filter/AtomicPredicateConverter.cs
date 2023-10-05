@@ -73,7 +73,25 @@ namespace MudExtensions
         {
             writer.WriteStartObject();
 
-            writer.WriteString(nameof(AtomicPredicate<T>.Value), value.Value?.ToString());
+            if (value.Value is bool boolValue)
+            {
+                writer.WriteBoolean(nameof(AtomicPredicate<T>.Value), boolValue);
+            }
+            else if (value.Value is DateTime dateTimeValue)
+            {
+                // If you need specific DateTime formatting, apply here.
+                writer.WriteString(nameof(AtomicPredicate<T>.Value), dateTimeValue.ToString("O"));  // ISO 8601 format
+            }
+            else if (value.Value is Enum enumValue)
+            {
+                writer.WriteString(nameof(AtomicPredicate<T>.Value), enumValue.ToString());
+            }
+            else
+            {
+                // For other types, continue to use the ToString method.
+                writer.WriteString(nameof(AtomicPredicate<T>.Value), value.Value?.ToString());
+            }
+
             writer.WriteString(nameof(AtomicPredicate<T>.Operator), value.Operator);
             writer.WriteString(nameof(AtomicPredicate<T>.Member), value.Member);
             writer.WriteString(nameof(AtomicPredicate<T>.MemberType), value.MemberType?.AssemblyQualifiedName);
