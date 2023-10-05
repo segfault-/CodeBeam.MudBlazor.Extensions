@@ -92,12 +92,19 @@ namespace MudExtensions
             {
                 return d;
             }
+            else if (value is string s)
+            {
+                if (double.TryParse(s, out var result))
+                {
+                    return result;
+                }
+            }
             else if (value is null)
             {
                 return null;
             }
 
-            throw new InvalidCastException("Value is not a number");
+            throw new InvalidCastException("Value is not a valid double representation");
         }
 
         public static bool? ConvertToBoolean(object? value)
@@ -106,12 +113,19 @@ namespace MudExtensions
             {
                 return b;
             }
+            else if (value is string s)
+            {
+                if (bool.TryParse(s, out var result))
+                {
+                    return result;
+                }
+            }
             else if (value is null)
             {
                 return null;
             }
 
-            throw new InvalidCastException("Value is not a boolean");
+            throw new InvalidCastException("Value is not a valid boolean representation");
         }
 
         public static DateTime? ConvertToDateTime(object? value)
@@ -120,12 +134,19 @@ namespace MudExtensions
             {
                 return dt;
             }
+            else if (value is string s)
+            {
+                if (DateTime.TryParse(s, out var result))
+                {
+                    return result;
+                }
+            }
             else if (value is null)
             {
                 return null;
             }
 
-            throw new InvalidCastException("Value is not a DateTime");
+            throw new InvalidCastException("Value is not a valid DateTime representation");
         }
 
         public static Guid? ConvertToGuid(object? value)

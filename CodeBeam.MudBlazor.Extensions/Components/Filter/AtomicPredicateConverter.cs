@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace MudExtensions
@@ -31,25 +30,17 @@ namespace MudExtensions
                     switch (propertyName)
                     {
                         case nameof(AtomicPredicate<T>.Value):
-                            if (atomicPredicate.MemberType == typeof(bool))
+                            var valueString = reader.GetString();
+
+                            // Check if the atomicPredicate.MemberType is not null and is Enum
+                            if (atomicPredicate.MemberType is not null && atomicPredicate.MemberType.IsEnum && valueString is not null)
                             {
-                                atomicPredicate.Value = reader.GetBoolean();
-                            }
-                            else if (atomicPredicate.MemberType == typeof(DateTime))
-                            {
-                                atomicPredicate.Value = reader.GetDateTime();
-                            }
-                            else if (atomicPredicate.MemberType is not null && atomicPredicate.MemberType.IsEnum)
-                            {
-                                var valueString = reader.GetString();
-                                if (valueString is not null)
-                                {
-                                    atomicPredicate.Value = Enum.Parse(atomicPredicate.MemberType, valueString);
-                                }
+                                // Parse the string value back to Enum
+                                atomicPredicate.Value = Enum.Parse(atomicPredicate.MemberType, valueString);
                             }
                             else
                             {
-                                atomicPredicate.Value = reader.GetString();
+                                atomicPredicate.Value = valueString;
                             }
 
                             break;
@@ -81,25 +72,7 @@ namespace MudExtensions
         {
             writer.WriteStartObject();
 
-            if (value.Value is bool boolValue)
-            {
-                writer.WriteBoolean(nameof(AtomicPredicate<T>.Value), boolValue);
-            }
-            else if (value.Value is DateTime dateTimeValue)
-            {
-                // If you need specific DateTime formatting, apply here.
-                writer.WriteString(nameof(AtomicPredicate<T>.Value), dateTimeValue.ToString("O"));  // ISO 8601 format
-            }
-            else if (value.Value is Enum enumValue)
-            {
-                writer.WriteString(nameof(AtomicPredicate<T>.Value), enumValue.ToString());
-            }
-            else
-            {
-                // For other types, continue to use the ToString method.
-                writer.WriteString(nameof(AtomicPredicate<T>.Value), value.Value?.ToString());
-            }
-
+            writer.WriteString(nameof(AtomicPredicate<T>.Value), value.Value?.ToString());
             writer.WriteString(nameof(AtomicPredicate<T>.Operator), value.Operator);
             writer.WriteString(nameof(AtomicPredicate<T>.Member), value.Member);
             writer.WriteString(nameof(AtomicPredicate<T>.MemberType), value.MemberType?.AssemblyQualifiedName);
