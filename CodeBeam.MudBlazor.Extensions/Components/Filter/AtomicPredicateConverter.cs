@@ -31,17 +31,25 @@ namespace MudExtensions
                     switch (propertyName)
                     {
                         case nameof(AtomicPredicate<T>.Value):
-                            var valueString = reader.GetString();
-
-                            // Check if the atomicPredicate.MemberType is not null and is Enum
-                            if (atomicPredicate.MemberType is not null && atomicPredicate.MemberType.IsEnum && valueString is not null)
+                            if (atomicPredicate.MemberType == typeof(bool))
                             {
-                                // Parse the string value back to Enum
-                                atomicPredicate.Value = Enum.Parse(atomicPredicate.MemberType, valueString);
+                                atomicPredicate.Value = reader.GetBoolean();
+                            }
+                            else if (atomicPredicate.MemberType == typeof(DateTime))
+                            {
+                                atomicPredicate.Value = reader.GetDateTime();
+                            }
+                            else if (atomicPredicate.MemberType is not null && atomicPredicate.MemberType.IsEnum)
+                            {
+                                var valueString = reader.GetString();
+                                if (valueString is not null)
+                                {
+                                    atomicPredicate.Value = Enum.Parse(atomicPredicate.MemberType, valueString);
+                                }
                             }
                             else
                             {
-                                atomicPredicate.Value = valueString;
+                                atomicPredicate.Value = reader.GetString();
                             }
 
                             break;
