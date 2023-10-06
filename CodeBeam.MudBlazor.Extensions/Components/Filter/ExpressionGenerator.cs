@@ -559,9 +559,24 @@ namespace MudExtensions
                 return null;
             }
 
-            // Parse the input string to the specified enum type.
-            return Enum.Parse(enumType, enumStringValue.ToString());
+            // Check if the provided type is a nullable enum
+            Type typeToParse = Nullable.GetUnderlyingType(enumType) ?? enumType;
+
+            if (!typeToParse.IsEnum)
+            {
+                throw new ArgumentException("Provided type is not an enum or nullable enum.", nameof(enumType));
+            }
+
+            // Explicitly handle the nullable string scenario
+            string valueToParse = enumStringValue.ToString();
+            if (valueToParse == null)
+            {
+                throw new InvalidOperationException("Unexpected null value.");
+            }
+
+            return Enum.Parse(typeToParse, valueToParse);
         }
+
 
         public static MemberExpression? GetMemberExpression<T>(Expression<Func<T, object>>? expression)
         {
