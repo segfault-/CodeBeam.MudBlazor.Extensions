@@ -19,11 +19,11 @@ namespace MudExtensions
             .GetMethods(BindingFlags.Static | BindingFlags.Public)
             .Single(m => m.Name == nameof(Enumerable.Contains) && m.GetParameters().Length == 2);
 
-        internal static bool IsNullableEnum(Type t)
+        private static bool IsNullableEnum(Type? type)
         {
-            Type? u = Nullable.GetUnderlyingType(t);
-            return (u is not null) && u.IsEnum;
+            return Nullable.GetUnderlyingType(type)?.IsEnum == true;
         }
+
         internal static Expression GenerateStringFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
             var valueString = FieldType.ConvertToString(rule.Value);
@@ -94,17 +94,19 @@ namespace MudExtensions
                 {
                     // If operator is 'Is' and enum value is not null
                     FilterOperator.Enum.Is when rule.Value != null =>
-                        Expression.OrElse(
-                            Expression.NotEqual(parameterExpression, nullExpression),
-                            Expression.Equal(Expression.Property(parameterExpression, "Value"), enumConstantExpression)
-                        ),
+                        Expression.Equal(Expression.Property(parameterExpression, "Value"), enumConstantExpression),
 
                     // If operator is 'IsNot' and enum value is not null
                     FilterOperator.Enum.IsNot when rule.Value != null =>
-                        Expression.AndAlso(
-                            Expression.Equal(parameterExpression, nullExpression),
-                            Expression.NotEqual(Expression.Property(parameterExpression, "Value"), enumConstantExpression)
-                        ),
+                        Expression.NotEqual(Expression.Property(parameterExpression, "Value"), enumConstantExpression),
+
+                    // If operator is 'Is' and enum value is null
+                    FilterOperator.Enum.Is when rule.Value == null =>
+                        Expression.Equal(parameterExpression, nullExpression),
+
+                    // If operator is 'IsNot' and enum value is null
+                    FilterOperator.Enum.IsNot when rule.Value == null =>
+                        Expression.NotEqual(parameterExpression, nullExpression),
 
                     // For any other operator, return true, no filtering is performed
                     _ => Expression.Constant(true, typeof(bool))
