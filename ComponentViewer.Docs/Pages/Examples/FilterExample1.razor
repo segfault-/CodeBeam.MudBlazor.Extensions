@@ -130,6 +130,41 @@
         {
             __cats = _cats.AsQueryable<CatsDto>().Where(_expression);
         }
+
+        JsonSerializerOptions jsonSerializerOptions = new()
+        {
+            TypeInfoResolver = new PredicateUnitJsonTypeInfoResolver<CatsDto>(),
+            WriteIndented = true
+        };
+
+        jsonSerializerOptions.Converters.Add(new AtomicPredicateConverter<CatsDto>());
+
+        if (Filter is not null)
+        {
+            JsonString = JsonSerializer.Serialize<PredicateUnit<CatsDto>>(Filter, jsonSerializerOptions);
+
+            if (JsonString is not null)
+            {
+                PredicateUnit<CatsDto>? pUnit = JsonSerializer.Deserialize<PredicateUnit<CatsDto>>(JsonString, jsonSerializerOptions);
+
+                CompoundPredicate<CatsDto>? compoundPredicate = (CompoundPredicate<CatsDto>?)pUnit;
+                if(compoundPredicate is not null)
+                {
+                    MudExtensions.ExpressionGenerator expressionGenerator = new();
+                    var expression = expressionGenerator.CompilePredicateExpression(compoundPredicate);
+                    if(expression is not null)
+                    {
+                        var source = _cats.AsQueryable<CatsDto>().Where(expression);
+                    }
+                }
+
+
+            }
+        }
+
+
+
+
         return Task.CompletedTask;
     }
 

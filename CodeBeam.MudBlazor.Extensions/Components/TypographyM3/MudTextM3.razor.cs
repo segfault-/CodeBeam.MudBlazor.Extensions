@@ -46,7 +46,7 @@ namespace MudExtensions
         /// </summary>
         [Parameter]
         [Category(CategoryTypes.Text.Appearance)]
-        public Size Size { get; set; } = Size.Large; 
+        public Size Size { get; set; } = Size.Medium; 
 
         /// <summary>
         /// Child content of component.

@@ -23,7 +23,7 @@
             @if ((AtomicPredicate.Operator ?? "").Equals("is one of") || (AtomicPredicate.Operator ?? "").Equals("is not one of"))
             {
                 <MudSelect T="string" @bind-Value="ValueString" @bind-Value:after="@OnValueFieldChangedAsync" @bind-SelectedValues="@MultiSelectValues" Variant="Variant.Outlined" MultiSelection="true" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
-                    @foreach (var item in Enum.GetValues(FieldType.InnerType))
+                    @foreach (var item in FieldType.GetEnumValues())
                     {
                         <MudSelectItem @key="item" T="string" Value="@item.ToString()">@item</MudSelectItem>
                     }
@@ -32,7 +32,7 @@
             else
             {
                 <MudSelect T="string" @bind-Value="ValueString" @bind-Value:after="@OnValueFieldChangedAsync" Variant="Variant.Outlined" MultiSelection="false" FullWidth="true" Required="true" Dense="true" Margin="Margin.Dense">
-                    @foreach (var item in Enum.GetValues(FieldType.InnerType))
+                    @foreach (var item in FieldType.GetEnumValues())
                     {
                         <MudSelectItem @key="item" T="string" Value="@item.ToString()">@item</MudSelectItem>
                     }

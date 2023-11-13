@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections;
 
 namespace MudExtensions
 {
@@ -165,6 +166,23 @@ namespace MudExtensions
             }
 
             throw new InvalidCastException("Value is not a Guid");
+        }
+
+        public IEnumerable GetEnumValues()
+        {
+            if (InnerType is null)
+            {
+                throw new InvalidOperationException("The InnerType is not set.");
+            }
+
+            Type typeToCheck = Nullable.GetUnderlyingType(InnerType) ?? InnerType;
+
+            if (typeToCheck.IsEnum)
+            {
+                return Enum.GetValues(typeToCheck);
+            }
+
+            throw new InvalidOperationException("The type is not an enum");
         }
 
     }
