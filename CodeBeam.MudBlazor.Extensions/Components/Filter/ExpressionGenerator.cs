@@ -143,43 +143,50 @@ namespace MudExtensions
         }
         internal static Expression GenerateNumericFilterExpression<T>(AtomicPredicate<T> rule, Expression parameterExpression)
         {
+            if(rule.MemberType is null)
+            {
+                throw new InvalidOperationException("Rule MemberType is null");
+            }
+
+
             // Parse the numeric value from the rule's Value property
-            var numericValue = FieldType.ConvertToDouble(rule.Value);
+            // Convert it to the specific type as indicated by rule.MemberType
+            var numericValue = Convert.ChangeType(rule.Value, rule.MemberType);
 
             // Filter operations for numeric type
             return rule.Operator switch
             {
                 // If operator is 'Equal' and numeric value is not null
                 FilterOperator.Number.Equal when numericValue is not null =>
-                    Expression.Equal(parameterExpression, Expression.Constant(numericValue.Value, typeof(double))),
+                    Expression.Equal(parameterExpression, Expression.Constant(numericValue, rule.MemberType)),
 
                 // If operator is 'NotEqual' and numeric value is not null
                 FilterOperator.Number.NotEqual when numericValue is not null =>
-                    Expression.NotEqual(parameterExpression, Expression.Constant(numericValue.Value, typeof(double))),
+                    Expression.NotEqual(parameterExpression, Expression.Constant(numericValue, rule.MemberType)),
 
                 // If operator is 'GreaterThan' and numeric value is not null
                 FilterOperator.Number.GreaterThan when numericValue is not null =>
-                    Expression.GreaterThan(parameterExpression, Expression.Constant(numericValue.Value, typeof(double))),
+                    Expression.GreaterThan(parameterExpression, Expression.Constant(numericValue, rule.MemberType)),
 
                 // If operator is 'GreaterThanOrEqual' and numeric value is not null
                 FilterOperator.Number.GreaterThanOrEqual when numericValue is not null =>
-                    Expression.GreaterThanOrEqual(parameterExpression, Expression.Constant(numericValue.Value, typeof(double))),
+                    Expression.GreaterThanOrEqual(parameterExpression, Expression.Constant(numericValue, rule.MemberType)),
 
                 // If operator is 'LessThan' and numeric value is not null
                 FilterOperator.Number.LessThan when numericValue is not null =>
-                    Expression.LessThan(parameterExpression, Expression.Constant(numericValue.Value, typeof(double))),
+                    Expression.LessThan(parameterExpression, Expression.Constant(numericValue, rule.MemberType)),
 
                 // If operator is 'LessThanOrEqual' and numeric value is not null
                 FilterOperator.Number.LessThanOrEqual when numericValue is not null =>
-                    Expression.LessThanOrEqual(parameterExpression, Expression.Constant(numericValue.Value, typeof(double))),
+                    Expression.LessThanOrEqual(parameterExpression, Expression.Constant(numericValue, rule.MemberType)),
 
                 // If operator is 'Empty'
                 FilterOperator.Number.Empty =>
-                    Expression.Equal(parameterExpression, Expression.Constant(null, typeof(double))),
+                    Expression.Equal(parameterExpression, Expression.Constant(null, rule.MemberType)),
 
                 // If operator is 'NotEmpty'
                 FilterOperator.Number.NotEmpty =>
-                    Expression.NotEqual(parameterExpression, Expression.Constant(null, typeof(double))),
+                    Expression.NotEqual(parameterExpression, Expression.Constant(null, rule.MemberType)),
 
                 // For any other operator, or if numericValue is null, return true, no filtering is performed
                 _ => Expression.Constant(true, typeof(bool))
