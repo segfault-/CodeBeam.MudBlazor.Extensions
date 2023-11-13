@@ -11,7 +11,6 @@
 		<Company>CodeBeam</Company>
 		<Description>MudBlazor extension components from contributors. Includes 30+ components and utilities.</Description>
 		<Copyright>CodeBeam OpenSource MIT</Copyright>
-		<PackageIcon>Mud_Secondary.png</PackageIcon>
 		<PackageProjectUrl>https://codebeam-mudextensions.pages.dev/</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/CodeBeamOrg/CodeBeam.MudBlazor.Extensions</RepositoryUrl>
 		<PackageTags>Blazor; MudBlazor; Component; Extension; Material3; Animate; Stepper; ComboBox; Select; List; Loading; Gallery; ChipField; Transfer; Barcode; QR; SpeedDial; RangeSlider; Teleport</PackageTags>
@@ -71,10 +70,10 @@
 	
 	<ItemGroup>
 		<None Include="bundleconfig.json" />
-		<None Include="..\..\..\..\Desktop\MudBuilder\Mud_Secondary.png">
+		<!--<None Include="..\..\..\..\Desktop\MudBuilder\Mud_Secondary.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
-		</None>
+		</None>-->
 		<!--<None Include="wwwroot\MudExtensions.js" />-->
 		<!--<None Include="Components\ListExtended\MudListExtended.razor" />
 		<None Include="Components\ListExtended\MudListItemExtended.razor" />
