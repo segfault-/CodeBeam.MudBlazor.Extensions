@@ -13,5 +13,7 @@ namespace MudExtensions.UnitTests.Mocks
         public ValueTask Open(string link, string target) => ValueTask.CompletedTask;
 
         public ValueTask OpenInNewTabAsync(string url) => ValueTask.CompletedTask;
+
+        ValueTask IJsApiService.UpdateStyleProperty(string elementId, string propertyName, object value) => ValueTask.CompletedTask;
     }
 }
