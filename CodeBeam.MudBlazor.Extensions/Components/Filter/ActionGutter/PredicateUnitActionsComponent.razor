@@ -6,7 +6,7 @@
         <div>
             @if (IsCompoundPredicate && !IsFirstElement)
             {
-                <MudSpeedDial Origin="Origin.TopRight" Style="position:relative" OpenOnHover="false" OpenOnClick="true" Size="Size.Small" CloseWhenClick="true">
+                <MudSpeedDial Origin="Origin.TopRight" Style="position:relative!important" OpenOnHover="false" OpenOnClick="true" Size="Size.Small" CloseWhenClick="true">
                     <MudFab Class="z-60" Size="Size.Small" IconSize="Size.Small" Color="Color.Primary" StartIcon="@Icons.Material.Filled.AddCircleOutline" OnClick="AddAtomicPredicateAsync" />
                     <MudFab Class="z-60" Size="Size.Small" IconSize="Size.Small" Color="Color.Primary" StartIcon="@Icons.Material.Filled.LibraryAdd" OnClick="AddCompoundPredicateAsync" />
                 </MudSpeedDial>

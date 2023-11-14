@@ -182,7 +182,7 @@
                 BirthDate = DateTime.Now.AddYears(-random.Next(1, 15)).AddMonths(-random.Next(0, 12)).AddDays(-random.Next(0, 30)),
                 CatType = types[random.Next(types.Length)],
                 IsSpade = random.NextDouble() > 0.5,
-                Temperature = 36 + random.NextDouble() * 2, // Temperature between 36.0 and 38.0
+                Temperature = (int)(36 + random.NextDouble() * 2), // Temperature between 36.0 and 38.0
                 MicroId = Guid.NewGuid(),
             }).ToList();
 
