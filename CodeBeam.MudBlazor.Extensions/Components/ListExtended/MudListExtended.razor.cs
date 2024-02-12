@@ -1,13 +1,11 @@
-﻿using System.Data;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using MudBlazor.Services;
 using MudBlazor.Utilities;
 using MudExtensions.Enums;
 using MudExtensions.Services;
-using static MudBlazor.CategoryTypes;
-using static MudBlazor.Colors;
+using System.Data;
 
 namespace MudExtensions
 {
@@ -85,6 +83,13 @@ namespace MudExtensions
         [Parameter]
         [Category(CategoryTypes.FormComponent.ListBehavior)]
         public RenderFragment SelectAllTemplate { get; set; }
+
+        /// <summary>
+        /// Function to be invoked when checking whether an item should be disabled or not. Works both with renderfragment and ItemCollection approach.
+        /// </summary>
+        [Parameter]
+        [Category(CategoryTypes.FormComponent.ListBehavior)]
+        public Func<T, bool> ItemDisabledFunc { get; set; }
 
         [Parameter]
         [Category(CategoryTypes.List.Behavior)]
@@ -191,6 +196,11 @@ namespace MudExtensions
         [Parameter]
         [Category(CategoryTypes.List.Behavior)]
         public string SearchBoxPlaceholder { get; set; }
+
+        /// <summary>
+        /// Fired when the search value changes.
+        /// </summary>
+        [Parameter] public EventCallback<string> OnSearchStringChange { get; set; }
 
         /// <summary>
         /// Allows virtualization. Only work if ItemCollection parameter is not null.
@@ -922,6 +932,12 @@ namespace MudExtensions
             }
         }
 
+        protected async Task SearchChanged(string searchString)
+        {
+            _searchString = searchString;
+            await OnSearchStringChange.InvokeAsync(searchString);
+        }
+
         #endregion
 
 
@@ -1228,7 +1244,7 @@ namespace MudExtensions
         public async Task ActiveFirstItem(string startChar = null)
         {
             var items = CollectAllMudListItems(true);
-            if (items == null || items.Count == 0 || items[0].Disabled)
+            if (items == null || items.Count == 0 || items[0].GetDisabledStatus())
             {
                 return;
             }
@@ -1311,7 +1327,7 @@ namespace MudExtensions
             {
                 return;
             }
-            if (items[index + changeCount].Disabled)
+            if (items[index + changeCount].GetDisabledStatus())
             {
                 // Recursive
                 await ActiveAdjacentItem(changeCount > 0 ? changeCount + 1 : changeCount - 1);
@@ -1364,7 +1380,7 @@ namespace MudExtensions
             DeactiveAllItems(items);
             for (int i = 0; i < items.Count; i++)
             {
-                if (!items[properLastIndex - i].Disabled)
+                if (!items[properLastIndex - i].GetDisabledStatus())
                 {
                     properLastIndex -= i;
                     break;
